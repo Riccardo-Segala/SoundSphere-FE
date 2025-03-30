@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "http://springbootbackend:8080",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

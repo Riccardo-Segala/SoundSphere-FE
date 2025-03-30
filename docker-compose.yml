@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: angular_env
+    volumes:
+      - ./:/app
+      - /node_modules
+      # Evita problemi di permessi con i moduli
+    networks:
+      - app_network  # Collega il backend alla rete comune
+    stdin_open: true
+    tty: true
+    ports:
+      - "4200:4200"
+    command: >
+      bash -c "source /root/.nvm/nvm.sh && 
+      nvm use node && 
+      npm install &&
+      npm update &&  
+      npm audit fix &&  
+      ng serve --host 0.0.0.0 --proxy-config proxy.conf.json"
+
+networks:
+  app_network:
+    external: true
