@@ -8,7 +8,7 @@ services:
     container_name: angular_env
     volumes:
       - ./:/app
-      - /node_modules
+      - /app/node_modules
       # Evita problemi di permessi con i moduli
     networks:
       - app_network  # Collega il backend alla rete comune
