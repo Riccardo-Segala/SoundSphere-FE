@@ -2,7 +2,14 @@
 FROM node:lts-bullseye
 
 # Installa dipendenze di sistema
-RUN apt update && apt install -y curl unzip zip bash
+RUN apt update && apt install -y curl unzip zip bash software-properties-common
+
+# Installa OpenJDK 17 dai repository ufficiali di Debian
+RUN apt install -y openjdk-17-jdk
+
+# Configura JAVA_HOME
+ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+ENV PATH="$JAVA_HOME/bin:$PATH"
 
 # Installa NVM
 ENV NVM_VERSION="0.40.0"
@@ -20,15 +27,6 @@ RUN bash -c "source /root/.nvm/nvm.sh && nvm install node && nvm use node"
 
 # Installa Angular CLI globalmente
 RUN npm install -g @angular/cli
-
-# Installa SDKMAN! per gestire Gradle
-RUN curl -s "https://get.sdkman.io" | bash
-ENV SDKMAN_DIR="/root/.sdkman"
-RUN echo 'export SDKMAN_DIR="/root/.sdkman"' >> /root/.bashrc && \
-    echo '[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"' >> /root/.bashrc
-
-# Installa Gradle (ultima versione)
-RUN bash -c "source /root/.sdkman/bin/sdkman-init.sh && sdk install gradle"
 
 # Imposta il working directory
 WORKDIR /app
