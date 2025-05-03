@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate:api": "openapi-generator-cli generate -i http://springbootbackend:8080/v3/api-docs.yaml -g typescript-angular -o src/app/generated-api --additional-properties=apiPackage=api,modelPackage=model"
+    "generate:api": "openapi-generator-cli generate -i /openapi/openapi.yaml -g typescript-angular -o src/app/api-client --additional-properties=apiPackage=api,modelPackage=dto"
   },
   "private": true,
   "dependencies": {
