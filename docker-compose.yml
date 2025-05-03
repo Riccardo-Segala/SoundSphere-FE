@@ -18,7 +18,12 @@ services:
     ports:
       - "4200:4200"
     command: >
-      bash -c "npm run generate:api && ng serve --host 0.0.0.0 --proxy-config proxy.conf.json"
+      bash -c "
+        if [ \"$API_UPDATE\" != \"false\" ]; then
+          npm run generate:api;
+        fi &&
+        ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
+      "
 
 volumes:
   openapi-spec:
