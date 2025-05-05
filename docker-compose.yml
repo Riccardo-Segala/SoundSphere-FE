@@ -10,6 +10,7 @@ services:
       - ./:/app
       - /node_modules
       - openapi-spec:/openapi
+
       # Evita problemi di permessi con i moduli
     networks:
       - app_network  # Collega il backend alla rete comune
