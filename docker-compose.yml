@@ -8,7 +8,9 @@ services:
     container_name: angular_env
     volumes:
       - ./:/app
-      - /app/node_modules
+      - /node_modules
+      - openapi-spec:/openapi
+
       # Evita problemi di permessi con i moduli
     networks:
       - app_network  # Collega il backend alla rete comune
@@ -17,12 +19,16 @@ services:
     ports:
       - "4200:4200"
     command: >
-      bash -c "source /root/.nvm/nvm.sh && 
-      nvm use node && 
-      npm install &&
-      npm update &&  
-      npm audit fix &&  
-      ng serve --host 0.0.0.0 --proxy-config proxy.conf.json"
+      bash -c "
+        if [ \"$API_UPDATE\" != \"false\" ]; then
+          npm run generate:api;
+        fi &&
+        ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
+      "
+
+volumes:
+  openapi-spec:
+    external: true
 
 networks:
   app_network:
