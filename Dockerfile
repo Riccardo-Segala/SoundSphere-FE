@@ -28,6 +28,8 @@ RUN bash -c "source /root/.nvm/nvm.sh && nvm install node && nvm use node"
 # Installa Angular CLI globalmente
 RUN npm install -g @angular/cli
 
+RUN npm install -g @openapitools/openapi-generator-cli
+
 # Imposta il working directory
 WORKDIR /app
 
