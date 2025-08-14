@@ -1,0 +1,12 @@
+<section>
+    <form>
+        <input type="text" [(ngModel)]="cercaProd" (keyup)="filtraProdotti()"/>
+    </form>
+</section>
+<section>
+    <div class="prodotto" *ngFor="let p of prodotti">
+        <span>{{p.nome}}</span>
+        <span>{{p.marca}}</span>
+        <span>{{p.prezzo}}</span>
+    </div>
+</section>
