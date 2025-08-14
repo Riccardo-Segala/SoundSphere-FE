@@ -1,46 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet, Router } from '@angular/router';
-import { SessionService } from './services/session.service';
-import {ResponseProductDTO} from "./api-client/dto/responseProductDTO";
-import {HttpClient} from "@angular/common/http";
-import {ProdottoControllerService} from "./api-client";
-
+import {RouterLink, RouterOutlet} from '@angular/router';
+import {SampleEntitiesComponent} from './component/sample-entities/sample-entities.component';
 
 @Component({
   selector: 'app-root',
-  standalone:true,
-  imports: [CommonModule,RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-    cercaProd:string='';
-    prodotti:ResponseProductDTO[]=[];
-    loggedUser:string|null=null;
-    title='frontend';
-
-    constructor(private http:HttpClient,private router:Router,private session:SessionService,private prodottoService: ProdottoControllerService) {
-    }
-
-    cerca(){
-
-    }
-    ngOnInit() {
-        this.loggedUser=this.session.getLoggedUser();
-        this.caricaProdotti();
-    }
-    caricaProdotti(){
-        if(this.cercaProd){
-            //get prodotti by name/descrizione
-        }
-        else{
-            this.prodottoService.getAllProducts().subscribe(prodotti => this.prodotti = prodotti);
-        }
-    }
-    logout() :void {
-        this.session.clearLoggedUser();
-        this.loggedUser=this.session.getLoggedUser();
-        this.router.navigate(['/home']);
-    }
+  title = 'frontend';
 }
