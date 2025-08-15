@@ -1,0 +1,17 @@
+<header>
+    <h1>SoundSphere</h1>
+    <nav class="clearfix" style="background:red">
+        <a routerLink="/home">Home</a>
+        <!-- controllo se utente loggato per pulsante logout o login -->
+        <a *ngIf="!loggedUser" routerLink="/login">Login</a>
+        <a *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
+    </nav>
+</header>
+
+<main class="clearfix">
+    <router-outlet></router-outlet>
+</main>
+
+<footer>
+
+</footer>

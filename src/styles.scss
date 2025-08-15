@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+//html, body { height: 100%; }
+body {
+  color: #666;
+  font-family: "Trebuchet MS",Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  width:980px;
+  margin: 0 auto;
+  box-shadow: 0 0 0 2px #222;
+}
