@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { SessionService } from './services/session.service';
-import {ResponseProductDTO} from "./api-client/dto/responseProductDTO";
+import {ResponseProductDTO} from "./api-client";
 import {HttpClient} from "@angular/common/http";
 import {ProdottoControllerService} from "./api-client";
 

@@ -4,7 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
-import {CreateUserDTO} from "../../api-client/dto/createUserDTO";
+import {CreateUserDTO} from "../../api-client";
 import {AuthenticationControllerService, UtenteControllerService} from "../../api-client";
 
 @Component({

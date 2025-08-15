@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
 import {ProdottoControllerService} from "../../api-client";
-import {ResponseProductDTO} from "../../api-client/dto/responseProductDTO";
+import {ResponseProductDTO} from "../../api-client";
 import {Observable} from "rxjs";
 
 @Component({

@@ -23,7 +23,13 @@ services:
         if [ \"$API_UPDATE\" != \"false\" ]; then
           npm run generate:api;
         fi &&
-        ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
+      
+        if [ ! -d \"/app/node_modules\" ]; then
+          echo 'node_modules non trovata, installo le dipendenze...'
+          npm install
+        fi
+        echo 'Avvio il server Angular' &&
+        ng serve --host 0.0.0.0 --proxy-config proxy.conf.json 
       "
 
 volumes:
