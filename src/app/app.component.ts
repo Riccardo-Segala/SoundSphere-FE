@@ -27,7 +27,10 @@ export class AppComponent {
 
     }
     ngOnInit() {
-        this.loggedUser=this.session.getLoggedUser();
+        //this.loggedUser=this.session.getLoggedUser();
+        //riceve il valore ogni volta che la variabile user$ viene aggiornata nel session service
+        //tipo chiamata asincrona di API
+        this.session.user$.subscribe(u=>this.loggedUser=u);
         this.caricaProdotti();
     }
     caricaProdotti(){
@@ -41,6 +44,6 @@ export class AppComponent {
     logout() :void {
         this.session.clearLoggedUser();
         this.loggedUser=this.session.getLoggedUser();
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
     }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpContext} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
 import {Router} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -7,6 +7,7 @@ import {CommonModule, NgForOf} from "@angular/common";
 import {ProdottoControllerService} from "../../api-client";
 import {ResponseProductDTO} from "../../api-client";
 import {Observable} from "rxjs";
+import {Configuration} from '../../api-client';
 
 @Component({
     selector: "app-catalogo",
