@@ -1,5 +1,5 @@
 <section class="login">
-    <form #form="ngForm" (ngSubmit)="login()">
+    <form name="form-login" #form="ngForm" (ngSubmit)="login()">
         <label>Email:
             <input name="email" type="email" inputmode="email" [(ngModel)]="credenziali.email" required/>
         </label>

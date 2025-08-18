@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import{SessionService} from "../../services/session.service";
 import {Router, RouterModule, Routes} from '@angular/router';
 import {AuthenticationControllerService, LoginRequestDTO,JwtResponseDTO} from "../../api-client";
+import {HttpContext} from "@angular/common/http";
 
 @Component({
     selector: 'app-login',
@@ -21,11 +22,11 @@ export class LoginComponent {
 
     login(){
         this.errore='';
-        this.authService.login(this.credenziali).subscribe({
-            next:(response)=>{
+        this.authService.login(this.credenziali,'body',false,{httpHeaderAccept:'application/json' as unknown as '*/*'}).subscribe({
+            next:(response:JwtResponseDTO)=>{
                 if(response){
-                    const res:JwtResponseDTO=response;
-                    this.sessionService.setLoggedUser(this.credenziali.email as string,res.token as string);
+                    //const res:JwtResponseDTO=response;
+                    this.sessionService.setLoggedUser(this.credenziali.email as string,response.token as string);
                     this.router.navigate(['/']);
                 }else{
                     this.errore='Password Errata';

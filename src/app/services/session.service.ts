@@ -20,7 +20,8 @@ export class SessionService {
     }
     getToken(): string|null{
         const raw=localStorage.getItem('token');
-        return raw ? JSON.parse(raw) as string:null;
+
+        return raw ? JSON.parse(raw) as string : null;
     }
 
     setLoggedUser(user:string,token:string):void{
