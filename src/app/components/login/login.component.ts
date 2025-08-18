@@ -15,14 +15,17 @@ import {HttpContext} from "@angular/common/http";
 })
 export class LoginComponent {
     errore='';
-    credenziali:LoginRequestDTO={};
+    credenziali:LoginRequestDTO={
+        email: '',
+        password: ''
+    };
 
     constructor(private sessionService: SessionService, private router: Router,private authService: AuthenticationControllerService) {
     }
 
     login(){
         this.errore='';
-        this.authService.login(this.credenziali,'body',false,{httpHeaderAccept:'application/json' as unknown as '*/*'}).subscribe({
+        this.authService.login(this.credenziali).subscribe({
             next:(response:JwtResponseDTO)=>{
                 if(response){
                     //const res:JwtResponseDTO=response;

@@ -15,7 +15,15 @@ import {AuthenticationControllerService, UtenteControllerService} from "../../ap
     styleUrls:['./registrazione.component.scss']
 })
 export class RegistrazioneComponent {
-    utente:CreateUserDTO={};
+    utente:CreateUserDTO={
+        nome: '',
+        cognome: '',
+        email: '',
+        password: '',
+        dataDiNascita: '',
+        sesso: 'NON_SPECIFICATO'
+
+    };
     pathImmagine='';
 
     constructor(private http: HttpClient, private router: Router,private sessionService:SessionService,private authService:AuthenticationControllerService, private utenteService: UtenteControllerService) {

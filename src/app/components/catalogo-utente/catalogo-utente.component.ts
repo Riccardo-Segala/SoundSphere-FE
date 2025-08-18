@@ -30,7 +30,7 @@ export class CatalogoUtenteComponent implements OnInit {
     ngOnInit() {
         //servirebbe get da filiale 'online'
         this.loggedUser=this.session.getLoggedUser();
-        this.prodottoService.getAllProducts('body',false,{httpHeaderAccept:"application/json" as unknown as "*/*"}).subscribe(prodotti => this.prodotti = prodotti);
+        this.prodottoService.getAllProducts().subscribe(prodotti => this.prodotti = prodotti);
 
     }
 
@@ -39,7 +39,7 @@ export class CatalogoUtenteComponent implements OnInit {
             //get prodotti by name/descrizione e filiale
         }
         else{
-            this.prodottoService.getAllProducts('body',false,{httpHeaderAccept:"application/json" as unknown as "*/*"}).subscribe(prodotti=>this.prodotti=prodotti);
+            this.prodottoService.getAllProducts().subscribe(prodotti=>this.prodotti=prodotti);
         }
     }
 }
