@@ -24,6 +24,7 @@
 
     <br><br>
     <label>Quantità:</label>
-    <input type="number" name="quantita-carrello" [(ngModel)]="quantita">
+    <input type="number" min="1" name="quantita-carrello" [(ngModel)]="quantita">
 
+    <button type="button" (click)="annulla()">Torna a Catalogo</button>
 </section>

@@ -44,14 +44,33 @@ export class DettaglioProdottoComponent implements OnInit {
     }
 
     addToWishlist(){
-
+        const prodId=this.route.snapshot.paramMap.get("id");
+        if(!prodId){
+            this.errore="Nessun prodotto è attualmente selezionato (manca id)";
+            return;
+        }
+        else {
+            this.errore="";
+            const carrello:CreateCartDTO={
+                utenteId:this.user.id,
+                prodottoId:prodId,
+                quantita:this.quantita,
+                wishlist:true
+            };
+            this.cartService.createCart(carrello).subscribe({
+                next:(response)=>{
+                    if(response){
+                        this.router.navigate(['/']);
+                    }
+                },
+                error:()=>{
+                    this.errore="Errore nell'inserimento del prodotto nel carrello";
+                }
+            })
+        }
     }
 
     addToCart(){
-        if(this.quantita==0){
-            this.errore="Selezionare una quantità maggiore di 0";
-            return;
-        }
         const prodId=this.route.snapshot.paramMap.get("id");
         if(!prodId){
             this.errore="Nessun prodotto è attualmente selezionato (manca id)";
@@ -76,5 +95,8 @@ export class DettaglioProdottoComponent implements OnInit {
                 }
             })
         }
+    }
+    annulla(){
+        this.router.navigate(["/"]);
     }
 }

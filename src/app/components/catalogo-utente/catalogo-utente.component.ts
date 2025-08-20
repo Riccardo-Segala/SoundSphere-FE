@@ -33,7 +33,9 @@ export class CatalogoUtenteComponent implements OnInit {
         this.prodottoService.getAllProducts().subscribe(prodotti => {
             this.prodotti = prodotti;
             this.filtraProdotti();
+
         });
+
     }
 
     filtraProdotti() {

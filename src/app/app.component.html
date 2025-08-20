@@ -1,14 +1,16 @@
 <header>
-    <h1>SoundSphere</h1>
-    <nav class="clearfix" style="background:red">
-        <a routerLink="/">Home</a>
+    <nav class="clearfix">
+        <h1 style="display: flex;justify-content: center"><a routerLink="/">SoundSphere</a></h1>
         <!-- controllo se utente loggato per pulsante logout o login -->
-        <a *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
-        <a *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
+        <br>
+        <button type="button" style="float:right" (click)="carrello()">Carrello</button>
+        <br>
+        <a style="float:right" *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
+        <br><a style="float:right" *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
     </nav>
 </header>
 <ng-template #benvenuto>
-    <section>
+    <section style="float:right" >
         <span  style="color:blue">Benvenuto {{loggedUser}}</span>
     </section>
 </ng-template>
