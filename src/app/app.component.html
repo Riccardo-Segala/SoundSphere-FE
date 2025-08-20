@@ -1,15 +1,15 @@
 <header>
     <h1>SoundSphere</h1>
     <nav class="clearfix" style="background:red">
-        <a routerLink="/home">Home</a>
+        <a routerLink="/">Home</a>
         <!-- controllo se utente loggato per pulsante logout o login -->
-        <a *ngIf="!loggedUser;else benvenuto" routerLink="/login">Login</a>
+        <a *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
         <a *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
     </nav>
 </header>
 <ng-template #benvenuto>
     <section>
-        <span>Benvenuto {{loggedUser}}</span>
+        <span  style="color:blue">Benvenuto {{loggedUser}}</span>
     </section>
 </ng-template>
 <main class="clearfix">

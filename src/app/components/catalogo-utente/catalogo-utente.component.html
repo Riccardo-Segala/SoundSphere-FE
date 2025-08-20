@@ -1,12 +1,14 @@
 <section>
     <form>
-        <input name="ricerca" type="text" [(ngModel)]="cercaProd" (keyup)="filtraProdotti()"/>
+        <input style="float:left;background-color:#000000" name="ricerca" type="text" [(ngModel)]="cercaProd" (keyup)="filtraProdotti()"/>
     </form>
+    ciao
 </section>
-<section>
-    <div class="prodotto" *ngFor="let p of prodotti">
+<section style="float:left">
+    <div class="prodotto" *ngFor="let p of prodFiltrati">
         <span>{{p.nome}}</span>
         <span>{{p.marca}}</span>
         <span>{{p.prezzo}}</span>
+        <a [routerLink]="['/dettaglio-prodotto',p.id]">Vai a Dettaglio</a>
     </div>
 </section>
