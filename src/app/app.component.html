@@ -11,7 +11,7 @@
 </header>
 <ng-template #benvenuto>
     <section style="float:right" >
-        <span  style="color:blue">Benvenuto {{loggedUser}}</span>
+        <span  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</span>
     </section>
 </ng-template>
 <main class="clearfix">

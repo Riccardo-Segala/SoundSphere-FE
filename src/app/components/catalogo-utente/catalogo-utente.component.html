@@ -9,5 +9,7 @@
         <span>{{p.marca}} </span>
         <span>{{p.prezzo}} </span><br>
         <a style="justify-content:center" [routerLink]="['/dettaglio-prodotto',p.id]">Vai a Dettaglio</a>
+        <!--<button type="button" *ngIf="inCarrello(p.id)" (click)="aggiungiCarrello(p.id)">Aggiungi al Carrello</button>
+        <input type="number" *ngIf="inCarrello(p.id)" [(ngModel)]="quantita" (click)="aggiornaCarrello(p.id)"/>-->
     </div><br>
 </section>

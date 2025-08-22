@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {
-    CreateCartDTO,
     ProdottoControllerService,
     ResponseProductDTO,
     CarrelloControllerService,
@@ -11,6 +10,7 @@ import {
 } from "../../api-client";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
 
 @Component({
     selector: "app-dettaglio",
@@ -39,8 +39,9 @@ export class DettaglioProdottoComponent implements OnInit {
         if(id){
             this.prodottoService.getProductById(id).subscribe(prodotto=>this.prodotto = prodotto);
         }
-
-        this.userService.getCurrentUser().subscribe(user=>this.user = user);
+        const u=this.session.getUser();
+        if(u)
+            this.user=this.session.getUser() as ResponseUserDTO;
     }
 
     addToWishlist(){
@@ -51,13 +52,12 @@ export class DettaglioProdottoComponent implements OnInit {
         }
         else {
             this.errore="";
-            const carrello:CreateCartDTO={
-                utenteId:this.user.id,
+            const cartItem:UpdateCartDTO={
                 prodottoId:prodId,
                 quantita:this.quantita,
                 wishlist:true
             };
-            this.cartService.createCart(carrello).subscribe({
+            this.cartService.updateItemInCart(cartItem).subscribe({
                 next:(response)=>{
                     if(response){
                         this.router.navigate(['/']);
@@ -78,13 +78,12 @@ export class DettaglioProdottoComponent implements OnInit {
         }
         else {
             this.errore="";
-            const carrello:CreateCartDTO={
-                utenteId:this.user.id,
+            const cartItem:UpdateCartDTO={
                 prodottoId:prodId,
                 quantita:this.quantita,
                 wishlist:false
             };
-            this.cartService.createCart(carrello).subscribe({
+            this.cartService.updateItemInCart(cartItem).subscribe({
                 next:(response)=>{
                     if(response){
                         this.router.navigate(['/']);

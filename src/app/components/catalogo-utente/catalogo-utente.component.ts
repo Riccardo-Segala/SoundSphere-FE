@@ -4,9 +4,15 @@ import {SessionService} from "../../services/session.service";
 import {Router,RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
-import {ProdottoControllerService} from "../../api-client";
+import {
+    CarrelloControllerService,
+    ProdottoControllerService, ResponseCartDTO,
+    ResponseUserDTO,
+    UtenteControllerService
+} from "../../api-client";
 import {ResponseProductDTO} from "../../api-client";
 import {Observable} from "rxjs";
+import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
 
 @Component({
     selector: "app-catalogo",
@@ -22,20 +28,34 @@ import {Observable} from "rxjs";
 export class CatalogoUtenteComponent implements OnInit {
     cercaProd:string='';
     prodotti:ResponseProductDTO[]=[];
-    loggedUser:string|null=null;
+    //loggedUser:string|null=null;
+    loggedUser:ResponseUserDTO={};
     prodFiltrati:ResponseProductDTO[]=[];
-    constructor(private http:HttpClient,private router:Router,private session:SessionService,private prodottoService: ProdottoControllerService) {
+    carrello:UpdateCartDTO[]=[];
+
+    constructor(private http:HttpClient,
+                private router:Router,
+                private session:SessionService,
+                private prodottoService: ProdottoControllerService,
+                private carrelloService:CarrelloControllerService,
+                private utenteService:UtenteControllerService) {
     }
 
     ngOnInit() {
         //servirebbe get da filiale 'online'
-        this.loggedUser=this.session.getLoggedUser();
-        this.prodottoService.getAllProducts().subscribe(prodotti => {
+        if(this.session.getUser()){
+            this.loggedUser=this.session.getUser() as ResponseUserDTO;
+        }
+        console.log(this.loggedUser.nome+" "+this.loggedUser.cognome);
+        this.prodottoService.getAllProducts().subscribe({
+            next:(prodotti) => {
             this.prodotti = prodotti;
-            this.filtraProdotti();
-
+            this.filtraProdotti();},
+            error: (err) => {
+                console.log(err);
+            }
         });
-
+        this.carrelloService.getAllCartOfUser().subscribe(c=>this.carrello = c);
     }
 
     filtraProdotti() {
@@ -47,5 +67,28 @@ export class CatalogoUtenteComponent implements OnInit {
         else{
             this.prodFiltrati=this.prodotti.filter(p=>(p.nome?.toLowerCase().includes(this.cercaProd.toLowerCase()))||(p.nome?.toLowerCase().includes(this.cercaProd.toLowerCase()))||(p.marca?.toLowerCase().includes(this.cercaProd.toLowerCase())));
         }
+    }
+
+    aggiungiCarrello(id:string|undefined){
+        if(id){
+            for(let p of this.prodotti){
+                if(p.id==id){
+                    this.carrelloService.updateItemInCart({
+                        prodottoId:id,
+                        quantita:1,
+                        wishlist:false
+                    }).subscribe();
+                }
+            }
+        }
+    }
+    inCarrello(id:string|undefined):boolean{
+        for(let c of this.carrello){
+            for(let p of this.prodotti){
+                if(p.id===c.prodottoId && c.quantita!==undefined && c.quantita>0)
+                    return true;
+            }
+        }
+        return false;
     }
 }

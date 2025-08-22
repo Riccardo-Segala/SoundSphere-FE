@@ -1,8 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {CommonModule, NgForOf} from '@angular/common';
 import {
-    CarrelloControllerService, ProdottoControllerService, ResponseCartDTO,
-    ResponseProductDTO,
+    CarrelloControllerService, ResponseCartDTO,
     ResponseUserDTO,
     UtenteControllerService
 } from "../../api-client";
@@ -37,7 +36,7 @@ export class CarrelloComponent implements OnInit {
     ngOnInit() {
         this.userService.getCurrentUser().subscribe(user=>{this.loggedUser=user});
 
-        this.carrelloService.getAllCarts().subscribe(carrello=>{
+        this.carrelloService.getAllCartOfUser().subscribe(carrello=>{
             this.carrello=carrello;
         });
     }

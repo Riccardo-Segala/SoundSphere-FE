@@ -3,8 +3,14 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import{SessionService} from "../../services/session.service";
 import {Router, RouterModule, Routes} from '@angular/router';
-import {AuthenticationControllerService, LoginRequestDTO,JwtResponseDTO} from "../../api-client";
-import {HttpContext} from "@angular/common/http";
+import {
+    AuthenticationControllerService,
+    LoginRequestDTO,
+    JwtResponseDTO,
+    ResponseUserDTO,
+    UtenteControllerService
+} from "../../api-client";
+import {HttpClient, HttpContext} from "@angular/common/http";
 
 @Component({
     selector: 'app-login',
@@ -19,8 +25,13 @@ export class LoginComponent {
         email: '',
         password: ''
     };
+    loggedUser:ResponseUserDTO={};
 
-    constructor(private sessionService: SessionService, private router: Router,private authService: AuthenticationControllerService) {
+    constructor(private sessionService: SessionService,
+                private router: Router,
+                private authService: AuthenticationControllerService,
+                private http:HttpClient,
+                private userService:UtenteControllerService) {
     }
 
     login(){
@@ -29,10 +40,15 @@ export class LoginComponent {
             next:(response:JwtResponseDTO)=>{
                 if(response){
                     //const res:JwtResponseDTO=response;
-                    this.sessionService.setLoggedUser(this.credenziali.email as string,response.token as string);
-                    this.router.navigate(['/']);
-                }else{
-                    this.errore='Password Errata';
+                    if(response.token){
+                        this.sessionService.setToken(response.token);
+                        this.userService.getCurrentUser().subscribe((utente)=>{
+                            this.sessionService.setUser(utente);
+                            this.router.navigate(['/']);
+                        })
+                    }else{
+                        this.errore='Password Errata';
+                    }
                 }
             },error:()=>{
                 this.errore='Utente non trovato';

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { SessionService } from './services/session.service';
 import {HttpClient} from "@angular/common/http";
-import {ProdottoControllerService} from "./api-client";
+import {ProdottoControllerService, ResponseUserDTO} from "./api-client";
 import {FormsModule} from "@angular/forms";
 
 
@@ -15,7 +15,7 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-    loggedUser:string|null=null;
+    loggedUser:ResponseUserDTO|null=null;
     title='frontend';
 
     constructor(private http:HttpClient,public router:Router,private session:SessionService,private prodottoService: ProdottoControllerService) {
@@ -28,7 +28,7 @@ export class AppComponent {
     }
     logout() :void {
         this.session.clearLoggedUser();
-        this.loggedUser=this.session.getLoggedUser();
+        this.loggedUser=this.session.getUser();
         this.router.navigate(['/']);
     }
     carrello(){
