@@ -24,7 +24,7 @@ services:
           npm run generate:api;
         fi &&
       
-        if [ ! -d \"/app/node_modules\" ]; then
+        if [ ! -d \"/app/node_modules\" ]|| [ \"$PKG_UPDATE\" = \"true\" ]; then
           echo 'node_modules non trovata, installo le dipendenze...'
           npm install
         fi
