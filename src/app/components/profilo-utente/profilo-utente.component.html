@@ -1,0 +1,77 @@
+<section class="registrazione">
+    <form #form="ngForm" (ngSubmit)="registrazione()">
+        <!--<label>Foto Profilo:
+            <input type="file" name="profilo" (click)="fileSelezionato($event)"/>
+        </label>-->
+        <div>
+            <label>Foto Profilo:
+                <input type="text" name="profilo" [(ngModel)]="utente.pathImmagine"/>
+            </label>
+            <br>
+            <label>Nome:
+                <input name="nome" [(ngModel)]="utente.nome" required/>
+            </label><br>
+            <label>Cognome:
+                <input name="cognome" [(ngModel)]="utente.cognome" required/>
+            </label><br>
+            <label>Email:
+                <input name="email" type="email" inputmode="email" [(ngModel)]="utente.email" required/>
+            </label><br>
+            <label>Password:
+                <input name="password" type="password" minlength="8" [(ngModel)]="utente.password" required/>
+            </label><br>
+            <label>Data di Nascita:
+                <input name="data-nascita" type="date" [(ngModel)]="utente.dataDiNascita" required/>
+            </label><br>
+            <label>Genere:
+                <div>
+                    <label><input name="sesso" type="radio" value="MASCHIO" [(ngModel)]="utente.sesso" checked>Maschio</label>
+                    <label><input name="sesso" type="radio" value="FEMMINA" [(ngModel)]="utente.sesso" checked>Femmina</label>
+                    <label><input name="sesso" type="radio" value="NON_SPECIFICATO" [(ngModel)]="utente.sesso" checked>Non Specificato</label>
+                </div>
+            </label>
+        </div>
+        <br>
+        <div name="indirizzo">
+            <label>Nazione:</label>
+            <input type="text" [(ngModel)]="indirizzo.nazione"/><br>
+
+            <label>Provincia:</label>
+            <input type="text" [(ngModel)]="indirizzo.provincia"/><br>
+
+            <label>Città:</label>
+            <input type="text" [(ngModel)]="indirizzo.citta"/><br>
+
+            <label>CAP:</label>
+            <input type="text" [(ngModel)]="indirizzo.cap"/><br>
+
+            <label>Via:</label>
+            <input type="text" [(ngModel)]="indirizzo.via"/><br>
+
+            <label>Civico:</label>
+            <input type="text" [(ngModel)]="indirizzo.civico"/><br>
+
+            <label>Usare come indirizzo di default?</label>
+            <input type="checkbox" [(ngModel)]="indirizzo.isDefault">
+            <br>
+        </div>
+
+
+        <!--
+    tipologia?: CreateUserAddressDTO.TipologiaEnum;
+    utenteId?: string;
+    utenteNome?: string;
+    utenteCognome?: string;
+
+    export namespace CreateUserAddressDTO {
+    export const TipologiaEnum = {
+        Spedizione: 'SPEDIZIONE'
+    } as const;
+    export type TipologiaEnum = typeof TipologiaEnum[keyof typeof TipologiaEnum];
+}
+        -->
+
+        <button type="submit" [disabled]="form.invalid">{{ modifica ? 'Salva' : 'Registrati' }}</button>
+        <button type="button" (click)="annulla()">Annulla</button>
+    </form>
+</section>

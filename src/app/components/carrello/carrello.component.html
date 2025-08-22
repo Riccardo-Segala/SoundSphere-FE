@@ -1,0 +1,15 @@
+<section>
+    <div *ngFor="let c of carrello">
+        <label>Nome:</label>
+        <textarea readonly>{{c.prodotto?.nome}}</textarea>
+
+        <label>Marca:</label>
+        <textarea readonly>{{c.prodotto?.marca}}</textarea>
+
+        <label>Prezzo:</label>
+        <textarea readonly>{{c.prodotto?.prezzo}}</textarea>
+
+        <label>Quantità:</label>
+        <input type="number" min="1" [(ngModel)]="c.quantita">
+    </div>
+</section>

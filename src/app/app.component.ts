@@ -2,45 +2,36 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { SessionService } from './services/session.service';
-import {ResponseProductDTO} from "./api-client";
 import {HttpClient} from "@angular/common/http";
-import {ProdottoControllerService} from "./api-client";
+import {ProdottoControllerService, ResponseUserDTO} from "./api-client";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
   selector: 'app-root',
   standalone:true,
-  imports: [CommonModule,RouterOutlet, RouterLink],
+  imports: [CommonModule,RouterOutlet, RouterLink,FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-    cercaProd:string='';
-    prodotti:ResponseProductDTO[]=[];
-    loggedUser:string|null=null;
+    loggedUser:ResponseUserDTO|null=null;
     title='frontend';
 
-    constructor(private http:HttpClient,private router:Router,private session:SessionService,private prodottoService: ProdottoControllerService) {
-    }
-
-    cerca(){
-
+    constructor(private http:HttpClient,public router:Router,private session:SessionService,private prodottoService: ProdottoControllerService) {
     }
     ngOnInit() {
-        this.loggedUser=this.session.getLoggedUser();
-        this.caricaProdotti();
-    }
-    caricaProdotti(){
-        if(this.cercaProd){
-            //get prodotti by name/descrizione
-        }
-        else{
-            this.prodottoService.getAllProducts().subscribe(prodotti => this.prodotti = prodotti);
-        }
+        //this.loggedUser=this.session.getLoggedUser();
+        //riceve il valore ogni volta che la variabile user$ viene aggiornata nel session service
+        //tipo chiamata asincrona di API
+        this.session.user$.subscribe(u=>this.loggedUser=u);
     }
     logout() :void {
         this.session.clearLoggedUser();
-        this.loggedUser=this.session.getLoggedUser();
-        this.router.navigate(['/home']);
+        this.loggedUser=this.session.getUser();
+        this.router.navigate(['/']);
+    }
+    carrello(){
+        this.router.navigate(["carrello"]);
     }
 }

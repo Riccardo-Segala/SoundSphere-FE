@@ -3,7 +3,14 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import{SessionService} from "../../services/session.service";
 import {Router, RouterModule, Routes} from '@angular/router';
-import {AuthService} from "../../services/auth-service.service";
+import {
+    AuthenticationControllerService,
+    LoginRequestDTO,
+    JwtResponseDTO,
+    ResponseUserDTO,
+    UtenteControllerService
+} from "../../api-client";
+import {HttpClient, HttpContext} from "@angular/common/http";
 
 @Component({
     selector: 'app-login',
@@ -14,21 +21,34 @@ import {AuthService} from "../../services/auth-service.service";
 })
 export class LoginComponent {
     errore='';
-    email:string='';
-    password:string='';
+    credenziali:LoginRequestDTO={
+        email: '',
+        password: ''
+    };
+    loggedUser:ResponseUserDTO={};
 
-    constructor(private sessionService: SessionService, private router: Router,private authService: AuthService) {
+    constructor(private sessionService: SessionService,
+                private router: Router,
+                private authService: AuthenticationControllerService,
+                private http:HttpClient,
+                private userService:UtenteControllerService) {
     }
 
     login(){
         this.errore='';
-        this.authService.getUserByEmail(this.email,this.password).subscribe({
-            next:(response)=>{
+        this.authService.login(this.credenziali).subscribe({
+            next:(response:JwtResponseDTO)=>{
                 if(response){
-                    this.sessionService.setLoggedUser(this.email,response.token);
-                    this.router.navigate(['/']);
-                }else{
-                    this.errore='Password Errata';
+                    //const res:JwtResponseDTO=response;
+                    if(response.token){
+                        this.sessionService.setToken(response.token);
+                        this.userService.getCurrentUser().subscribe((utente)=>{
+                            this.sessionService.setUser(utente);
+                            this.router.navigate(['/']);
+                        })
+                    }else{
+                        this.errore='Password Errata';
+                    }
                 }
             },error:()=>{
                 this.errore='Utente non trovato';

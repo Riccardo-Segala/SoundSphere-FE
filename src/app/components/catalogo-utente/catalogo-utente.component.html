@@ -1,12 +1,15 @@
 <section>
     <form>
-        <input type="text" [(ngModel)]="cercaProd" (keyup)="filtraProdotti()"/>
+        <input style="float:left" name="ricerca" type="text" [(ngModel)]="cercaProd" (keyup)="filtraProdotti()"/>
     </form>
-</section>
-<section>
-    <div class="prodotto" *ngFor="let p of prodotti">
-        <span>{{p.nome}}</span>
-        <span>{{p.marca}}</span>
-        <span>{{p.prezzo}}</span>
-    </div>
+</section><br>
+<section style="float:left">
+    <div class="prodotto" *ngFor="let p of prodFiltrati">
+        <span>{{p.nome}} </span>
+        <span>{{p.marca}} </span>
+        <span>{{p.prezzo}} </span><br>
+        <a style="justify-content:center" [routerLink]="['/dettaglio-prodotto',p.id]">Vai a Dettaglio</a>
+        <!--<button type="button" *ngIf="inCarrello(p.id)" (click)="aggiungiCarrello(p.id)">Aggiungi al Carrello</button>
+        <input type="number" *ngIf="inCarrello(p.id)" [(ngModel)]="quantita" (click)="aggiornaCarrello(p.id)"/>-->
+    </div><br>
 </section>
