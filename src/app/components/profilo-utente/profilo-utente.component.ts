@@ -33,7 +33,6 @@ export class ProfiloUtenteComponent {
     modifica=false;
     indirizzo:ResponseUserAddressDTO= {};
 
-    userForm:FormGroup;
 
     constructor(private http: HttpClient,
                 private router: Router,
@@ -43,14 +42,6 @@ export class ProfiloUtenteComponent {
                 private authService:AuthenticationControllerService,
                 private utenteService: UtenteControllerService,
                 private indirizzoService:IndirizzoUtenteControllerService) {
-        this.userForm = this.fb.group({
-            nome: ['', Validators.required],
-            cognome:['', Validators.required],
-            email: ['', Validators.required,Validators.email],
-            password: ['', Validators.required,Validators.minLength(8)],
-            dataNascita:['', Validators.required],
-            sesso: ['', Validators.required],
-        })
     }
 
     ngOnInit(){
