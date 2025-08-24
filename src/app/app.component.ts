@@ -5,6 +5,7 @@ import { SessionService } from './services/session.service';
 import {HttpClient} from "@angular/common/http";
 import {ProdottoControllerService, ResponseUserDTO} from "./api-client";
 import {FormsModule} from "@angular/forms";
+import {UtenteModel} from "./models/utente.model";
 
 
 @Component({
@@ -15,7 +16,7 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-    loggedUser:ResponseUserDTO|null=null;
+    loggedUser:UtenteModel|null=null;
     title='frontend';
 
     constructor(private http:HttpClient,public router:Router,private session:SessionService,private prodottoService: ProdottoControllerService) {

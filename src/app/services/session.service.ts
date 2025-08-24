@@ -2,25 +2,26 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ResponseUserDTO} from "../api-client";
+import {UtenteModel} from "../models/utente.model";
 
 @Injectable({providedIn: 'root'})
 export class SessionService {
     //creo un oggetto BehaviorSubject il cui valore viene ottenuto leggendo il localStorage
     //mantiene "stato corrente" (passaggio da stato corrente a nuovo tramite .next())
     u=localStorage.getItem('utente');
-    private userSubject=new BehaviorSubject<ResponseUserDTO|null>(this.u ? JSON.parse(this.u as string): null);
+    private userSubject=new BehaviorSubject<UtenteModel|null>(this.u ? JSON.parse(this.u as string): null);
     //creo una variabile che può essere osservata dagli altri componenti pubblicamente ($ è solamente convenzione di nome)
     user$ = this.userSubject.asObservable();
 
-    get user():ResponseUserDTO|null {
+    get user():UtenteModel|null {
         return this.userSubject.value;
     }
 
-    getUser(): ResponseUserDTO | null{
+    getUser(): UtenteModel | null{
         const raw = localStorage.getItem('utente');
-        return raw ? JSON.parse(raw) as ResponseUserDTO : null;
+        return raw ? JSON.parse(raw) as UtenteModel : null;
     }
-    setUser(user:ResponseUserDTO){
+    setUser(user:UtenteModel){
         localStorage.setItem('utente',JSON.stringify(user));
         this.userSubject.next(user);
     }
@@ -34,7 +35,7 @@ export class SessionService {
         localStorage.setItem('token',token);
     }
 
-    setLoggedUser(user:ResponseUserDTO,token:string):void{
+    setLoggedUser(user:UtenteModel,token:string):void{
         localStorage.setItem('utente',JSON.stringify(user));
         localStorage.setItem('token',token);
         //aggiorna stato corrente del BehaviorSubject

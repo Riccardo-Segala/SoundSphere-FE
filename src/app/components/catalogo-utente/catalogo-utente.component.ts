@@ -11,8 +11,10 @@ import {
     UtenteControllerService
 } from "../../api-client";
 import {ResponseProductDTO} from "../../api-client";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
+import {CarrelloModel} from "../../models/carrello.model";
+import {mapper} from "../../core/mapping/mapper.initializer";
 
 @Component({
     selector: "app-catalogo",
@@ -31,7 +33,7 @@ export class CatalogoUtenteComponent implements OnInit {
     //loggedUser:string|null=null;
     loggedUser:ResponseUserDTO={};
     prodFiltrati:ResponseProductDTO[]=[];
-    carrello:UpdateCartDTO[]=[];
+    carrello:CarrelloModel[]=[];
 
     constructor(private http:HttpClient,
                 private router:Router,
@@ -55,7 +57,9 @@ export class CatalogoUtenteComponent implements OnInit {
                 console.log(err);
             }
         });
-        this.carrelloService.getAllCartOfUser().subscribe(c=>this.carrello = c);
+        this.carrelloService.getAllCartOfUser()
+            .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
+            .subscribe(c=>this.carrello = c);
     }
 
     filtraProdotti() {
@@ -85,7 +89,7 @@ export class CatalogoUtenteComponent implements OnInit {
     inCarrello(id:string|undefined):boolean{
         for(let c of this.carrello){
             for(let p of this.prodotti){
-                if(p.id===c.prodottoId && c.quantita!==undefined && c.quantita>0)
+                if(p.id===c.prodotto.id && c.quantita!==undefined && c.quantita>0)
                     return true;
             }
         }
