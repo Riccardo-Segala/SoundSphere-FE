@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, Inject, OnInit} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
@@ -11,6 +11,11 @@ import {
     ResponseUserDTO
 } from "../../api-client";
 import {AuthenticationControllerService, UtenteControllerService} from "../../api-client";
+import {IndirizzoUtenteModel} from "../../models/indirizzo-utente.model";
+import {Mapper} from "@automapper/core";
+import {mapper} from "../../core/mapping/mapper.initializer";
+import {map} from "rxjs";
+import {UtenteModel} from "../../models/utente.model";
 
 @Component({
     selector: 'app-registrazione',
@@ -20,18 +25,10 @@ import {AuthenticationControllerService, UtenteControllerService} from "../../ap
     styleUrls:['./profilo-utente.component.scss']
 })
 export class ProfiloUtenteComponent {
-    utente:CreateUserDTO={
-        nome: '',
-        cognome: '',
-        email: '',
-        password: '',
-        dataDiNascita: '',
-        sesso: 'NON_SPECIFICATO'
-    };
-    loggedUser:ResponseUserDTO|null={};
+    utente:UtenteModel={};
     pathImmagine='';
-    modifica=false;
-    indirizzo:ResponseUserAddressDTO= {};
+    modifica:boolean=false;
+    indirizzo:IndirizzoUtenteModel[]=[{nazione:""}];
 
 
     constructor(private http: HttpClient,
@@ -46,33 +43,51 @@ export class ProfiloUtenteComponent {
 
     ngOnInit(){
         const id=this.route.snapshot.paramMap.get('id');
-        if(id){
-            this.modifica=true;
-            if(this.sessionService.getUser())
-                this.loggedUser=this.sessionService.getUser();
+        if(this.router.url.includes("/modifica-profilo")) {
+            this.modifica = true;
+            if (this.sessionService.getUser()){
+                this.indirizzoService.getAllUsersAddress()
+                    .pipe(map(dtos => mapper.mapArray(dtos, 'ResponseUserAddressDTO', 'IndirizzoUtenteModel')))
+                    .subscribe(indirizzi => this.indirizzo = indirizzi);
 
+                this.indirizzo[0].tipologia="SPEDIZIONE";
+            }
+            else{
+                this.router.navigate(["/registrazione"]);
+            }
+        }
+        else{
+            this.modifica=false;
+            this.indirizzo[0].tipologia="SPEDIZIONE";
         }
     }
     registrazione(){
         const payload=this.utente;
 
-        if(this.modifica){
-            this.authService.registerUser(payload).subscribe((res:JwtResponseDTO)=>{
-                this.utenteService.getCurrentUser().subscribe(user=>{this.loggedUser=user;
-                    this.sessionService.setLoggedUser(this.loggedUser,res.token as string);
-                })
-            })
+        if(!this.modifica){
+            this.authService.registerUser(mapper.map(payload,'UtenteModel','CreateUserDTO')).subscribe({
+                next:(res:JwtResponseDTO)=>{
+                    this.sessionService.setLoggedUser(this.utente,res.token as string);
 
-            this.indirizzoService.createUserAddress({
-                via:this.indirizzo.via,
-                civico:this.indirizzo.civico,
-                cap:this.indirizzo.cap,
-                citta:this.indirizzo.citta,
-                provincia:this.indirizzo.provincia,
-                nazione:this.indirizzo.nazione,
-                isDefault:this.indirizzo.isDefault,
-                tipologia:"SPEDIZIONE",
-            }).subscribe();
+                    let dto=mapper.map(this.indirizzo[0],'IndirizzoUtenteModel','CreateUserAddressDTO');
+                    console.log(JSON.stringify(dto));
+
+                    this.indirizzoService.createUserAddress(mapper.map(this.indirizzo[0],'IndirizzoUtenteModel','CreateUserAddressDTO'))
+                        .subscribe({
+                            next:(risposta:ResponseUserAddressDTO)=>{
+                                this.router.navigate(["/modifica-profilo"]);
+                            },
+                            error:(err)=>{
+                                console.log("Errore nella creazione dell'indirizzo: "+err);
+                            }
+                        })
+
+
+                },
+                error:(err)=>{
+                    console.log("Errore nella registrazione dell'utente: "+err);
+                }
+            });
         }
         else{
 

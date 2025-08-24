@@ -34,44 +34,31 @@
         <br>
         <div name="indirizzo">
             <label>Nazione:</label>
-            <input type="text" [(ngModel)]="indirizzo.nazione"/><br>
+            <input name="nazione" type="text" [(ngModel)]="indirizzo[0].nazione"/><br>
 
             <label>Provincia:</label>
-            <input type="text" [(ngModel)]="indirizzo.provincia"/><br>
+            <input name="provincia" type="text" [(ngModel)]="indirizzo[0].provincia"/><br>
 
             <label>Città:</label>
-            <input type="text" [(ngModel)]="indirizzo.citta"/><br>
+            <input name="citta" type="text" [(ngModel)]="indirizzo[0].citta"/><br>
 
             <label>CAP:</label>
-            <input type="text" [(ngModel)]="indirizzo.cap"/><br>
+            <input name="cap" type="text" [(ngModel)]="indirizzo[0].cap"/><br>
 
             <label>Via:</label>
-            <input type="text" [(ngModel)]="indirizzo.via"/><br>
+            <input name="via" type="text" [(ngModel)]="indirizzo[0].via"/><br>
 
             <label>Civico:</label>
-            <input type="text" [(ngModel)]="indirizzo.civico"/><br>
+            <input name="civico" type="text" [(ngModel)]="indirizzo[0].civico"/><br>
 
             <label>Usare come indirizzo di default?</label>
-            <input type="checkbox" [(ngModel)]="indirizzo.isDefault">
+            <input name="default" type="checkbox" [(ngModel)]="indirizzo[0].isDefault">
             <br>
         </div>
 
-
-        <!--
-    tipologia?: CreateUserAddressDTO.TipologiaEnum;
-    utenteId?: string;
-    utenteNome?: string;
-    utenteCognome?: string;
-
-    export namespace CreateUserAddressDTO {
-    export const TipologiaEnum = {
-        Spedizione: 'SPEDIZIONE'
-    } as const;
-    export type TipologiaEnum = typeof TipologiaEnum[keyof typeof TipologiaEnum];
-}
-        -->
-
-        <button type="submit" [disabled]="form.invalid">{{ modifica ? 'Salva' : 'Registrati' }}</button>
+        <button name="salvataggio" type="submit" [disabled]="form.invalid">
+            {{ modifica ? 'Salva' : 'Registrati' }}
+        </button>
         <button type="button" (click)="annulla()">Annulla</button>
     </form>
 </section>

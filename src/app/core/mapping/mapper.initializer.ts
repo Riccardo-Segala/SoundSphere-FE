@@ -1,8 +1,10 @@
 import {createMapper,type Mapper} from "@automapper/core";
 import {pojos} from "@automapper/pojos";
-import {mapper, setupMapperMetadata} from "./mapper.config";
+import {setupMapperMetadata} from "./mapper.config";
 import {prodottoProfile} from "./profiles/prodotto.profile";
 import {carrelloProfile} from "./profiles/carrello.profile";
+import {utenteProfile} from "./profiles/utente.profile";
+import {indirizzoUtenteProfile} from "./profiles/indirizzo-utente.profile";
 
 function initializeMapper():Mapper{
     setupMapperMetadata();
@@ -13,6 +15,8 @@ function initializeMapper():Mapper{
 
     prodottoProfile(mapper);
     carrelloProfile(mapper);
+    indirizzoUtenteProfile(mapper);
+    utenteProfile(mapper)
 
     return mapper;
 }

@@ -9,6 +9,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/catalogo-utente', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'registrazione', component: ProfiloUtenteComponent },
+  { path: 'modifica-profilo', component: ProfiloUtenteComponent},
   { path: 'catalogo-utente', component: CatalogoUtenteComponent },
   { path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },
   { path: 'carrello',component:CarrelloComponent}
