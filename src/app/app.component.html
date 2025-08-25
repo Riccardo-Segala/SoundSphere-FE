@@ -7,6 +7,12 @@
         <br>
         <a style="float:right" *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
         <br><a style="float:right" *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
+        <br>
+        <ul>
+            <li *ngFor="let c of categorieMacro">
+                <a [routerLink]="['categorie',c.id]">{{c.name}}</a>
+            </li>
+        </ul>
     </nav>
 </header>
 <ng-template #benvenuto>

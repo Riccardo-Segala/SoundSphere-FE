@@ -173,4 +173,23 @@ export function setupMapperMetadata():void{
         pathImmagine:String,
         sesso:String
     });
+    PojosMetadataMap.create('ResponseParentCategoryDTO',{
+        id:String,
+        name:String,
+        slug:String
+    });
+    PojosMetadataMap.create('ResponseCategoryNavigationDTO',{
+        id:String,
+        name:String,
+        slug:String,
+        children:['ResponseParentCategoryDTO'],
+        isLeaf:Boolean
+    });
+    PojosMetadataMap.create('CategoriaModel',{
+        id:String,
+        name:String,
+        slug:String,
+        children:['CategoriaModel'],
+        isLeaf:Boolean
+    });
 }

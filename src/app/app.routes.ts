@@ -4,13 +4,18 @@ import {ProfiloUtenteComponent} from "./components/profilo-utente/profilo-utente
 import {CatalogoUtenteComponent} from "./components/catalogo-utente/catalogo-utente.component";
 import {DettaglioProdottoComponent} from "./components/catalogo-utente/dettaglio-prodotto.component";
 import {CarrelloComponent} from "./components/carrello/carrello.component";
+import {CategorieComponent} from "./components/catalogo-utente/categorie.component";
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/catalogo-utente', pathMatch: 'full' },
+  { path: '', redirectTo: '/categorie', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'registrazione', component: ProfiloUtenteComponent },
   { path: 'modifica-profilo', component: ProfiloUtenteComponent},
   { path: 'catalogo-utente', component: CatalogoUtenteComponent },
+  {path:'catalogo-utente/:idCategoria',component:CatalogoUtenteComponent},
   { path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },
-  { path: 'carrello',component:CarrelloComponent}
+  { path: 'carrello',component:CarrelloComponent},
+  { path:'categorie',component:CategorieComponent},
+  {path: 'categorie/:id',component:CategorieComponent}
+
 ];

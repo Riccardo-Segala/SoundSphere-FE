@@ -1,0 +1,12 @@
+nav{
+  border:2px solid black;
+}
+nav ul{
+  list-style-type: none;
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+}
+nav li{
+  margin: 0 10px;
+}

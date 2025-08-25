@@ -15,6 +15,7 @@ import {map, Observable} from "rxjs";
 import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
+import {UtenteModel} from "../../models/utente.model";
 
 @Component({
     selector: "app-catalogo",
@@ -31,7 +32,7 @@ export class CatalogoUtenteComponent implements OnInit {
     cercaProd:string='';
     prodotti:ResponseProductDTO[]=[];
     //loggedUser:string|null=null;
-    loggedUser:ResponseUserDTO={};
+    loggedUser:UtenteModel={};
     prodFiltrati:ResponseProductDTO[]=[];
     carrello:CarrelloModel[]=[];
 
@@ -46,7 +47,7 @@ export class CatalogoUtenteComponent implements OnInit {
     ngOnInit() {
         //servirebbe get da filiale 'online'
         if(this.session.getUser()){
-            this.loggedUser=this.session.getUser() as ResponseUserDTO;
+            this.loggedUser=this.session.getUser() as UtenteModel;
         }
         console.log(this.loggedUser.nome+" "+this.loggedUser.cognome);
         this.prodottoService.getAllProducts().subscribe({
