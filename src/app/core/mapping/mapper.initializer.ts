@@ -5,6 +5,7 @@ import {prodottoProfile} from "./profiles/prodotto.profile";
 import {carrelloProfile} from "./profiles/carrello.profile";
 import {utenteProfile} from "./profiles/utente.profile";
 import {indirizzoUtenteProfile} from "./profiles/indirizzo-utente.profile";
+import {categoriaProfile} from "./profiles/categoria.profile";
 
 function initializeMapper():Mapper{
     setupMapperMetadata();
@@ -16,7 +17,8 @@ function initializeMapper():Mapper{
     prodottoProfile(mapper);
     carrelloProfile(mapper);
     indirizzoUtenteProfile(mapper);
-    utenteProfile(mapper)
+    utenteProfile(mapper);
+    categoriaProfile(mapper);
 
     return mapper;
 }
