@@ -46,9 +46,17 @@ export class ProfiloUtenteComponent {
         if(this.router.url.includes("/modifica-profilo")) {
             this.modifica = true;
             if (this.sessionService.getUser()){
-                this.indirizzoService.getAllUsersAddress()
+                this.indirizzoService.getAllUserAddressesByUserId()
                     .pipe(map(dtos => mapper.mapArray(dtos, 'ResponseUserAddressDTO', 'IndirizzoUtenteModel')))
-                    .subscribe(indirizzi => this.indirizzo = indirizzi);
+                    .subscribe({
+                        next:(indirizzi:IndirizzoUtenteModel[]) => {
+                            this.indirizzo = indirizzi;
+                        },
+                        error:()=>{
+                            console.log("Errore ottenimento indirizzi utente: ");
+                        }
+
+                    });
 
                 this.indirizzo[0].tipologia="SPEDIZIONE";
             }
@@ -77,15 +85,15 @@ export class ProfiloUtenteComponent {
                             next:(risposta:ResponseUserAddressDTO)=>{
                                 this.router.navigate(["/modifica-profilo"]);
                             },
-                            error:(err)=>{
-                                console.log("Errore nella creazione dell'indirizzo: "+err);
+                            error:()=>{
+                                console.log("Errore nella creazione dell'indirizzo: ");
                             }
                         })
 
 
                 },
-                error:(err)=>{
-                    console.log("Errore nella registrazione dell'utente: "+err);
+                error:()=>{
+                    console.log("Errore nella registrazione dell'utente: ");
                 }
             });
         }

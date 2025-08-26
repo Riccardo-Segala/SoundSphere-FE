@@ -8,14 +8,15 @@ import {
     ResponseUserDTO,
     UtenteControllerService
 } from "../../api-client";
-import {CommonModule} from "@angular/common";
+import {CommonModule,Location} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
+import {RecensioniComponent} from "../recensioni/recensioni.component";
 
 @Component({
     selector: "app-dettaglio",
     standalone: true,
-    imports:[CommonModule,FormsModule],
+    imports: [CommonModule, FormsModule, RecensioniComponent],
     templateUrl: "/dettaglio-prodotto.component.html",
     styleUrls: ["/dettaglio-prodotto.component.scss"],
 })
@@ -31,7 +32,8 @@ export class DettaglioProdottoComponent implements OnInit {
                 private router: Router,
                 private prodottoService:ProdottoControllerService,
                 private cartService:CarrelloControllerService,
-                private userService:UtenteControllerService) {
+                private userService:UtenteControllerService,
+                private location:Location) {
     }
 
     ngOnInit() {
@@ -60,7 +62,7 @@ export class DettaglioProdottoComponent implements OnInit {
             this.cartService.updateItemInCart(cartItem).subscribe({
                 next:(response)=>{
                     if(response){
-                        this.router.navigate(['/']);
+                        this.location.back();
                     }
                 },
                 error:()=>{
@@ -86,7 +88,7 @@ export class DettaglioProdottoComponent implements OnInit {
             this.cartService.updateItemInCart(cartItem).subscribe({
                 next:(response)=>{
                     if(response){
-                        this.router.navigate(['/']);
+                        this.location.back();
                     }
                 },
                 error:()=>{
@@ -96,6 +98,6 @@ export class DettaglioProdottoComponent implements OnInit {
         }
     }
     annulla(){
-        this.router.navigate(["/"]);
+        this.location.back();
     }
 }

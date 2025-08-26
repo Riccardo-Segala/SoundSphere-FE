@@ -30,4 +30,16 @@
 
     <br><br><br>
     <span>{{errore}}</span>
+
+    <br><br>
+    @defer (on viewport){
+        <app-recensioni [prodottoId]="prodotto.id"/>
+    } @placeholder {
+        <div>
+            <p>Caricamento sezione recensioni<</p>
+        </div>
+    } @loading {
+        <p>Inizializzazione recensioni</p>
+    }
+
 </section>

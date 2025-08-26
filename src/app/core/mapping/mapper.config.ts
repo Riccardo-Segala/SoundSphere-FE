@@ -37,7 +37,8 @@ export function setupMapperMetadata():void{
         prezzo:Number,
         costoGiornaliero:Number,
         isRentable:Boolean,
-        pathImmagine:String
+        pathImmagine:String,
+        numStelleMedio:Number
     });
 
     PojosMetadataMap.create('ResponseCartDTO',{
@@ -191,5 +192,35 @@ export function setupMapperMetadata():void{
         slug:String,
         children:['CategoriaModel'],
         isLeaf:Boolean
+    });
+    PojosMetadataMap.create('ResponseReviewDTO',{
+        prodottoId:String,
+        data: String,
+        numStelle: Number,
+        titolo: String,
+        descrizione: String,
+        nomeProdotto: String,
+        nomeUtente: String,
+        cognomeUtente: String
+    });
+    PojosMetadataMap.create('UpdateReviewDTO',{
+        numStelle: Number,
+        titolo: String,
+        descrizione: String
+    });
+    PojosMetadataMap.create('CreateReviewDTO',{
+        prodottoId:String,
+        numStelle: Number,
+        titolo: String,
+        descrizione: String
+    });
+    PojosMetadataMap.create('RecensioneModel',{
+        prodottoId:String,
+        data: String,
+        numStelle: Number,
+        titolo: String,
+        descrizione: String,
+        nomeUtente: String,
+        cognomeUtente: String
     });
 }
