@@ -1,0 +1,23 @@
+<section id="inserimento-recensione">
+    <form #form="ngForm">
+        <input type="text" name="titolo" [(ngModel)]="nuovaRecensione.titolo" required>
+        <input type="number" min="1" max="5" name="stelle" [(ngModel)]="nuovaRecensione.numStelle" required>
+        <br>
+        <input type="text" name="descrizione" [(ngModel)]="nuovaRecensione.descrizione" required>
+        <br>
+        <button type="submit" (click)="inserisciRecensione()" [disabled]="form.invalid">Aggiungi</button>
+    </form>
+</section><br>
+<section id="lista-recensioni">
+    <ul *ngFor="let r of recensioni">
+        <li>
+            <div>
+                {{r.nomeUtente}} {{r.cognomeUtente}} {{r.data}}
+                <br>
+                <h3>{{r.titolo}}</h3><br>
+                <h4>{{r.descrizione}}</h4>
+            </div>
+        </li>
+        <br>
+    </ul>
+</section>
