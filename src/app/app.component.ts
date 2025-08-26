@@ -61,7 +61,7 @@ export class AppComponent {
         this.loggedUser=this.session.getUser();
         this.router.navigate(['/']);
     }
-    carrello(){
-        this.router.navigate(["carrello"]);
+    carrello(path:string){
+        this.router.navigate([path]);
     }
 }

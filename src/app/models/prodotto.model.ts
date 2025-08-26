@@ -7,4 +7,5 @@ export interface ProdottoModel{
     costoGiornaliero?:number;
     isRentable?:boolean;
     pathImmagine?:string;
+    stelleMedie:number;
 }

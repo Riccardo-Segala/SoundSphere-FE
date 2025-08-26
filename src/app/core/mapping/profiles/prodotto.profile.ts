@@ -5,6 +5,7 @@ import {ProdottoModel} from "../../../models/prodotto.model";
 
 export const prodottoProfile = (mapper:Mapper)=>{
     createMap(mapper,'ResponseProductDTO','ProdottoModel');
+    createMap(mapper,'CatalogProductDTO','ProdottoModel');
     createMap(mapper,'ProdottoModel','UpdateProductDTO');
     createMap(mapper,'ProdottoModel','CreateProductDTO');
 }

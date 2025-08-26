@@ -29,6 +29,17 @@ export function setupMapperMetadata():void{
         costoGiornaliero: Number,
         pathImmagine: String
     });
+    PojosMetadataMap.create('CatalogProductDTO',{
+        id:String,
+        nome:String,
+        marca:String,
+        prezzo:Number,
+        costoGiornaliero:Number,
+        pathImmagine:String,
+        stelleMedie:Number,
+        quantitaDisponibile: Number,
+        quantitaDisponibileAlNoleggio: Number
+    })
     PojosMetadataMap.create('ProdottoModel',{
         id:String,
         nome:String,
@@ -38,7 +49,9 @@ export function setupMapperMetadata():void{
         costoGiornaliero:Number,
         isRentable:Boolean,
         pathImmagine:String,
-        numStelleMedio:Number
+        stelleMedie:Number,
+        quantitaDisponibile: Number,
+        quantitaDisponibileAlNoleggio: Number
     });
 
     PojosMetadataMap.create('ResponseCartDTO',{
@@ -64,7 +77,7 @@ export function setupMapperMetadata():void{
         citta:String,
         provincia:String,
         nazione:String,
-        idDefault:Boolean,
+        main:Boolean,
         tipologia:"SPEDIZIONE",
         utenteId:String,
         utenteNome:String,
@@ -77,7 +90,7 @@ export function setupMapperMetadata():void{
         citta:String,
         provincia:String,
         nazione:String,
-        idDefault:Boolean,
+        main:Boolean,
         tipologia:"SPEDIZIONE",
         utenteId:String,
         utenteNome:String,
@@ -91,7 +104,7 @@ export function setupMapperMetadata():void{
         citta:String,
         provincia:String,
         nazione:String,
-        idDefault:Boolean,
+        main:Boolean,
         tipologia:"SPEDIZIONE"
     });
     PojosMetadataMap.create('ResponseUserAddressDTO',{
@@ -102,7 +115,7 @@ export function setupMapperMetadata():void{
         citta:String,
         provincia:String,
         nazione:String,
-        idDefault:Boolean,
+        main:Boolean,
         tipologia:"SPEDIZIONE"
     });
     PojosMetadataMap.create('ResponseBenefitDTO',{

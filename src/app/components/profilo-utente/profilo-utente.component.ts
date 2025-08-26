@@ -82,7 +82,7 @@ export class ProfiloUtenteComponent {
 
                     this.indirizzoService.createUserAddress(mapper.map(this.indirizzo[0],'IndirizzoUtenteModel','CreateUserAddressDTO'))
                         .subscribe({
-                            next:(risposta:ResponseUserAddressDTO)=>{
+                            next:()=>{
                                 this.router.navigate(["/modifica-profilo"]);
                             },
                             error:()=>{
