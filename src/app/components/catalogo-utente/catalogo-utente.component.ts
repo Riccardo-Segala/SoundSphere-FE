@@ -5,7 +5,7 @@ import {Router,RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
 import {
-    CarrelloControllerService,
+    CarrelloControllerService, CatalogProductDTO,
     ProdottoControllerService, ResponseCartDTO,
     ResponseUserDTO,
     UtenteControllerService
@@ -25,16 +25,17 @@ import {UtenteModel} from "../../models/utente.model";
     imports: [
         FormsModule,
         NgForOf,
-        RouterModule
+        RouterModule,
+        CommonModule
     ]
 })
 export class CatalogoUtenteComponent implements OnInit {
     cercaProd:string='';
-    prodotti:ResponseProductDTO[]=[];
-    //loggedUser:string|null=null;
+    prodotti:CatalogProductDTO[]=[];
     loggedUser:UtenteModel={};
-    prodFiltrati:ResponseProductDTO[]=[];
+    prodFiltrati:CatalogProductDTO[]=[];
     carrello:CarrelloModel[]=[];
+    errore:string="";
 
     constructor(private http:HttpClient,
                 private router:Router,
@@ -50,10 +51,11 @@ export class CatalogoUtenteComponent implements OnInit {
             this.loggedUser=this.session.getUser() as UtenteModel;
         }
         console.log(this.loggedUser.nome+" "+this.loggedUser.cognome);
-        this.prodottoService.getAllProducts().subscribe({
+        this.prodottoService.getOnlineCatalog().subscribe({
             next:(prodotti) => {
-            this.prodotti = prodotti;
-            this.filtraProdotti();},
+                this.prodotti = prodotti;
+                this.filtraProdotti();
+            },
             error: (err) => {
                 console.log(err);
             }
@@ -74,25 +76,41 @@ export class CatalogoUtenteComponent implements OnInit {
         }
     }
 
-    aggiungiCarrello(id:string|undefined){
+    aggiungiCarrello(id:string|undefined,wishlist:boolean){
         if(id){
             for(let p of this.prodotti){
                 if(p.id==id){
                     this.carrelloService.updateItemInCart({
                         prodottoId:id,
                         quantita:1,
-                        wishlist:false
-                    }).subscribe();
+                        wishlist:wishlist
+                    }).pipe(map(dto=>mapper.map<ResponseCartDTO,CarrelloModel>(dto,'ResponseCartDTO','CarrelloModel')))
+                        .subscribe({
+                        next:(res:CarrelloModel)=>{
+                            this.carrello.push(res);
+                        },
+                        error:(err)=>{
+                            console.log("Errore inserimento in carrello/wishlist: "+err);
+                        }
+                    });
+                }
+                else{
+                    this.errore="Non è stato trovato il prodotto da aggiungere";
                 }
             }
         }
     }
     inCarrello(id:string|undefined):boolean{
         for(let c of this.carrello){
-            for(let p of this.prodotti){
-                if(p.id===c.prodotto.id && c.quantita!==undefined && c.quantita>0)
-                    return true;
-            }
+            if(c.prodotto.id===id && !c.wishlist && c.quantita>0 )
+                return true;
+        }
+        return false;
+    }
+    inWishlist(id:string|undefined):boolean{
+        for(let c of this.carrello){
+            if(c.prodotto.id===id && c.wishlist)
+                return true;
         }
         return false;
     }

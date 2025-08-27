@@ -15,6 +15,7 @@ export const routes: Routes = [
   {path:'catalogo-utente/:idCategoria',component:CatalogoUtenteComponent},
   { path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },
   { path: 'carrello',component:CarrelloComponent},
+  { path:'wishlist',component:CarrelloComponent},
   { path:'categorie',component:CategorieComponent},
   {path: 'categorie/:id',component:CategorieComponent}
 

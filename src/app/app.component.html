@@ -3,7 +3,9 @@
         <h1 style="display: flex;justify-content: center"><a routerLink="/">SoundSphere</a></h1>
         <!-- controllo se utente loggato per pulsante logout o login -->
         <br>
-        <button type="button" style="float:right" (click)="carrello()">Carrello</button>
+        <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('carrello')">Carrello</button>
+        <br>
+        <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('wishlist')">Wishlist</button>
         <br>
         <a style="float:right" *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
         <br><a style="float:right" *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
