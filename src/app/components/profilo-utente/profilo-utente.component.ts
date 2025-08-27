@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from "@angular/core";
+import {Component, Inject, OnInit, ViewChild} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
@@ -16,11 +16,12 @@ import {Mapper} from "@automapper/core";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
 import {UtenteModel} from "../../models/utente.model";
+import {IndirizzoutenteComponent} from "../indirizzi-utente/indirizzo-utente.component";
 
 @Component({
     selector: 'app-registrazione',
     standalone:true,
-    imports:[CommonModule,FormsModule],
+    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule],
     templateUrl:'./profilo-utente.component.html',
     styleUrls:['./profilo-utente.component.scss']
 })
@@ -30,6 +31,8 @@ export class ProfiloUtenteComponent {
     modifica:boolean=false;
     indirizzo:IndirizzoUtenteModel[]=[{nazione:""}];
 
+    @ViewChild(IndirizzoutenteComponent) private addressComponent!:IndirizzoutenteComponent;
+    profileForm!:FormGroup;
 
     constructor(private http: HttpClient,
                 private router: Router,
@@ -42,6 +45,17 @@ export class ProfiloUtenteComponent {
     }
 
     ngOnInit(){
+        this.sessionService.clearLoggedUser();
+        this.profileForm = this.fb.group({
+            pathImmagine:[''],
+            nome:['',Validators.required],
+            cognome:['',Validators.required],
+            email:['',Validators.required,Validators.email],
+            password:['',this.modifica?[]:[Validators.required,Validators.minLength(8)]],
+            dataDiNascita:['',Validators.required],
+            sesso:['NON_SPECIFICATO',Validators.required]
+        });
+
         const id=this.route.snapshot.paramMap.get('id');
         if(this.router.url.includes("/modifica-profilo")) {
             this.modifica = true;
@@ -57,7 +71,6 @@ export class ProfiloUtenteComponent {
                         }
 
                     });
-
                 this.indirizzo[0].tipologia="SPEDIZIONE";
             }
             else{
@@ -69,28 +82,49 @@ export class ProfiloUtenteComponent {
             this.indirizzo[0].tipologia="SPEDIZIONE";
         }
     }
+    get isFormInvalid():boolean{
+        if(this.modifica){
+            return this.profileForm.invalid;
+        }
+        else{
+            return this.profileForm.invalid || (this.addressComponent && this.addressComponent.addressForm.invalid);
+        }
+    }
     registrazione(){
-        const payload=this.utente;
+        if(this.isFormInvalid){
+            console.log("Form Invalid");
+            this.profileForm.markAllAsTouched();
+            if(!this.modifica)
+                this.addressComponent?.addressForm.markAllAsTouched();
+            return;
+        }
+
+
+        const payload=this.profileForm.value;
 
         if(!this.modifica){
             this.authService.registerUser(mapper.map(payload,'UtenteModel','CreateUserDTO')).subscribe({
                 next:(res:JwtResponseDTO)=>{
-                    this.sessionService.setLoggedUser(this.utente,res.token as string);
-
-                    let dto=mapper.map(this.indirizzo[0],'IndirizzoUtenteModel','CreateUserAddressDTO');
-                    console.log(JSON.stringify(dto));
-
-                    this.indirizzoService.createUserAddress(mapper.map(this.indirizzo[0],'IndirizzoUtenteModel','CreateUserAddressDTO'))
-                        .subscribe({
-                            next:()=>{
-                                this.router.navigate(["/modifica-profilo"]);
+                    if(res.token){
+                        this.sessionService.setToken(res.token);
+                        this.addressComponent.inserisciIndirizzo().subscribe({
+                            next:(salvato:boolean)=>{
+                                if(salvato){
+                                    console.log("Indirizzo salvato con successo");
+                                    this.sessionService.setUser(this.profileForm.value);
+                                    this.router.navigate(["/"]);
+                                }
+                                else{
+                                    console.log("Errore inserimento indirizzo");
+                                    this.sessionService.clearLoggedUser();
+                                }
                             },
-                            error:()=>{
-                                console.log("Errore nella creazione dell'indirizzo: ");
+                            error:(err)=>{
+                                console.log("Errore metodo indirizzi: "+err);
+                                this.sessionService.clearLoggedUser();
                             }
                         })
-
-
+                    }
                 },
                 error:()=>{
                     console.log("Errore nella registrazione dell'utente: ");
@@ -98,13 +132,17 @@ export class ProfiloUtenteComponent {
             });
         }
         else{
-
+            /*this.utenteService.updateUser(mapper.map(payload,'UtenteModel','CreateUserDTO'))
+                .pipe(map(dto=>mapper.map(dto,'ResponseUserDTO','UtenteModel')))
+                .subscribe({
+                    next:(res:UtenteModel)=>{
+                        this.sessionService.setUser(res);
+                    },
+                    error:(err)=>{
+                        console.log("Errore aggiornamento profilo: "+err);
+                    }
+            })*/
         }
-
-    }
-    fileSelezionato(event:any){
-        const file:File=event.target.files[0];
-        //this.utenteService.caricaFile(file);
     }
     annulla(){
         this.router.navigate(['/login']);

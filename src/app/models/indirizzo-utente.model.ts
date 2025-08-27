@@ -6,7 +6,7 @@ export interface IndirizzoUtenteModel{
     citta?:string;
     provincia?:string;
     nazione?:string;
-    isDefault?:boolean;
+    main?:boolean;
     tipologia?:"SPEDIZIONE";
     utenteId?:string;
     utenteNome?:string;
