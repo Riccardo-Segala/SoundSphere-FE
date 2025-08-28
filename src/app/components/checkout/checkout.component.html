@@ -1,0 +1,29 @@
+<section>
+    <div id="selezione" style="float:left">
+        <div *ngIf="metodiPagamento.length>0">
+            <label>Seleziona un metodo di pagamento</label><br>
+            <select name="md" [(ngModel)]="metodoCorrente">
+                <option  *ngFor="let m of metodiPagamento" [ngValue]="m.id" [selected]="m.isDefault">
+                    {{m.numero}} - {{m.tipoPagamento}}
+                </option>
+            </select>
+        </div>
+
+        <br><br>
+        <label>Seleziona un indirizzo di spedizione</label><br>
+        <select name="indirizzi" [(ngModel)]="indirizzoCorrente">
+            <option *ngFor="let i of indirizzi" [ngValue]="i.id" [selected]="i.main">
+                {{i.via}} {{i.civico}},
+                {{i.citta}} ({{i.cap}}), {{i.provincia}}, {{i.nazione}}
+            </option>
+        </select>
+    </div>
+    <div id="carrello" *ngFor="let c of carrello">
+        <span>{{c.quantita}}x {{c.prodotto.marca}} {{c.prodotto.nome}} - {{c.prodotto.prezzo}}</span>
+    </div>
+    <div style="float:right">
+        <span id="totale">{{totale}}</span>
+        <br>
+        <button type="button" (click)="paga()">Conferma Ordine</button>
+    </div>
+</section>
