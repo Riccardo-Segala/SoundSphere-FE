@@ -60,7 +60,7 @@ export class CarrelloComponent implements OnInit {
                 this.carrelloService.getAllWishlist()
                     .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
                     .subscribe({
-                        next:(carrello)=>{
+                        next:(carrello:CarrelloModel[])=>{
                             this.carrello=carrello;
                             this.calcolaStelleMedie();
                         },
@@ -69,7 +69,6 @@ export class CarrelloComponent implements OnInit {
                         }
                     });
             }
-
         }
         else{
             this.router.navigate(['/']);
@@ -89,5 +88,8 @@ export class CarrelloComponent implements OnInit {
                 });
             }
         }
+    }
+    checkout(){
+        this.router.navigate(["/checkout"]);
     }
 }

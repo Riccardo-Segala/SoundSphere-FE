@@ -13,6 +13,9 @@
         <textarea readonly>{{c.prodotto?.prezzo}}</textarea>
 
         <label *ngIf="!c.wishlist">Quantità:</label>
-        <input *ngIf="!c.wishlist" type="number" min="1" [(ngModel)]="c.quantita">
+        <input *ngIf="!c.wishlist" readonly type="number" min="1" [(ngModel)]="c.quantita">
+
+        <br><br>
+        <button type="button" (click)="checkout()">Vai al checkout</button>
     </div>
 </section>

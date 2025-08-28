@@ -1,6 +1,7 @@
 import { pojos,PojosMetadataMap } from '@automapper/pojos';
 import {VantaggioModel} from "../../models/vantaggio.model";
 import {CreateUserDTO, UpdateUserAddressDTO, UpdateUserDTO} from "../../api-client";
+import {TipoPagamentoEnum} from "../../models/metodo-pagamento.model";
 
 export function setupMapperMetadata():void{
     PojosMetadataMap.create('ResponseProductDTO',{
@@ -235,5 +236,44 @@ export function setupMapperMetadata():void{
         descrizione: String,
         nomeUtente: String,
         cognomeUtente: String
+    });
+    PojosMetadataMap.create('MetodoPagamentoModel',{
+        id: String,
+        nomeSuCarta: String,
+        numero: String,
+        cvv: String,
+        dataScadenza: String,
+        paypalEmail: String,
+        tipoPagamento: String,
+        isDefault: Boolean
+    });
+    PojosMetadataMap.create('UpdatePaymentMethodDTO',{
+        id: String,
+        nomeSuCarta: String,
+        numero: String,
+        cvv: String,
+        dataScadenza: String,
+        paypalEmail: String,
+        tipoPagamento: String,
+        isDefault: Boolean
+    });
+    PojosMetadataMap.create('ResponsePaymentMethodDTO',{
+        id: String,
+        nomeSuCarta: String,
+        numero: String,
+        dataScadenza: String,
+        paypalEmail: String,
+        tipoPagamento: String,
+        isDefault: Boolean
+    });
+    PojosMetadataMap.create('CreatePaymentMethodDTO',{
+        nomeSuCarta: String,
+        numero: String,
+        cvv: String,
+        dataScadenza: String,
+        paypalEmail: String,
+        tipoPagamento: String,
+        isDefault: Boolean,
+        utenteId:String
     });
 }
