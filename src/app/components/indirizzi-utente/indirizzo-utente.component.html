@@ -1,20 +1,4 @@
 <section id="inserimento-recensione">
-    <!--<form #form="ngForm">
-        <input type="text" name="nazione" [(ngModel)]="nuovoIndirizzo.nazione" required>
-        <input type="text" name="provincia" [(ngModel)]="nuovoIndirizzo.provincia" required>
-        <br>
-        <input type="text" name="citta" [(ngModel)]="nuovoIndirizzo.citta" required>
-        <br>
-        <input type="text" name="cap" [(ngModel)]="nuovoIndirizzo.cap" required>
-        <br>
-        <input type="text" name="via" [(ngModel)]="nuovoIndirizzo.via" required>
-        <br>
-        <input type="text" name="civico" [(ngModel)]="nuovoIndirizzo.civico" required>
-        <br>
-        <input *ngIf="indirizzi.length>0" type="checkbox" name="citta" [(ngModel)]="nuovoIndirizzo.main" [defaultValue]="false">
-        <br>
-        <button *ngIf="loggedUser" type="submit" (click)="inserisciIndirizzo()" [disabled]="form.invalid">Aggiungi</button>
-    </form>-->
     <div [formGroup]="addressForm">
         <h4>Indirizzo di residenza</h4>
         <input formControlName="nazione" placeholder="Nazione">

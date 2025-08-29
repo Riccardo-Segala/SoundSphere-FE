@@ -15,7 +15,9 @@
         <label *ngIf="!c.wishlist">Quantità:</label>
         <input *ngIf="!c.wishlist" readonly type="number" min="1" [(ngModel)]="c.quantita">
 
+        <button type="button" (click)="rimuovi(c.prodotto.id)"><span>trash</span></button>
         <br><br>
-        <button type="button" (click)="checkout()">Vai al checkout</button>
     </div>
+    <button type="button" (click)="checkout()">Vai al checkout</button>
+    <button type="button" (click)="rimuoviTutto()"><span>Rimuovi tutto</span></button>
 </section>

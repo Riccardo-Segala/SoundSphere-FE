@@ -1,0 +1,35 @@
+<section *ngIf="modifica">
+    <div id="div-form-metodi">
+        <form name="form-metodi" #form="ngForm">
+            <label>Nome</label>
+            <input type="text" [(ngModel)]="nuovoMetodo.nomeSuCarta">
+            <br>
+            <label>Numero</label>
+            <input type="text" [(ngModel)]="nuovoMetodo.numero">
+            <br>
+            <label>CVV</label>
+            <input type="text" [(ngModel)]="nuovoMetodo.cvv">
+            <br>
+            <label>Data Scadenza</label>
+            <input type="date" [(ngModel)]="nuovoMetodo.dataScadenza">
+            <br>
+            <label>Paypal</label>
+            <input type="checkbox" [(ngModel)]="paypal">
+            <br>
+            <label *ngIf="paypal">Email di paypal</label>
+            <input *ngIf="paypal" type="text" [(ngModel)]="nuovoMetodo.cvv">
+            <br>
+            <label>Impostare come metodo di default?</label>
+            <input type="checkbox" [(ngModel)]="nuovoMetodo.isDefault">
+            <br>
+        </form>
+    </div>
+    <div id="lista-metodi" *ngIf="metodi.length>0">
+        <div id="elemento-lista" *ngFor="let m of metodi">
+            <span>{{m.numero}} - {{m.tipoPagamento}} - {{m.dataScadenza}}</span>
+            <button type="button" (click)="update(m.id)">
+                <span>trash</span>
+            </button>
+        </div>
+    </div>
+</section>

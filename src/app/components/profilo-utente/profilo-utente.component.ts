@@ -17,11 +17,12 @@ import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
 import {UtenteModel} from "../../models/utente.model";
 import {IndirizzoutenteComponent} from "../indirizzi-utente/indirizzo-utente.component";
+import {MetodoPagamentoComponent} from "../metodo-pagamento/metodo-pagamento.component";
 
 @Component({
     selector: 'app-registrazione',
     standalone:true,
-    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule, MetodoPagamentoComponent],
     templateUrl:'./profilo-utente.component.html',
     styleUrls:['./profilo-utente.component.scss']
 })
@@ -45,7 +46,7 @@ export class ProfiloUtenteComponent {
     }
 
     ngOnInit(){
-        this.sessionService.clearLoggedUser();
+        //this.sessionService.clearLoggedUser();
         this.profileForm = this.fb.group({
             pathImmagine:[''],
             nome:['',Validators.required],
@@ -56,10 +57,11 @@ export class ProfiloUtenteComponent {
             sesso:['NON_SPECIFICATO',Validators.required]
         });
 
-        const id=this.route.snapshot.paramMap.get('id');
+        //const id=this.route.snapshot.paramMap.get('id');
         if(this.router.url.includes("/modifica-profilo")) {
             this.modifica = true;
             if (this.sessionService.getUser()){
+                this.utente=this.sessionService.getUser() as UtenteModel;
                 this.indirizzoService.getAllUserAddressesByUserId()
                     .pipe(map(dtos => mapper.mapArray(dtos, 'ResponseUserAddressDTO', 'IndirizzoUtenteModel')))
                     .subscribe({

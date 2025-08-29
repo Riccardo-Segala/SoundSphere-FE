@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {CommonModule, NgForOf} from '@angular/common';
 import {
-    CarrelloControllerService, ProdottoControllerService, ResponseCartDTO,
+    CarrelloControllerService, DeleteCartDTO, ProdottoControllerService, ResponseCartDTO,
     ResponseUserDTO,
     UtenteControllerService
 } from "../../api-client";
@@ -91,5 +91,35 @@ export class CarrelloComponent implements OnInit {
     }
     checkout(){
         this.router.navigate(["/checkout"]);
+    }
+
+    rimuoviTutto(){
+        const items:DeleteCartDTO={};
+        items.productIds=this.carrello.map(item=>item.prodotto.id) as string[];
+        this.carrelloService.removeItemsFromCart(items).subscribe({
+            next:(res)=>{
+                console.log("Rimozione riuscita");
+            },
+            error:(err)=>{
+                console.log("Errore rimozione prodotto: "+err);
+            }
+        })
+    }
+    rimuovi(id:string|undefined){
+        if(id){
+            this.carrelloService.removeItemFromCart(id).subscribe({
+                next:(res)=>{
+                    console.log("Prodotto rimosso");
+                    this.carrello.find(item=>item.prodotto.id==id);
+                    this.carrello=this.carrello.filter(c=>c.prodotto.id!==id);
+                },
+                error:(err)=>{
+                    console.log("Rimozione non riuscita");
+                }
+            });
+        }
+        else{
+            console.log("Prodotto nel carrello non trovato");
+        }
     }
 }

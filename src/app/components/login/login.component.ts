@@ -11,6 +11,7 @@ import {
     UtenteControllerService
 } from "../../api-client";
 import {HttpClient, HttpContext} from "@angular/common/http";
+import {UtenteModel} from "../../models/utente.model";
 
 @Component({
     selector: 'app-login',
@@ -25,7 +26,7 @@ export class LoginComponent {
         email: '',
         password: ''
     };
-    loggedUser:ResponseUserDTO={};
+    loggedUser:UtenteModel={};
 
     constructor(private sessionService: SessionService,
                 private router: Router,
@@ -43,8 +44,17 @@ export class LoginComponent {
                     if(response.token){
                         this.sessionService.setToken(response.token);
                         this.userService.getCurrentUser().subscribe((utente)=>{
+                            this.loggedUser=utente;
                             this.sessionService.setUser(utente);
-                            this.router.navigate(['/']);
+                            if(this.loggedUser.tipologia==="UTENTE"){
+                                this.router.navigate(['/']);
+                            }
+                            else if(this.loggedUser.tipologia==="ADMIN"){
+                                this.router.navigate(['/admin-page']);
+                            }
+                            else if(this.loggedUser.tipologia==="DIPENDENTE"){
+                                this.router.navigate(['/catalogo-dipendente']);
+                            }
                         })
                     }else{
                         this.errore='Password Errata';
