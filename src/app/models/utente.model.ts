@@ -12,6 +12,7 @@ export interface UtenteModel{
     dataRegistrazione?:string;
     punti?:number;
     vantaggio?:VantaggioModel;
+    ruoli?:string[];
 }
 
 export const SessoEnum = {

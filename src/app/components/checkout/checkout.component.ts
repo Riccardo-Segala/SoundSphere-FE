@@ -59,7 +59,7 @@ export class CheckoutComponent implements OnInit {
                 .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')));
             const getIndirizzi$=this.indirizzoService.getAllUserAddressesByUserId()
                 .pipe(map(dtos=>mapper.mapArray<ResponseUserAddressDTO,IndirizzoUtenteModel>(dtos,'ResponseUserAddressDTO','IndirizzoUtenteModel')))
-            const getMetodiPagamento$=this.mdService.getAllPaymentMethod()
+            const getMetodiPagamento$=this.mdService.getAllUserPaymentMethod()
                 .pipe(map(dtos=>mapper.mapArray<ResponsePaymentMethodDTO,MetodoPagamentoModel>(dtos,'ResponsePaymentMethodDTO','MetodoPagamentoModel')))
 
             forkJoin([getCarrello$,getIndirizzi$,getMetodiPagamento$]).subscribe({

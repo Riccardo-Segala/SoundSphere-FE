@@ -1,0 +1,26 @@
+<div>
+    <form name="formMetodi" #form="ngForm" (ngSubmit)="salva()">
+        <label>Nome</label>
+        <input name="nome" type="text" [(ngModel)]="metodo.nomeSuCarta">
+        <br>
+        <label>Numero</label>
+        <input name="numero" type="text" [(ngModel)]="metodo.numero">
+        <br>
+        <label>CVV</label>
+        <input name="cvv" type="text" [(ngModel)]="metodo.cvv">
+        <br>
+        <label>Data Scadenza</label>
+        <input name="data-scadenza" type="date" [(ngModel)]="metodo.dataScadenza">
+        <br>
+        <label>Paypal</label>
+        <input name="paypal" type="checkbox" [(ngModel)]="paypal">
+        <br>
+        <label *ngIf="paypal">Email di paypal</label>
+        <input name="paypal-email" *ngIf="paypal" type="text" [(ngModel)]="metodo.paypalEmail">
+        <br>
+        <label>Impostare come metodo di default?</label>
+        <input name="default" type="checkbox" [(ngModel)]="metodo.isDefault">
+        <br>
+        <button name="salva" type="submit" [disabled]="form.invalid">Salva</button>
+    </form>
+</div>

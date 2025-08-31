@@ -11,12 +11,11 @@
 </section><br>
 <section id="lista-recensioni">
     <ul *ngFor="let i of indirizzi">
-        <li>
-            <div>
-                <span>{{i.via}} {{i.civico}},
-                {{i.citta}} {{i.cap}}, {{i.provincia}}, {{i.nazione}}</span>
-            </div>
-        </li>
+        <div>
+            <span>{{i.via}} {{i.civico}},
+            {{i.citta}} {{i.cap}}, {{i.provincia}}, {{i.nazione}}</span>
+            <button type="button" (click)="caricaIndirizzo(i.id)">Modifica</button>
+        </div>
         <br>
     </ul>
 </section>

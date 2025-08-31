@@ -17,8 +17,8 @@
             <label>Email:
                 <input type="email" formControlName="email"/>
             </label><br>
-            <label>Password:
-                <input type="password" formControlName="password"/>
+            <label *ngIf="!modifica">Password:
+                <input type="password" *ngIf="!modifica" formControlName="password"/>
             </label><br>
             <label>Data di Nascita:
                 <input type="date" formControlName="dataDiNascita"/>
@@ -33,7 +33,10 @@
         </div>
         <br>
         <app-address [modifica]="modifica"></app-address>
-        <app-metodo-pagamento></app-metodo-pagamento>
+        <div id="metodi" *ngIf="modifica">
+            <app-lista-metodi-pagamento [modifica]="modifica"></app-lista-metodi-pagamento>
+        </div>
+
         <button name="salvataggio" type="submit" [disabled]="isFormInvalid">
             {{ modifica ? 'Salva' : 'Registrati' }}
         </button>

@@ -46,13 +46,13 @@ export class LoginComponent {
                         this.userService.getCurrentUser().subscribe((utente)=>{
                             this.loggedUser=utente;
                             this.sessionService.setUser(utente);
-                            if(this.loggedUser.tipologia==="UTENTE"){
+                            if(this.loggedUser.ruoli?.includes("UTENTE")){
                                 this.router.navigate(['/']);
                             }
-                            else if(this.loggedUser.tipologia==="ADMIN"){
+                            else if(this.loggedUser.ruoli?.includes("ADMIN")){
                                 this.router.navigate(['/admin-page']);
                             }
-                            else if(this.loggedUser.tipologia==="DIPENDENTE"){
+                            else if(this.loggedUser.ruoli?.includes("DIPENDENTE")){
                                 this.router.navigate(['/catalogo-dipendente']);
                             }
                         })

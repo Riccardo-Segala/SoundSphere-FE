@@ -17,12 +17,12 @@ import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
 import {UtenteModel} from "../../models/utente.model";
 import {IndirizzoutenteComponent} from "../indirizzi-utente/indirizzo-utente.component";
-import {MetodoPagamentoComponent} from "../metodo-pagamento/metodo-pagamento.component";
+import {ListaMetodoPagamentoComponent} from "../metodo-pagamento/lista-metodo-pagamento.component";
 
 @Component({
-    selector: 'app-registrazione',
+    selector: 'app-profilo',
     standalone:true,
-    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule, MetodoPagamentoComponent],
+    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule, ListaMetodoPagamentoComponent],
     templateUrl:'./profilo-utente.component.html',
     styleUrls:['./profilo-utente.component.scss']
 })
@@ -30,7 +30,7 @@ export class ProfiloUtenteComponent {
     utente:UtenteModel={};
     pathImmagine='';
     modifica:boolean=false;
-    indirizzo:IndirizzoUtenteModel[]=[{nazione:""}];
+    indirizzi:IndirizzoUtenteModel[]=[{nazione:""}];
 
     @ViewChild(IndirizzoutenteComponent) private addressComponent!:IndirizzoutenteComponent;
     profileForm!:FormGroup;
@@ -40,9 +40,7 @@ export class ProfiloUtenteComponent {
                 private route:ActivatedRoute,
                 private fb:FormBuilder,
                 private sessionService:SessionService,
-                private authService:AuthenticationControllerService,
-                private utenteService: UtenteControllerService,
-                private indirizzoService:IndirizzoUtenteControllerService) {
+                private authService:AuthenticationControllerService) {
     }
 
     ngOnInit(){
@@ -51,8 +49,8 @@ export class ProfiloUtenteComponent {
             pathImmagine:[''],
             nome:['',Validators.required],
             cognome:['',Validators.required],
-            email:['',Validators.required,Validators.email],
-            password:['',this.modifica?[]:[Validators.required,Validators.minLength(8)]],
+            email:['',[Validators.required,Validators.email]],
+            //password:['',this.modifica?[]:[Validators.required,Validators.minLength(8)]],
             dataDiNascita:['',Validators.required],
             sesso:['NON_SPECIFICATO',Validators.required]
         });
@@ -62,18 +60,17 @@ export class ProfiloUtenteComponent {
             this.modifica = true;
             if (this.sessionService.getUser()){
                 this.utente=this.sessionService.getUser() as UtenteModel;
-                this.indirizzoService.getAllUserAddressesByUserId()
+                this.profileForm.patchValue(this.utente);
+                /*this.indirizzoService.getAllUserAddressesByUserId()
                     .pipe(map(dtos => mapper.mapArray(dtos, 'ResponseUserAddressDTO', 'IndirizzoUtenteModel')))
                     .subscribe({
                         next:(indirizzi:IndirizzoUtenteModel[]) => {
-                            this.indirizzo = indirizzi;
+                            this.indirizzi = indirizzi;
                         },
                         error:()=>{
                             console.log("Errore ottenimento indirizzi utente: ");
                         }
-
-                    });
-                this.indirizzo[0].tipologia="SPEDIZIONE";
+                    });*/
             }
             else{
                 this.router.navigate(["/registrazione"]);
@@ -81,7 +78,10 @@ export class ProfiloUtenteComponent {
         }
         else{
             this.modifica=false;
-            this.indirizzo[0].tipologia="SPEDIZIONE";
+            this.profileForm.addControl(
+                'password',
+                this.fb.control('', [Validators.required, Validators.minLength(8)])
+            );
         }
     }
     get isFormInvalid():boolean{

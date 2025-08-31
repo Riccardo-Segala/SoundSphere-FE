@@ -76,4 +76,10 @@ export class IndirizzoutenteComponent implements OnInit {
             })
             );
     }
+    caricaIndirizzo(id:string|undefined){
+        const indirizzo=this.indirizzi.find(ind=>ind.id===id);
+        if(indirizzo){
+            this.addressForm.patchValue(indirizzo);
+        }
+    }
 }

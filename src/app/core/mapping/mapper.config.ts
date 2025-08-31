@@ -157,7 +157,8 @@ export function setupMapperMetadata():void{
         tipologia:String,
         dataRegistrazione:String,
         punti:Number,
-        vantaggio:'VantaggioModel'
+        vantaggio:'VantaggioModel',
+        ruoli:[String]
     });
     PojosMetadataMap.create('UpdateUserDTO',{
         nome:String,
@@ -177,7 +178,8 @@ export function setupMapperMetadata():void{
         tipologia:String,
         dataRegistrazione:String,
         punti:Number,
-        vantaggio:'VantaggioModel'
+        vantaggio:'VantaggioModel',
+        ruoli:[String]
     });
     PojosMetadataMap.create('CreateUserDTO',{
         nome:String,
