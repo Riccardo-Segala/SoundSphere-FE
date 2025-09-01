@@ -6,7 +6,7 @@ export interface MetodoPagamentoModel{
     dataScadenza: string;
     paypalEmail: string;
     tipoPagamento: TipoPagamentoEnum;
-    isDefault: boolean;
+    main: boolean;
 }
 
 export const TipoPagamentoEnum = {

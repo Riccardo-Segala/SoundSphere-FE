@@ -68,7 +68,7 @@ export class CheckoutComponent implements OnInit {
                     this.indirizzi=inidrizziRes as IndirizzoUtenteModel[];
                     this.metodiPagamento=mdRes as MetodoPagamentoModel[];
 
-                    const md=this.metodiPagamento.find(m=>m.isDefault)
+                    const md=this.metodiPagamento.find(m=>m.main)
                     if(md)
                         this.metodoCorrente=md.id;
                     else

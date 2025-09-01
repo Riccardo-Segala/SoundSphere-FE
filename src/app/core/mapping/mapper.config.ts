@@ -247,7 +247,7 @@ export function setupMapperMetadata():void{
         dataScadenza: String,
         paypalEmail: String,
         tipoPagamento: String,
-        isDefault: Boolean
+        main: Boolean
     });
     PojosMetadataMap.create('UpdatePaymentMethodDTO',{
         id: String,
@@ -257,7 +257,7 @@ export function setupMapperMetadata():void{
         dataScadenza: String,
         paypalEmail: String,
         tipoPagamento: String,
-        isDefault: Boolean
+        main: Boolean
     });
     PojosMetadataMap.create('ResponsePaymentMethodDTO',{
         id: String,
@@ -266,7 +266,7 @@ export function setupMapperMetadata():void{
         dataScadenza: String,
         paypalEmail: String,
         tipoPagamento: String,
-        isDefault: Boolean
+        main: Boolean
     });
     PojosMetadataMap.create('CreatePaymentMethodDTO',{
         nomeSuCarta: String,
@@ -275,7 +275,7 @@ export function setupMapperMetadata():void{
         dataScadenza: String,
         paypalEmail: String,
         tipoPagamento: String,
-        isDefault: Boolean,
+        main: Boolean,
         utenteId:String
     });
 }

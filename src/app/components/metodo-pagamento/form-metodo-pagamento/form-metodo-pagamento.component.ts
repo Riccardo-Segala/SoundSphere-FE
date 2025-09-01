@@ -22,6 +22,8 @@ export class FormMetodoPagamentoComponent implements OnInit{
     @Output() salvaMetodo = new EventEmitter<MetodoPagamentoModel>();
     metodo!:MetodoPagamentoModel;
     paypal:boolean=false;
+    nome:string='';
+    cognome:string='';
 
     constructor(
         private router:Router,
@@ -34,6 +36,7 @@ export class FormMetodoPagamentoComponent implements OnInit{
         this.metodo=this.azzeraMetodo();
     }
     salva(){
+        this.metodo.nomeSuCarta=this.cognome+" "+this.nome;
         this.mpService.createPaymentMethod(mapper.map(this.metodo,'MetodoPagamentoModel','CreatePaymentMethodDTO'))
             .pipe(map(dto=>mapper.map<ResponsePaymentMethodDTO,MetodoPagamentoModel>(dto,'ResponsePaymentMethodDTO','MetodoPagamentoModel')))
             .subscribe({
@@ -56,7 +59,7 @@ export class FormMetodoPagamentoComponent implements OnInit{
             dataScadenza: '',
             paypalEmail: '',
             tipoPagamento: 'CARTA_DI_CREDITO',
-            isDefault: false
+            main: false
         }
     }
 }

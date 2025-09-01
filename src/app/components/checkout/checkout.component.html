@@ -3,7 +3,7 @@
         <div *ngIf="metodiPagamento.length>0">
             <label>Seleziona un metodo di pagamento</label><br>
             <select name="md" [(ngModel)]="metodoCorrente">
-                <option  *ngFor="let m of metodiPagamento" [ngValue]="m.id" [selected]="m.isDefault">
+                <option  *ngFor="let m of metodiPagamento" [ngValue]="m.id" [selected]="m.main">
                     {{m.numero}} - {{m.tipoPagamento}}
                 </option>
             </select>

@@ -70,7 +70,7 @@ export class ProfiloUtenteComponent {
             this.modifica=false;
             this.profileForm.addControl(
                 'password',
-                this.fb.control('', [Validators.required, Validators.minLength(8)])
+                this.fb.control('', [Validators.required, Validators.minLength(8),Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")])
             );
         }
     }
