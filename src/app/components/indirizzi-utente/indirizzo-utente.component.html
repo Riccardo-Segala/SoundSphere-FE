@@ -1,4 +1,4 @@
-<section id="inserimento-recensione">
+<!--<section id="inserimento-recensione">
     <div [formGroup]="addressForm">
         <h4>Indirizzo di residenza</h4>
         <input formControlName="nazione" placeholder="Nazione">
@@ -8,14 +8,19 @@
         <input formControlName="via" placeholder="Via/Piazza">
         <input formControlName="civico" placeholder="Civico">
     </div>
-</section><br>
+</section><br>-->
 <section id="lista-recensioni">
+    <h2>Nuovo Indirizzo</h2>
+    <app-form-indirizzi [modifica]="modifica" (salvaIndirizzo)="salva($event)"></app-form-indirizzi>
+    <h2>I tuoi indirizzi</h2>
     <ul *ngFor="let i of indirizzi">
-        <div>
+        <ng-container>
             <span>{{i.via}} {{i.civico}},
             {{i.citta}} {{i.cap}}, {{i.provincia}}, {{i.nazione}}</span>
-            <button type="button" (click)="caricaIndirizzo(i.id)">Modifica</button>
-        </div>
+            <button type="button" (click)="metodoInModifica(i.id)">Modifica</button>
+            <button type="button" (click)="eliminaIndirizzo(i.id)">Elimina</button>
+            <app-form-indirizzi [modifica]="modifica"  *ngIf="i.id===idModifica" [indirizzo]="i" (salvaIndirizzo)="salva($event)"></app-form-indirizzi>
+        </ng-container>
         <br>
     </ul>
 </section>

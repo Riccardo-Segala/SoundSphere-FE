@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {Router, RouterModule} from "@angular/router";
 import {SessionService} from "../../services/session.service";
 import {IndirizzoUtenteModel} from "../../models/indirizzo-utente.model";
@@ -8,20 +8,21 @@ import {mapper} from "../../core/mapping/mapper.initializer";
 import {CommonModule, NgForOf} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UtenteModel} from "../../models/utente.model";
+import {FormIndirizziUtenteComponent} from "./form-indirizzi-utente.component";
 
 @Component({
     selector: 'app-address',
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, FormIndirizziUtenteComponent],
     templateUrl:'./indirizzo-utente.component.html',
     styleUrls:['./indirizzo-utente.component.scss']
 })
 export class IndirizzoutenteComponent implements OnInit {
     indirizzi:IndirizzoUtenteModel[]=[];
-    nuovoIndirizzo:IndirizzoUtenteModel={};
     loggedUser:UtenteModel={};
-    public addressForm!:FormGroup;
+    @ViewChild(FormIndirizziUtenteComponent) public addressForm!:FormIndirizziUtenteComponent;
     @Input() modifica:boolean=false;
+    idModifica:string|null=null;
 
     constructor(
         private router:Router,
@@ -31,55 +32,81 @@ export class IndirizzoutenteComponent implements OnInit {
     ){}
 
     ngOnInit() {
-        this.addressForm = this.fb.group({
-            nazione:['',Validators.required],
-            provincia:['',Validators.required],
-            citta:['',Validators.required],
-            cap:['',[Validators.required,Validators.pattern('^\\d{5}$')]],
-            via:['',Validators.required],
-            civico:['',[Validators.required,Validators.pattern('^\\d{1,3}[A-Za-z]?$')]],
-        });
-        if(this.session.getUser())
+        const user=this.session.getUser();
+        if(user)
         {
-            this.loggedUser=this.session.getUser() as UtenteModel;
-            this.indirizzoService.getAllUserAddressesByUserId()
-                .pipe(map(dtos=>mapper.mapArray<ResponseUserAddressDTO,IndirizzoUtenteModel>(dtos,'ResponseUserAddressDTO','IndirizzoUtenteModel')))
-                .subscribe({
-                    next:(indirizzi:IndirizzoUtenteModel[])=>{
-                        this.indirizzi=indirizzi;
-                    },
-                    error:(err)=>{
-                        console.log("Errore ottenimento indirizzi: "+err);
-                    }
-                });
+            this.loggedUser=user as UtenteModel;
+            this.caricaListaIndirizzi();
         }
     }
 
-    public inserisciIndirizzo():Observable<boolean>{
-        this.addressForm.markAsTouched();
-        if(this.addressForm.invalid){
-            return of(false);
+    salva(indirizzo:IndirizzoUtenteModel){
+        if(indirizzo.id){
+            this.indirizzoService.updateUserAddress(indirizzo.id,mapper.map(indirizzo,'IndirizzoUtenteModel','UpdateUserAddressDTO'))
+                .pipe()
+                .subscribe({
+                    next:(res)=>{
+                        this.caricaListaIndirizzi();
+                    },
+                    error:(err)=>{
+                        console.log("Errore aggiornamento indirizzo: "+err);
+                    }
+                })
         }
-        this.nuovoIndirizzo=this.addressForm.value;
-        const indirizzoDTO=mapper.map<IndirizzoUtenteModel,CreateUserAddressDTO>(this.nuovoIndirizzo,'IndirizzoUtenteModel','CreateUserAddressDTO');
-        indirizzoDTO.tipologia="RESIDENZA";
-        indirizzoDTO.main=true;
-        return this.indirizzoService.createUserAddress(indirizzoDTO)
-            .pipe(map(dto=>{
-                const nuovoIndirizzo=mapper.map(dto,'ResponseUserAddressDTO','IndirizzoUtenteModel');
-                this.indirizzi.push(nuovoIndirizzo);
-                return true;
-            }),
-            catchError(err=>{
-                console.log("Errore creazione nuovo indirizzo: "+err);
-                return of(false);
-            })
-            );
+        else{
+            if(!this.modifica){
+                indirizzo.main=true;
+                indirizzo.tipologia="RESIDENZA";
+            }
+            this.indirizzoService.createUserAddress(mapper.map(indirizzo,'IndirizzoUtenteModel','CreateUserAddressDTO'))
+                .pipe()
+                .subscribe({
+                    next:(res)=>{
+                        this.caricaListaIndirizzi();
+                        this.addressForm.addressForm.reset();
+                    },
+                    error:(err)=>{
+                        console.log("Errore inserimento nuovo indirizzo: "+err);
+                    }
+                })
+        }
     }
-    caricaIndirizzo(id:string|undefined){
-        const indirizzo=this.indirizzi.find(ind=>ind.id===id);
-        if(indirizzo){
-            this.addressForm.patchValue(indirizzo);
+
+    eliminaIndirizzo(id:string|undefined){
+        if(id){
+            this.indirizzoService.deleteUserAddress(id).subscribe({
+                next:(res)=>{
+                    console.log("Eliminazione effettuata con successo");
+                    this.caricaListaIndirizzi();
+                },
+                error:(err)=>{
+                    console.log("Errore eliminazione indirizzo");
+                }
+            })
         }
+    }
+
+    metodoInModifica(id:string|undefined){
+        if(id){
+            if(id!==this.idModifica){
+                this.idModifica=id;
+            }
+            else if(id===this.idModifica){
+                this.idModifica=null;
+            }
+        }
+    }
+    caricaListaIndirizzi(){
+        this.indirizzoService.getAllUserAddressesByUserId()
+            .pipe(map(dtos=>mapper.mapArray<ResponseUserAddressDTO,IndirizzoUtenteModel>(dtos,'ResponseUserAddressDTO','IndirizzoUtenteModel')))
+            .subscribe({
+                next:(indirizzi:IndirizzoUtenteModel[])=>{
+                    this.indirizzi=indirizzi;
+                    this.idModifica=null;
+                },
+                error:(err)=>{
+                    console.log("Errore ottenimento indirizzi: "+err);
+                }
+            });
     }
 }

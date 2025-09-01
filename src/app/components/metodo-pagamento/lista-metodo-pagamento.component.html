@@ -1,0 +1,12 @@
+<section *ngIf="modifica">
+    <h1>Metodi di pagamento</h1>
+    <app-form-mp (salvaMetodo)="onSalvaMetodo($event)"></app-form-mp>
+    <div id="lista-metodi" *ngIf="metodi.length>0">
+        <div id="elemento-lista" *ngFor="let m of metodi">
+            <span>{{m.numero}} - {{m.tipoPagamento}} - {{m.dataScadenza}}</span>
+            <button type="button" (click)="delete(m.id)">
+                <span>trash</span>
+            </button>
+        </div>
+    </div>
+</section>

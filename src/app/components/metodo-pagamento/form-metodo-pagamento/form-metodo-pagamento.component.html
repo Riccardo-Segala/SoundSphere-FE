@@ -1,22 +1,27 @@
 <div>
     <form name="formMetodi" #form="ngForm" (ngSubmit)="salva()">
         <label>Nome</label>
-        <input name="nome" type="text" [(ngModel)]="metodo.nomeSuCarta">
+        <input name="nome" type="text" [(ngModel)]="metodo.nomeSuCarta" required>
         <br>
         <label>Numero</label>
-        <input name="numero" type="text" [(ngModel)]="metodo.numero">
+        <input name="numero" type="text" [(ngModel)]="metodo.numero" required>
         <br>
         <label>CVV</label>
-        <input name="cvv" type="text" [(ngModel)]="metodo.cvv">
+        <input name="cvv" type="text" [(ngModel)]="metodo.cvv" required>
         <br>
         <label>Data Scadenza</label>
-        <input name="data-scadenza" type="date" [(ngModel)]="metodo.dataScadenza">
+        <input name="data-scadenza" type="date" [(ngModel)]="metodo.dataScadenza" required>
         <br>
-        <label>Paypal</label>
-        <input name="paypal" type="checkbox" [(ngModel)]="paypal">
+        <div>
+            <label><input type="radio" name="tipo-metodo" value="CARTA_DI_CREDITO" [(ngModel)]="metodo.tipoPagamento">Carta di Credito </label>
+            <label><input type="radio" name="tipo-metodo" value="PAYPAL" [(ngModel)]="metodo.tipoPagamento">Paypal</label>
+        </div>
         <br>
-        <label *ngIf="paypal">Email di paypal</label>
-        <input name="paypal-email" *ngIf="paypal" type="text" [(ngModel)]="metodo.paypalEmail">
+        <div *ngIf="metodo.tipoPagamento==='PAYPAL'">
+            <label>Email di paypal</label>
+            <input name="paypal-email" [(ngModel)]="metodo.paypalEmail">
+        </div>
+
         <br>
         <label>Impostare come metodo di default?</label>
         <input name="default" type="checkbox" [(ngModel)]="metodo.isDefault">
