@@ -7,6 +7,8 @@ import {utenteProfile} from "./profiles/utente.profile";
 import {indirizzoUtenteProfile} from "./profiles/indirizzo-utente.profile";
 import {categoriaProfile} from "./profiles/categoria.profile";
 import {recensioneProfile} from "./profiles/recensione.profile";
+import {metodoPagamentoProfile} from "./profiles/metodo-pagamento.profile";
+import {vantaggioProfile} from "./profiles/vantaggio.profile";
 
 function initializeMapper():Mapper{
     setupMapperMetadata();
@@ -18,9 +20,11 @@ function initializeMapper():Mapper{
     prodottoProfile(mapper);
     carrelloProfile(mapper);
     indirizzoUtenteProfile(mapper);
+    vantaggioProfile(mapper);
     utenteProfile(mapper);
     categoriaProfile(mapper);
     recensioneProfile(mapper);
+    metodoPagamentoProfile(mapper);
 
     return mapper;
 }

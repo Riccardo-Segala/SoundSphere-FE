@@ -20,8 +20,8 @@ import {UtenteModel} from "../../models/utente.model";
 @Component({
     selector: "app-catalogo",
     standalone: true,
-    templateUrl: `/catalogo-utente.component.html`,
-    styleUrl: `/catalogo-utente.component.scss`,
+    templateUrl: `./catalogo-utente.component.html`,
+    styleUrl: `./catalogo-utente.component.scss`,
     imports: [
         FormsModule,
         NgForOf,
@@ -100,18 +100,23 @@ export class CatalogoUtenteComponent implements OnInit {
             }
         }
     }
-    inCarrello(id:string|undefined):boolean{
-        for(let c of this.carrello){
-            if(c.prodotto.id===id && !c.wishlist && c.quantita>0 )
-                return true;
+    disponibileCarrello(id:string|undefined):boolean{
+        const prod=this.prodFiltrati.find(i=>i.id==id);
+        if(prod){
+            if(!(prod.quantitaDisponibile && prod.quantitaDisponibile>0)){
+                return false;
+            }
         }
-        return false;
+        else{
+            return false;
+        }
+
+        const cart=this.carrello.find(c=>c.prodotto.id==id)
+        return !(cart && !cart.wishlist && cart.quantita > 0);
+
     }
-    inWishlist(id:string|undefined):boolean{
-        for(let c of this.carrello){
-            if(c.prodotto.id===id && c.wishlist)
-                return true;
-        }
-        return false;
+    disponibileWishlist(id:string|undefined):boolean{
+        const cart=this.carrello.find(c=>c.prodotto.id==id)
+        return !(cart && cart.wishlist);
     }
 }

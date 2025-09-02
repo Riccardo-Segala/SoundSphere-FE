@@ -10,7 +10,7 @@
         <span>{{p.stelleMedie}} </span>
         <span>{{p.prezzo}} </span><br>
         <a style="justify-content:center" [routerLink]="['/dettaglio-prodotto',p.id]">Vai a Dettaglio</a>
-        <button type="button" *ngIf="!inCarrello(p.id)" (click)="aggiungiCarrello(p.id,false)">Aggiungi al Carrello</button>
-        <button type="button" *ngIf="!inWishlist(p.id)" (click)="aggiungiCarrello(p.id,true)">Aggiungi alla Wishlist</button>
+        <button type="button" *ngIf="disponibileCarrello(p.id)" (click)="aggiungiCarrello(p.id,false)">Aggiungi al Carrello</button>
+        <button type="button" *ngIf="disponibileWishlist(p.id)" (click)="aggiungiCarrello(p.id,true)">Aggiungi alla Wishlist</button>
     </div><br>
 </section>

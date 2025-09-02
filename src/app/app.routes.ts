@@ -5,6 +5,9 @@ import {CatalogoUtenteComponent} from "./components/catalogo-utente/catalogo-ute
 import {DettaglioProdottoComponent} from "./components/catalogo-utente/dettaglio-prodotto.component";
 import {CarrelloComponent} from "./components/carrello/carrello.component";
 import {CategorieComponent} from "./components/catalogo-utente/categorie.component";
+import {CheckoutComponent} from "./components/checkout/checkout.component";
+import {AdminPageComponent} from "./components/admin/admin-page.component";
+import {ListaFilialiComponent} from "./components/filiali/lista-filiali.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/categorie', pathMatch: 'full' },
@@ -17,6 +20,8 @@ export const routes: Routes = [
   { path: 'carrello',component:CarrelloComponent},
   { path:'wishlist',component:CarrelloComponent},
   { path:'categorie',component:CategorieComponent},
-  {path: 'categorie/:id',component:CategorieComponent}
-
+  {path: 'categorie/:id',component:CategorieComponent},
+  {path:'checkout',component:CheckoutComponent},
+  {path:'admin-page',component:AdminPageComponent},
+  {path: 'filiali',component:ListaFilialiComponent}
 ];

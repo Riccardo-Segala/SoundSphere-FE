@@ -19,7 +19,7 @@
 </header>
 <ng-template #benvenuto>
     <section style="float:right" >
-        <span  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</span>
+        <a routerLink="/modifica-profilo"  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</a>
     </section>
 </ng-template>
 <main class="clearfix">

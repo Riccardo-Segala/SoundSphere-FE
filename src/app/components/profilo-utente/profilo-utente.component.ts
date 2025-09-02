@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from "@angular/core";
+import {Component, Inject, OnInit, ViewChild} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
@@ -16,11 +16,14 @@ import {Mapper} from "@automapper/core";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
 import {UtenteModel} from "../../models/utente.model";
+import {IndirizzoutenteComponent} from "../indirizzi-utente/indirizzo-utente.component";
+import {ListaMetodoPagamentoComponent} from "../metodo-pagamento/lista-metodo-pagamento.component";
+import {FormIndirizziUtenteComponent} from "../indirizzi-utente/form-indirizzi-utente.component";
 
 @Component({
-    selector: 'app-registrazione',
+    selector: 'app-profilo',
     standalone:true,
-    imports:[CommonModule,FormsModule],
+    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule, ListaMetodoPagamentoComponent, FormIndirizziUtenteComponent],
     templateUrl:'./profilo-utente.component.html',
     styleUrls:['./profilo-utente.component.scss']
 })
@@ -28,8 +31,9 @@ export class ProfiloUtenteComponent {
     utente:UtenteModel={};
     pathImmagine='';
     modifica:boolean=false;
-    indirizzo:IndirizzoUtenteModel[]=[{nazione:""}];
 
+    @ViewChild('formIndirizzo',{static:false}) private addressFormComponent!:FormIndirizziUtenteComponent;
+    profileForm!:FormGroup;
 
     constructor(private http: HttpClient,
                 private router: Router,
@@ -37,28 +41,26 @@ export class ProfiloUtenteComponent {
                 private fb:FormBuilder,
                 private sessionService:SessionService,
                 private authService:AuthenticationControllerService,
-                private utenteService: UtenteControllerService,
+                private utenteService:UtenteControllerService,
                 private indirizzoService:IndirizzoUtenteControllerService) {
     }
 
     ngOnInit(){
-        const id=this.route.snapshot.paramMap.get('id');
+        this.profileForm = this.fb.group({
+            pathImmagine:[''],
+            nome:['',Validators.required],
+            cognome:['',Validators.required],
+            email:['',[Validators.required,Validators.email]],
+            dataDiNascita:['',Validators.required],
+            sesso:['NON_SPECIFICATO',Validators.required]
+        });
+
+        //const id=this.route.snapshot.paramMap.get('id');
         if(this.router.url.includes("/modifica-profilo")) {
             this.modifica = true;
             if (this.sessionService.getUser()){
-                this.indirizzoService.getAllUserAddressesByUserId()
-                    .pipe(map(dtos => mapper.mapArray(dtos, 'ResponseUserAddressDTO', 'IndirizzoUtenteModel')))
-                    .subscribe({
-                        next:(indirizzi:IndirizzoUtenteModel[]) => {
-                            this.indirizzo = indirizzi;
-                        },
-                        error:()=>{
-                            console.log("Errore ottenimento indirizzi utente: ");
-                        }
-
-                    });
-
-                this.indirizzo[0].tipologia="SPEDIZIONE";
+                this.utente=this.sessionService.getUser() as UtenteModel;
+                this.profileForm.patchValue(this.utente);
             }
             else{
                 this.router.navigate(["/registrazione"]);
@@ -66,31 +68,58 @@ export class ProfiloUtenteComponent {
         }
         else{
             this.modifica=false;
-            this.indirizzo[0].tipologia="SPEDIZIONE";
+            this.profileForm.addControl(
+                'password',
+                this.fb.control('', [Validators.required, Validators.minLength(8),Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")])
+            );
+        }
+    }
+    get isFormInvalid():boolean{
+        if(this.modifica){
+            return this.profileForm.invalid;
+        }
+        else{
+            return this.profileForm.invalid || (this.addressFormComponent && this.addressFormComponent.addressForm.invalid);
         }
     }
     registrazione(){
-        const payload=this.utente;
+        this.profileForm.markAllAsTouched();
+        this.addressFormComponent?.addressForm.markAllAsTouched();
+        if(this.isFormInvalid){
+            console.log("Form Invalido");
+            return;
+        }
 
+        this.utente={...this.utente,...this.profileForm.value};
         if(!this.modifica){
-            this.authService.registerUser(mapper.map(payload,'UtenteModel','CreateUserDTO')).subscribe({
+            this.authService.registerUser(mapper.map(this.utente,'UtenteModel','CreateUserDTO')).subscribe({
                 next:(res:JwtResponseDTO)=>{
-                    this.sessionService.setLoggedUser(this.utente,res.token as string);
-
-                    let dto=mapper.map(this.indirizzo[0],'IndirizzoUtenteModel','CreateUserAddressDTO');
-                    console.log(JSON.stringify(dto));
-
-                    this.indirizzoService.createUserAddress(mapper.map(this.indirizzo[0],'IndirizzoUtenteModel','CreateUserAddressDTO'))
-                        .subscribe({
-                            next:()=>{
-                                this.router.navigate(["/modifica-profilo"]);
-                            },
-                            error:()=>{
-                                console.log("Errore nella creazione dell'indirizzo: ");
-                            }
-                        })
-
-
+                    if(res.token){
+                        this.sessionService.setToken(res.token);
+                        let indirizzo:IndirizzoUtenteModel=this.addressFormComponent.addressForm.value;
+                        indirizzo.main=true;
+                        indirizzo.tipologia="RESIDENZA";
+                        this.indirizzoService.createUserAddress(mapper.map(indirizzo,'IndirizzoUtenteModel','CreateUserAddressDTO'))
+                            .subscribe({
+                                next:(res)=>{
+                                    console.log("Indirizzo creato: "+res);
+                                    this.utenteService.getCurrentUser()
+                                        .pipe(map(dto=>mapper.map<ResponseUserDTO,UtenteModel>(dto,'ResponseUserDTO','UtenteModel')))
+                                        .subscribe({
+                                            next:(res:UtenteModel)=>{
+                                                this.sessionService.setUser(res);
+                                            },
+                                            error:(err)=>{
+                                                console.log("Errore salvataggio utente in sessione: "+err);
+                                            }
+                                        });
+                                    this.router.navigate(["/"]);
+                                },
+                                error:(err)=>{
+                                    console.log("Errore inserimento indirizzo: "+err);
+                                }
+                            })
+                    }
                 },
                 error:()=>{
                     console.log("Errore nella registrazione dell'utente: ");
@@ -98,13 +127,19 @@ export class ProfiloUtenteComponent {
             });
         }
         else{
-
+            this.utenteService.updateCurrentUser(mapper.map(this.utente,'UtenteModel','UpdateUserDTO'))
+                .pipe(map(dto=>mapper.map<ResponseUserDTO,UtenteModel>(dto,'ResponseUserDTO','UtenteModel')))
+                .subscribe({
+                    next:(res:UtenteModel)=>{
+                        this.sessionService.setUser(res);
+                        this.utente=res;
+                        this.profileForm.patchValue(this.utente);
+                    },
+                    error:(err)=>{
+                        console.log("Errore salvataggio dati utente: "+err);
+                    }
+                })
         }
-
-    }
-    fileSelezionato(event:any){
-        const file:File=event.target.files[0];
-        //this.utenteService.caricaFile(file);
     }
     annulla(){
         this.router.navigate(['/login']);

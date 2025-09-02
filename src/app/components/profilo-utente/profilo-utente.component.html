@@ -1,64 +1,50 @@
 <section class="registrazione">
-    <form #form="ngForm" (ngSubmit)="registrazione()">
+    <form [formGroup]="profileForm" (ngSubmit)="registrazione()">
         <!--<label>Foto Profilo:
             <input type="file" name="profilo" (click)="fileSelezionato($event)"/>
         </label>-->
         <div>
             <label>Foto Profilo:
-                <input type="text" name="profilo" [(ngModel)]="utente.pathImmagine"/>
+                <input type="text" formControlName="pathImmagine"/>
             </label>
             <br>
             <label>Nome:
-                <input name="nome" [(ngModel)]="utente.nome" required/>
+                <input formControlName="nome"/>
             </label><br>
             <label>Cognome:
-                <input name="cognome" [(ngModel)]="utente.cognome" required/>
+                <input formControlName="cognome"/>
             </label><br>
             <label>Email:
-                <input name="email" type="email" inputmode="email" [(ngModel)]="utente.email" required/>
+                <input type="email" formControlName="email"/>
             </label><br>
-            <label>Password:
-                <input name="password" type="password" minlength="8" [(ngModel)]="utente.password" required/>
+            <label *ngIf="!modifica">Password:
+                <input type="password" *ngIf="!modifica" formControlName="password"/>
             </label><br>
             <label>Data di Nascita:
-                <input name="data-nascita" type="date" [(ngModel)]="utente.dataDiNascita" required/>
+                <input type="date" formControlName="dataDiNascita"/>
             </label><br>
             <label>Genere:
                 <div>
-                    <label><input name="sesso" type="radio" value="MASCHIO" [(ngModel)]="utente.sesso" checked>Maschio</label>
-                    <label><input name="sesso" type="radio" value="FEMMINA" [(ngModel)]="utente.sesso" checked>Femmina</label>
-                    <label><input name="sesso" type="radio" value="NON_SPECIFICATO" [(ngModel)]="utente.sesso" checked>Non Specificato</label>
+                    <label><input type="radio" value="MASCHIO" formControlName="sesso">Maschio</label>
+                    <label><input type="radio" value="FEMMINA" formControlName="sesso">Femmina</label>
+                    <label><input type="radio" value="NON_SPECIFICATO" formControlName="sesso">Non Specificato</label>
                 </div>
             </label>
+            <button type="submit" *ngIf="modifica" name="aggiornamento-profilo" [disabled]="isFormInvalid">Salva</button>
         </div>
         <br>
-        <div name="indirizzo">
-            <label>Nazione:</label>
-            <input name="nazione" type="text" [(ngModel)]="indirizzo[0].nazione"/><br>
-
-            <label>Provincia:</label>
-            <input name="provincia" type="text" [(ngModel)]="indirizzo[0].provincia"/><br>
-
-            <label>Città:</label>
-            <input name="citta" type="text" [(ngModel)]="indirizzo[0].citta"/><br>
-
-            <label>CAP:</label>
-            <input name="cap" type="text" [(ngModel)]="indirizzo[0].cap"/><br>
-
-            <label>Via:</label>
-            <input name="via" type="text" [(ngModel)]="indirizzo[0].via"/><br>
-
-            <label>Civico:</label>
-            <input name="civico" type="text" [(ngModel)]="indirizzo[0].civico"/><br>
-
-            <label>Usare come indirizzo di default?</label>
-            <input name="default" type="checkbox" [(ngModel)]="indirizzo[0].isDefault">
-            <br>
+        <div id="indirizzi">
+            <h1>{{modifica?'Indirizzi':'Indirizzo di Residenza'}}</h1>
+            <app-form-indirizzi #formIndirizzo *ngIf="!modifica" [modifica]="modifica"></app-form-indirizzi>
+            <app-address *ngIf="modifica" [modifica]="modifica"></app-address>
         </div>
 
-        <button name="salvataggio" type="submit" [disabled]="form.invalid">
-            {{ modifica ? 'Salva' : 'Registrati' }}
+        <div id="metodi" *ngIf="modifica">
+            <app-lista-metodi-pagamento [modifica]="modifica"></app-lista-metodi-pagamento>
+        </div>
+
+        <button *ngIf="!modifica" name="salvataggio" type="submit" [disabled]="isFormInvalid">
+            Registrati
         </button>
-        <button type="button" (click)="annulla()">Annulla</button>
     </form>
 </section>
