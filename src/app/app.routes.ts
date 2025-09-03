@@ -8,6 +8,8 @@ import {CategorieComponent} from "./components/catalogo-utente/categorie.compone
 import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {AdminPageComponent} from "./components/admin/admin-page.component";
 import {ListaFilialiComponent} from "./components/filiali/lista-filiali.component";
+import {ProfiloDipendenteComponent} from "./components/dipendenti/profilo-dipendente.component";
+import {ListaDipendentiComponent} from "./components/dipendenti/lista-dipendenti.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/categorie', pathMatch: 'full' },
@@ -23,5 +25,8 @@ export const routes: Routes = [
   {path: 'categorie/:id',component:CategorieComponent},
   {path:'checkout',component:CheckoutComponent},
   {path:'admin-page',component:AdminPageComponent},
-  {path: 'filiali',component:ListaFilialiComponent}
+  {path: 'filiali',component:ListaFilialiComponent},
+  {path:'modifica-dipendente/:id',component:ProfiloDipendenteComponent},
+  {path:'lista-dipendenti',component:ListaDipendentiComponent},
+  {path:'crea-dipendente',component:ProfiloDipendenteComponent}
 ];

@@ -9,6 +9,8 @@ import {categoriaProfile} from "./profiles/categoria.profile";
 import {recensioneProfile} from "./profiles/recensione.profile";
 import {metodoPagamentoProfile} from "./profiles/metodo-pagamento.profile";
 import {vantaggioProfile} from "./profiles/vantaggio.profile";
+import {dipendenteProfile} from "./profiles/dipendente.profile";
+import {filialeProfile} from "./profiles/filiale.profile";
 
 function initializeMapper():Mapper{
     setupMapperMetadata();
@@ -25,6 +27,8 @@ function initializeMapper():Mapper{
     categoriaProfile(mapper);
     recensioneProfile(mapper);
     metodoPagamentoProfile(mapper);
+    dipendenteProfile(mapper);
+    filialeProfile(mapper);
 
     return mapper;
 }

@@ -1,6 +1,7 @@
 import {VantaggioModel} from "./vantaggio.model";
 
 export interface UtenteModel{
+    id?:string;
     nome?:string;
     cognome?:string;
     email?:string;
@@ -13,6 +14,11 @@ export interface UtenteModel{
     punti?:number;
     vantaggio?:VantaggioModel;
     ruoli?:string[];
+    ruoliIds?:string[];
+    stipendio?:number;
+    scadenzaContratto?:string;
+    dataAssunzione?:string;
+    filialeId?:string;
 }
 
 export const SessoEnum = {

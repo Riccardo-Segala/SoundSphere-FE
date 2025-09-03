@@ -20,7 +20,7 @@ export class AdminPageComponent implements OnInit {
     }
     ngOnInit(){
         this.loggedUser=this.session.getUser();
-        if(!(this.loggedUser && this.loggedUser.tipologia==="ADMIN")){
+        if(!(this.loggedUser && this.loggedUser.ruoli?.includes("ADMIN"))){
             this.router.navigate(['/']);
         }
     }
