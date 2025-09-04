@@ -1,0 +1,8 @@
+<section>
+    <button type="button" (click)="naviga(undefined)">Nuovo prodotto</button>
+    <div *ngFor="let p of prodotti">
+        <span>{{p.nome}} {{p.marca}} </span>
+        <button type="button" (click)="naviga(p.id)">Modifica</button>
+        <button type="button" (click)="elimina(p.id)">Elimina</button>
+    </div>
+</section>

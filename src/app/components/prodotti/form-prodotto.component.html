@@ -1,0 +1,37 @@
+<section>
+    <form #form="ngForm" (ngSubmit)="salva()">
+        <div>
+            <label>Nome: </label>
+            <input type="text" name="nome" [(ngModel)]="prodotto.nome" required>
+        </div>
+        <br>
+        <div>
+            <label>Descrizione: </label>
+            <input type="text" name="descrizione" [(ngModel)]="prodotto.descrizione" required>
+        </div>
+        <br>
+        <div>
+            <label>Immagine: </label>
+            <input type="text" name="path" [(ngModel)]="prodotto.pathImmagine">
+        </div>
+        <br>
+        <div>
+            <label>Prezzo (in €): </label>
+            <input type="number" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{2})?$" required>
+        </div>
+        <br>
+        <div>
+            <label>Noleggiabile: </label>
+            <input type="checkbox" name="check-rent" [(ngModel)]="prodotto.isRentable">
+        </div>
+        <br>
+        <div *ngIf="prodotto.isRentable">
+            <label>Costo Giornaliero di noleggio (in €): </label>
+            <input type="number" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{2})?$">
+        </div>
+        <br>
+        <button type="submit" [disabled]="form.invalid">
+            {{modifica ? 'Salva':'Aggiungi' }}
+        </button>
+    </form>
+</section>

@@ -64,4 +64,7 @@ export class AppComponent {
     carrello(path:string){
         this.router.navigate([path]);
     }
+    adminPage(){
+        this.router.navigate(['admin-page']);
+    }
 }
