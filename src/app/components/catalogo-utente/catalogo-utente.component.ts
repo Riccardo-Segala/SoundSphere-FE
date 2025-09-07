@@ -8,11 +8,10 @@ import {
     CarrelloControllerService, CatalogProductDTO,
     ProdottoControllerService, ResponseCartDTO,
     ResponseUserDTO,
-    UtenteControllerService
+    UtenteControllerService, UpdateCartItemDTO
 } from "../../api-client";
 import {ResponseProductDTO} from "../../api-client";
 import {map, Observable} from "rxjs";
-import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";

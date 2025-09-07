@@ -2,17 +2,17 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
 import {
-    AdminDipendenteControllerService,
+    AdminDipendenteControllerService, AdminFilialeControllerService,
     AdminUtenteControllerService,
     DipendenteControllerService, ResponseBenefitDTO, ResponseBranchDTO,
-    ResponseEmployeeDTO, VantaggioControllerService
+    ResponseEmployeeDTO, VantaggioControllerService,
+    CreateEmployeeFromAdminDTO
 } from "../../api-client";
 import {UtenteModel} from "../../models/utente.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
 import {FormsModule} from "@angular/forms";
 import {VantaggioModel} from "../../models/vantaggio.model";
-import {FilialeControllerService} from "../../api-client/api/filialeController.service";
 import {FilialeModel} from "../../models/filiale.model";
 import {NgForOf} from "@angular/common";
 
@@ -41,7 +41,7 @@ export class ProfiloDipendenteComponent implements OnInit {
         private dipendenteService:DipendenteControllerService,
         private adminDipService:AdminDipendenteControllerService,
         private vantaggioService:VantaggioControllerService,
-        private filialeService:FilialeControllerService
+        private filialeService:AdminFilialeControllerService
     ) {
     }
 
@@ -50,13 +50,16 @@ export class ProfiloDipendenteComponent implements OnInit {
         if(user){
             this.loggedUser=user;
         }
+        else{
+            this.router.navigate(["/"]);
+        }
         /*if(!this.loggedUser.ruoli?.includes("ADMIN") || this.loggedUser.ruoli?.includes("DIPENDENTE")){
             this.router.navigate(['/']);
         }*/
         this.dipendenteId=this.route.snapshot.paramMap.get("id");
         if(this.dipendenteId){
             this.modifica=true;
-            this.dipendenteService.getEmployeeById(this.dipendenteId)
+            this.adminDipService.getEmployeeById(this.dipendenteId)
                 .pipe(map(dto=>mapper.map<ResponseEmployeeDTO,UtenteModel>(dto,'ResponseEmployeeDTO','UtenteModel')))
                 .subscribe({
                     next:(res:UtenteModel)=>{
@@ -100,13 +103,15 @@ export class ProfiloDipendenteComponent implements OnInit {
     }
 
     salvaDipendente(){
+        this.dipendente.ruoliIds=[];
+        this.dipendente.ruoliIds?.push("8a1c0d4f-5b7c-48b8-b4b3-9e9d6d5f47c5");
         if(this.modifica){
             if(this.dipendenteId){
-                this.adminDipService.updateAdmin(this.dipendenteId,mapper.map(this.dipendente,'UtenteModel','UpdateEmployeeFromAdminDTO'))
+                this.adminDipService.updateEmployee(this.dipendenteId,mapper.map(this.dipendente,'UtenteModel','UpdateEmployeeFromAdminDTO'))
                     .pipe(map(dto=>mapper.map(dto,'ResponseUserDTO','UtenteModel')))
                     .subscribe({
                         next:(res:UtenteModel)=>{
-                            this.router.navigate(["/lista-dipendenti"]);
+                            this.router.navigate(["/dipendenti"]);
                         },
                         error:(err)=>{
                             console.log("Errore aggiornamento dipendente: "+err);
@@ -118,16 +123,20 @@ export class ProfiloDipendenteComponent implements OnInit {
             }
         }
         else{
-            this.adminDipService.createAdmin(mapper.map(this.dipendente,'UtenteModel','CreateEmployeeDTO'))
+            const employee:CreateEmployeeFromAdminDTO=mapper.map<UtenteModel,CreateEmployeeFromAdminDTO>(this.dipendente,'UtenteModel','CreateEmployeeFromAdminDTO');
+            this.adminDipService.createEmployee(employee)
                 .pipe(map(dto=>mapper.map<ResponseEmployeeDTO,UtenteModel>(dto,'ResponseEmployeeDTO','UtenteModel')))
                 .subscribe({
                     next:(res:UtenteModel)=>{
-                        this.router.navigate(["/lista-dipendenti"]);
+                        this.router.navigate(["/dipendenti"]);
                     },
                     error:(err)=>{
                         console.log("Errore creazione dipendente: "+err)
                     }
                 })
         }
+    }
+    annulla(){
+        this.router.navigate(["/dipendenti"]);
     }
 }

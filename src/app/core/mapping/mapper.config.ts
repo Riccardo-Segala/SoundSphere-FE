@@ -161,7 +161,7 @@ export function setupMapperMetadata():void{
         ruoli:[String],
         ruoliIds:[String],
         stipendio:Number,
-        scadenzoContratto:String,
+        scadenzaContratto:String,
         dataAssunzione:String,
         filialeId:String
     });
@@ -174,6 +174,7 @@ export function setupMapperMetadata():void{
         sesso:String,
     });
     PojosMetadataMap.create('ResponseUserDTO',{
+        id:String,
         nome:String,
         cognome:String,
         email:String,
@@ -298,6 +299,7 @@ export function setupMapperMetadata():void{
         id:String,
         nome: String,
         cognome: String,
+        email:String,
         dataDiNascita: String,
         tipologia:String,
         pathImmagine:String,
@@ -330,6 +332,18 @@ export function setupMapperMetadata():void{
         filialeId:String,
         ruoliIds:[String]
     });
+    PojosMetadataMap.create('UpdateUserFromAdminDTO',{
+        nome: String,
+        cognome: String,
+        email:String,
+        password:String,
+        dataDiNascita: String,
+        pathImmagine:String,
+        sesso:String,
+        punti:Number,
+        vantaggioId:String,
+        ruoliIds:[String]
+    })
     PojosMetadataMap.create('CreateEmployeeDTO',{
         utente:'CreateUserDTO',
         stipendio:Number,

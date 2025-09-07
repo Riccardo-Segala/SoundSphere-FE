@@ -1,21 +1,21 @@
 import {createMap, forMember, mapFrom, Mapper} from "@automapper/core";
 import {UtenteModel} from "../../../models/utente.model";
-import {CreateEmployeeFromAdminDTO, CreateUserFromAdminDTO} from "../../../api-client";
+import {
+    CreateEmployeeFromAdminDTO,
+    CreateUserFromAdminDTO,
+    UpdateEmployeeFromAdminDTO,
+    UpdateUserFromAdminDTO
+} from "../../../api-client";
 
 export const dipendenteProfile=(mapper:Mapper)=>{
     createMap(mapper,'ResponseEmployeeDTO','UtenteModel');
 
     createMap(mapper,'UtenteModel','CreateUserFromAdminDTO',
-        forMember(
+        /*forMember(
             (destination:CreateUserFromAdminDTO)=>destination.ruoliIds,
-            mapFrom((source: UtenteModel)=>{
-                const ids=source.ruoliIds;
-                if(Array.isArray(ids)){
-                    return new Set(ids);
-                }
-                return new Set();
+            mapFrom((source: UtenteModel)=>{source.ruoliIds
             })
-        ),
+        ),*/
         forMember(
             (destination:CreateUserFromAdminDTO)=>destination.vantaggioId,
             mapFrom((source:UtenteModel)=>source.vantaggio?.id)
@@ -27,4 +27,5 @@ export const dipendenteProfile=(mapper:Mapper)=>{
             mapFrom((source:UtenteModel)=>mapper.map(source,'UtenteModel','CreateUserFromAdminDTO'))
         )
     );
+    createMap(mapper,'UtenteModel','UpdateEmployeeFromAdminDTO');
 }

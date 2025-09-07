@@ -1,30 +1,30 @@
 <section>
-    <form #ngForm="ngForm" (ngSubmit)="salvaDipendente()">
+    <form #form="ngForm" (ngSubmit)="salvaDipendente()">
 
         <div>
             <label>Nome: </label>
-            <input name="nome" type="text" [(ngModel)]="dipendente.nome">
+            <input name="nome" type="text" [(ngModel)]="dipendente.nome" required>
         </div>
         <br>
         <div>
             <label>Cognome: </label>
-            <input name="cognome" type="text" [(ngModel)]="dipendente.cognome">
+            <input name="cognome" type="text" [(ngModel)]="dipendente.cognome" required>
         </div>
         <br>
         <div>
             <label>Email: </label>
-            <input name="email" type="email" [(ngModel)]="dipendente.email">
+            <input name="email" type="email" [(ngModel)]="dipendente.email" required>
         </div>
         <br>
         <div>
             <label>Password: </label>
-            <input name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$">
+            <input name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" required>
         </div>
         <br>
 
         <div>
             <label>Data Di Nascita: </label>
-            <input type="date" [(ngModel)]="dipendente.dataDiNascita">
+            <input type="date" name="data-nascita" [(ngModel)]="dipendente.dataDiNascita" required>
         </div>
         <br>
         <div>
@@ -35,29 +35,35 @@
         <div>
             <label>Sesso: </label>
             <div>
-                <input name="sesso" type="radio" value="MASCHIO" [(ngModel)]="dipendente.sesso">
-                <input name="sesso" type="radio" value="FEMMINA" [(ngModel)]="dipendente.sesso">
-                <input name="sesso" type="radio" value="NON_SPECIFICATO" [(ngModel)]="dipendente.sesso">
+                <label><input name="sesso" type="radio" value="MASCHIO" [(ngModel)]="dipendente.sesso">Maschio</label>
+                <label><input name="sesso" type="radio" value="FEMMINA" [(ngModel)]="dipendente.sesso">Femmina</label>
+                <label><input name="sesso" type="radio" value="NON_SPECIFICATO" [(ngModel)]="dipendente.sesso"> Non Specificato</label>
             </div>
         </div>
         <br>
+        <div>
+            <label>Stipendio: </label>
+            <input type="number" name="stipendio" [(ngModel)]="dipendente.stipendio">
+        </div>
+        <br>
+
         <!--
          ruoliIds,stipendio,scadenzaContratto,dataAssunzione,filialeId
         -->
         <div>
             <label>Vantaggio: </label>
-            <select name="vantaggio" [(ngModel)]="dipendente.pathImmagine">
-                <option *ngFor="let v of vantaggi" [ngValue]="v.id">{{v.nome}}</option>
+            <select name="vantaggio" [(ngModel)]="dipendente.vantaggio">
+                <option *ngFor="let v of vantaggi" [ngValue]="v">{{v.nome}}</option>
             </select>
         </div>
         <!-- Inserire qui gestione dei ruoli quando disponibile -->
         <div>
             <label>Data scadenza contratto: </label>
-            <input name="path" type="date" [(ngModel)]="dipendente.scadenzaContratto">
+            <input name="scadenza" type="date" [(ngModel)]="dipendente.scadenzaContratto">
         </div>
         <div>
             <label>dataAssunzione: </label>
-            <input name="path" type="date" [(ngModel)]="dipendente.dataAssunzione">
+            <input name="data-assunzione" type="date" [(ngModel)]="dipendente.dataAssunzione" required>
         </div>
         <div>
             <label>Filiale: </label>
@@ -65,5 +71,10 @@
                 <option *ngFor="let f of filiali" [ngValue]="f.id">{{f.nome}} - {{f.citta}}</option>
             </select>
         </div>
+        <button type="submit" [disabled]="form.invalid">
+            {{modifica ? 'Salva' : 'Aggiungi'}}
+        </button>
     </form>
+
+    <button type="button" (click)="annulla()">Annulla</button>
 </section>

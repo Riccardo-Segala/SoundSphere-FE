@@ -13,6 +13,7 @@ import {ListaDipendentiComponent} from "./components/dipendenti/lista-dipendenti
 import {ListaProdottiComponent} from "./components/prodotti/lista-prodotti.component";
 import {FormProdottoComponent} from "./components/prodotti/form-prodotto.component";
 import {FormFilialeComponent} from "./components/filiali/form-filiale.component";
+import {ListaUtentiComponent} from "./components/profilo-utente/lista-utenti.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/categorie', pathMatch: 'full' },
@@ -37,4 +38,5 @@ export const routes: Routes = [
   {path:'prodotti',component:ListaProdottiComponent},
   {path:'prodotti/modifica/:id',component:FormProdottoComponent},
   {path:'prodotti/crea',component:FormProdottoComponent},
+  {path:'utenti',component:ListaUtentiComponent}
 ];
