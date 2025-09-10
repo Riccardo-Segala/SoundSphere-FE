@@ -33,7 +33,7 @@ export class FormFilialeComponent implements OnInit{
 
     ngOnInit() {
         this.loggedUser = this.session.getUser();
-        if(this.loggedUser && this.loggedUser.ruoli?.includes("ADMIN")){
+        if(this.loggedUser && this.loggedUser.ruoli?.some(ruolo=>ruolo.nome=="ADMIN")){
             this.id=this.route.snapshot.paramMap.get('id');
             if(this.id){
                 this.modifica=true;

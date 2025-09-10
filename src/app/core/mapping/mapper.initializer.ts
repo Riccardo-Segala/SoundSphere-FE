@@ -11,6 +11,9 @@ import {metodoPagamentoProfile} from "./profiles/metodo-pagamento.profile";
 import {vantaggioProfile} from "./profiles/vantaggio.profile";
 import {dipendenteProfile} from "./profiles/dipendente.profile";
 import {filialeProfile} from "./profiles/filiale.profile";
+import {ruoloProfile} from "./profiles/ruolo.profile";
+import {permessoProfile} from "./profiles/permesso.profile";
+import {datiStaticiProfile} from "./profiles/dati-statici.profile";
 
 function initializeMapper():Mapper{
     setupMapperMetadata();
@@ -29,6 +32,9 @@ function initializeMapper():Mapper{
     metodoPagamentoProfile(mapper);
     dipendenteProfile(mapper);
     filialeProfile(mapper);
+    ruoloProfile(mapper);
+    permessoProfile(mapper);
+    datiStaticiProfile(mapper);
 
     return mapper;
 }

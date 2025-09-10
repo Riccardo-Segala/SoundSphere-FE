@@ -12,6 +12,8 @@ import {
 } from "../../api-client";
 import {HttpClient, HttpContext} from "@angular/common/http";
 import {UtenteModel} from "../../models/utente.model";
+import {mapper} from "../../core/mapping/mapper.initializer";
+import {map} from "rxjs";
 
 @Component({
     selector: 'app-login',
@@ -43,18 +45,20 @@ export class LoginComponent {
                     //const res:JwtResponseDTO=response;
                     if(response.token){
                         this.sessionService.setToken(response.token);
-                        this.userService.getCurrentUser().subscribe((utente)=>{
-                            this.loggedUser=utente;
-                            this.sessionService.setUser(utente);
-                            if(this.loggedUser.ruoli?.includes("ADMIN")){
-                                this.router.navigate(['/admin-page']);
-                            }
-                            else if(this.loggedUser.ruoli?.includes("UTENTE")){
-                                this.router.navigate(['/']);
-                            }
-                            else if(this.loggedUser.ruoli?.includes("DIPENDENTE")){
-                                this.router.navigate(['/catalogo-dipendente']);
-                            }
+                        this.userService.getCurrentUser()
+                            .pipe(map(dto=>mapper.map<ResponseUserDTO,UtenteModel>(dto,'ResponseUserDTO','UtenteModel')))
+                            .subscribe((utente:UtenteModel)=>{
+                                this.loggedUser=utente;
+                                this.sessionService.setUser(utente);
+                                if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="ADMIN")){
+                                    this.router.navigate(['/admin-page']);
+                                }
+                                else if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="UTENTE")){
+                                    this.router.navigate(['/']);
+                                }
+                                else if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome=="DIPENDENTE")){
+                                    this.router.navigate(['/catalogo-dipendente']);
+                                }
                         })
                     }else{
                         this.errore='Password Errata';

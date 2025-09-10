@@ -158,8 +158,7 @@ export function setupMapperMetadata():void{
         dataRegistrazione:String,
         punti:Number,
         vantaggio:'VantaggioModel',
-        ruoli:[String],
-        ruoliIds:[String],
+        ruoli:['RuoloModel'],
         stipendio:Number,
         scadenzaContratto:String,
         dataAssunzione:String,
@@ -403,5 +402,45 @@ export function setupMapperMetadata():void{
         cap: String,
         provincia: String,
         nazione: String
-    })
+    });
+    PojosMetadataMap.create('ResponsePermissionDTO',{
+        id:String,
+        nome:String
+    });
+    PojosMetadataMap.create('PermessoModel',{
+        id:String,
+        nome:String
+    });
+    PojosMetadataMap.create('ResponseRoleDTO',{
+        id:String,
+        nome:String,
+        permessi:['ResponsePermissionDTO']
+    });
+    PojosMetadataMap.create('RuoloModel',{
+        id:String,
+        nome:String,
+        permessi:['PermessoModel']
+    });
+    PojosMetadataMap.create('CreateRoleDTO',{
+        nome:String,
+        permessiIds:[String]
+    });
+    PojosMetadataMap.create('UpdateRoleDTO',{
+        nome:String,
+        permessiIds:[String]
+    });
+    PojosMetadataMap.create('ResponseStaticDataDTO',{
+        id:String,
+        nome:String,
+        valore:Number
+    });
+    PojosMetadataMap.create('CreateOrUpdateStaticDataDTO',{
+        nome:String,
+        valore:Number
+    });
+    PojosMetadataMap.create('DatiStaticiModel',{
+        id:String,
+        nome:String,
+        valore:Number
+    });
 }

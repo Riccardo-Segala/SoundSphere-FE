@@ -30,7 +30,7 @@ export class ListaProdottiComponent implements OnInit {
 
     ngOnInit() {
         this.loggedUser=this.session.getUser();
-        if(this.loggedUser && (this.loggedUser.ruoli?.includes("ADMIN") || this.loggedUser.ruoli?.includes("DIPENDENTE"))){
+        if(this.loggedUser && (this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="ADMIN" ||ruolo.nome==="DIPENDENTE"))){
             this.caricaProdotti();
         }
         else{

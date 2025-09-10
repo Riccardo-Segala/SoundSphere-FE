@@ -10,22 +10,16 @@ import {
 export const dipendenteProfile=(mapper:Mapper)=>{
     createMap(mapper,'ResponseEmployeeDTO','UtenteModel');
 
-    createMap(mapper,'UtenteModel','CreateUserFromAdminDTO',
-        /*forMember(
-            (destination:CreateUserFromAdminDTO)=>destination.ruoliIds,
-            mapFrom((source: UtenteModel)=>{source.ruoliIds
-            })
-        ),*/
-        forMember(
-            (destination:CreateUserFromAdminDTO)=>destination.vantaggioId,
-            mapFrom((source:UtenteModel)=>source.vantaggio?.id)
-        )
-    );
     createMap(mapper,'UtenteModel','CreateEmployeeFromAdminDTO',
         forMember(
             (destination:CreateEmployeeFromAdminDTO)=>destination.utente,
             mapFrom((source:UtenteModel)=>mapper.map(source,'UtenteModel','CreateUserFromAdminDTO'))
         )
     );
-    createMap(mapper,'UtenteModel','UpdateEmployeeFromAdminDTO');
+    createMap(mapper,'UtenteModel','UpdateEmployeeFromAdminDTO',
+        forMember(
+            (destination:UpdateEmployeeFromAdminDTO)=>destination.ruoliIds,
+            mapFrom((source:UtenteModel)=>source.ruoli?.map(ruolo=>ruolo.id))
+        )
+    );
 }

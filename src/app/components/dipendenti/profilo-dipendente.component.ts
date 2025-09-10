@@ -14,14 +14,15 @@ import {map} from "rxjs";
 import {FormsModule} from "@angular/forms";
 import {VantaggioModel} from "../../models/vantaggio.model";
 import {FilialeModel} from "../../models/filiale.model";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
     selector:'app-profilo-dipendente',
     standalone: true,
     imports: [
         FormsModule,
-        NgForOf
+        NgForOf,
+        NgIf
     ],
     templateUrl:'profilo-dipendente.component.html',
     styleUrls:['profilo-dipendente.component.scss']
@@ -103,8 +104,6 @@ export class ProfiloDipendenteComponent implements OnInit {
     }
 
     salvaDipendente(){
-        this.dipendente.ruoliIds=[];
-        this.dipendente.ruoliIds?.push("8a1c0d4f-5b7c-48b8-b4b3-9e9d6d5f47c5");
         if(this.modifica){
             if(this.dipendenteId){
                 this.adminDipService.updateEmployee(this.dipendenteId,mapper.map(this.dipendente,'UtenteModel','UpdateEmployeeFromAdminDTO'))

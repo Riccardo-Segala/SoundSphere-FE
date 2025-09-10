@@ -1,0 +1,53 @@
+<section>
+    <form #form="ngForm" (ngSubmit)="salva()">
+        <div>
+            <label>Nome: </label>
+            <input type="text" name="nome" [(ngModel)]="utente.nome" required>
+        </div><br>
+        <div>
+            <label>Cognome: </label>
+            <input type="text" name="cognome" [(ngModel)]="utente.cognome" required>
+        </div><br>
+        <div>
+            <label>Email: </label>
+            <input type="email" name="email" [(ngModel)]="utente.email" required>
+        </div><br>
+        <div>
+            <label>Password: </label>
+            <input type="password" name="password" [(ngModel)]="utente.password" [attr.required]="!modifica">
+        </div><br>
+        <div>
+            <label>Data di Nascita: </label>
+            <input type="date" name="data-nascita" [(ngModel)]="utente.dataDiNascita" required>
+        </div><br>
+        <div>
+            <label>Sesso: </label>
+            <div>
+                <label><input type="radio" name="sesso" value="MASCHIO" [(ngModel)]="utente.sesso">Maschio</label>
+                <label><input type="radio" value="FEMMINA"  [(ngModel)]="utente.sesso" name="sesso">Femmina</label>
+                <label><input type="radio" value="NON_SPECIFICATO" [(ngModel)]="utente.sesso" name="sesso">Non Specificato</label>
+            </div>
+        </div><br>
+        <div>
+            <label>Vantaggio: </label>
+            <select name="vantaggio" [(ngModel)]="utente.vantaggio" [compareWith]="confronta">
+                <option *ngFor="let v of vantaggi" [ngValue]="v">{{v.nome}}</option>
+            </select>
+        </div><br>
+        <div>
+            <label>
+                <div *ngFor="let r of ruoli">
+                    <input type="checkbox" name="ruolo"
+                           [value]="r.id" [checked]="ruoloSelezionato(r.id)" (change)="ruoloCambiato($event)">
+                    {{r.nome}}
+                </div>
+            </label>
+        </div>
+
+        <button name="salvataggio" type="submit" [disabled]="form.invalid && ruoliSelezionati.length>0">
+            {{ modifica ? 'Salva' : 'Inserisci' }}
+        </button>
+
+    </form>
+    <button type="button" (click)="annulla()">Annulla</button>
+</section>

@@ -2,7 +2,12 @@ import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
 import {UtenteModel} from "../../models/utente.model";
-import {AdminDipendenteControllerService, ResponseEmployeeDTO, UtenteControllerService} from "../../api-client";
+import {
+    AdminDipendenteControllerService,
+    AdminUtenteControllerService,
+    ResponseEmployeeDTO,
+    UtenteControllerService
+} from "../../api-client";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
 import {NgForOf} from "@angular/common";
@@ -22,7 +27,7 @@ export class ListaDipendentiComponent implements OnInit {
         private router: Router,
         private session:SessionService,
         private adminDipService:AdminDipendenteControllerService,
-        private utenteService:UtenteControllerService
+        private adminUtenteService:AdminUtenteControllerService
     ) {
     }
 
@@ -51,7 +56,15 @@ export class ListaDipendentiComponent implements OnInit {
     }
     elimina(id:string|undefined){
         if(id){
-
+            this.adminUtenteService.deleteUser(id).subscribe({
+                next:(res)=>{
+                    console.log('Eliminazione completata');
+                    this.caricaDipendenti();
+                },
+                error:(err)=>{
+                    console.log("Errore cancellazione dipendente");
+                }
+            })
         }
     }
 }

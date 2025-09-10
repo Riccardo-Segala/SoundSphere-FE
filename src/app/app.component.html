@@ -3,7 +3,7 @@
         <h1 style="display: flex;justify-content: center"><a routerLink="/">SoundSphere</a></h1>
         <!-- controllo se utente loggato per pulsante logout o login -->
         <br>
-        <button *ngIf="loggedUser && loggedUser.ruoli?.includes('ADMIN')" style="float:left" (click)="adminPage()">Admin</button>
+        <button *ngIf="loggedUser && isAdmin()" style="float:left" (click)="adminPage()">Admin</button>
         <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('carrello')">Carrello</button>
         <br>
         <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('wishlist')">Wishlist</button>

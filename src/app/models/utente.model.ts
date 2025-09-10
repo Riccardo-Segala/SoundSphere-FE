@@ -1,4 +1,5 @@
 import {VantaggioModel} from "./vantaggio.model";
+import {RuoloModel} from "./ruolo.model";
 
 export interface UtenteModel{
     id?:string;
@@ -13,8 +14,7 @@ export interface UtenteModel{
     dataRegistrazione?:string;
     punti?:number;
     vantaggio?:VantaggioModel;
-    ruoli?:string[];
-    ruoliIds?:string[];
+    ruoli?:RuoloModel[];
     stipendio?:number;
     scadenzaContratto?:string;
     dataAssunzione?:string;

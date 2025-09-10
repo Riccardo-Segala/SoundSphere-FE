@@ -29,7 +29,7 @@ export class ListaFilialiComponent implements OnInit {
 
     ngOnInit(){
         this.loggedUser=this.session.getUser();
-        if(this.loggedUser && this.loggedUser.ruoli?.includes("ADMIN")){
+        if(this.loggedUser && this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="ADMIN")){
            this.caricaFiliali();
         }
         else{

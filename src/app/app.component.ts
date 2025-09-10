@@ -67,4 +67,11 @@ export class AppComponent {
     adminPage(){
         this.router.navigate(['admin-page']);
     }
+    isAdmin():boolean{
+        if(this.loggedUser && this.loggedUser.ruoli){
+            return this.loggedUser.ruoli.some(ruolo=>ruolo.nome==="ADMIN");
+        }
+        return false;
+
+    }
 }

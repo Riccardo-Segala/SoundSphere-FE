@@ -18,7 +18,7 @@
         <br>
         <div>
             <label>Password: </label>
-            <input name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" required>
+            <input name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" [attr.required]="!modifica">
         </div>
         <br>
 
