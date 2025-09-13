@@ -49,13 +49,13 @@
 
         <!--
          ruoliIds,stipendio,scadenzaContratto,dataAssunzione,filialeId
-        -->
+       
         <div>
             <label>Vantaggio: </label>
             <select name="vantaggio" [(ngModel)]="dipendente.vantaggio">
                 <option *ngFor="let v of vantaggi" [ngValue]="v">{{v.nome}}</option>
             </select>
-        </div>
+        </div> -->
         <!-- Inserire qui gestione dei ruoli quando disponibile -->
         <div>
             <label>Data scadenza contratto: </label>
@@ -71,6 +71,14 @@
                 <option *ngFor="let f of filiali" [ngValue]="f.id">{{f.nome}} - {{f.citta}}</option>
             </select>
         </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="ruolo" [checked]="ruoloSelezionato()" (change)="ruoloCambiato($event)">
+                Rendi Admin
+            </label>
+        </div>
+
         <button type="submit" [disabled]="form.invalid">
             {{modifica ? 'Salva' : 'Aggiungi'}}
         </button>

@@ -10,7 +10,7 @@
             <label>
                 Valore:
             </label>
-            <input type="number" name="valore" [(ngModel)]="datoStatico.valore" required>
+            <input type="number" name="valore" [(ngModel)]="datoStatico.valore" required min="0">
         </div>
         <button type="submit" [disabled]="form.invalid">
             {{ modifica ? 'Salva' : 'Inserisci' }}

@@ -27,7 +27,7 @@ import {FormIndirizziUtenteComponent} from "../indirizzi-utente/form-indirizzi-u
     templateUrl:'./profilo-utente.component.html',
     styleUrls:['./profilo-utente.component.scss']
 })
-export class ProfiloUtenteComponent {
+export class ProfiloUtenteComponent implements OnInit{
     utente:UtenteModel={};
     pathImmagine='';
     modifica:boolean=false;

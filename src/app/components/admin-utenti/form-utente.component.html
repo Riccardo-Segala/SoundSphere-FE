@@ -37,17 +37,14 @@
         <div>
             <label>
                 <div *ngFor="let r of ruoli">
-                    <input type="checkbox" name="ruolo"
-                           [value]="r.id" [checked]="ruoloSelezionato(r.id)" (change)="ruoloCambiato($event)">
+                    <input type="checkbox" name="ruolo" [value]="r.id" [checked]="ruoloSelezionato(r.id)" (change)="ruoloCambiato($event)">
                     {{r.nome}}
                 </div>
             </label>
         </div>
-
         <button name="salvataggio" type="submit" [disabled]="form.invalid && ruoliSelezionati.length>0">
             {{ modifica ? 'Salva' : 'Inserisci' }}
         </button>
-
     </form>
     <button type="button" (click)="annulla()">Annulla</button>
 </section>

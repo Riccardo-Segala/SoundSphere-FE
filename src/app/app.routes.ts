@@ -8,13 +8,13 @@ import {CategorieComponent} from "./components/catalogo-utente/categorie.compone
 import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {AdminPageComponent} from "./components/admin/admin-page.component";
 import {ListaFilialiComponent} from "./components/filiali/lista-filiali.component";
-import {ProfiloDipendenteComponent} from "./components/dipendenti/profilo-dipendente.component";
+import {ProfiloDipendenteComponent} from "./components/admin-utenti/profilo-dipendente.component";
 import {ListaDipendentiComponent} from "./components/dipendenti/lista-dipendenti.component";
 import {ListaProdottiComponent} from "./components/prodotti/lista-prodotti.component";
 import {FormProdottoComponent} from "./components/prodotti/form-prodotto.component";
 import {FormFilialeComponent} from "./components/filiali/form-filiale.component";
-import {ListaUtentiComponent} from "./components/utenti/lista-utenti.component";
-import {FormUtenteComponent} from "./components/utenti/form-utente.component";
+import {ListaUtentiComponent} from "./components/admin-utenti/lista-utenti.component";
+import {FormUtenteComponent} from "./components/admin-utenti/form-utente.component";
 import {DatiStaticiComponent} from "./components/dati-statici/dati-statici.component";
 
 export const routes: Routes = [

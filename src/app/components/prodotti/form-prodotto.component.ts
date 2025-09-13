@@ -86,4 +86,7 @@ export class FormProdottoComponent implements OnInit {
                 })
         }
     }
+    annulla(){
+        this.router.navigate(["/prodotti"]);
+    }
 }

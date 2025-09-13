@@ -34,7 +34,7 @@ export class DatiStaticiComponent implements OnInit{
     }
 
     caricaDatiStatici(){
-        this.dsService.getAllAdmins()
+        this.dsService.getAllDatas()
             .pipe(map(dtos=>mapper.mapArray<ResponseStaticDataDTO,DatiStaticiModel>(dtos,'ResponseStaticDataDTO','DatiStaticiModel')))
             .subscribe({
                 next:(res:DatiStaticiModel[])=>{

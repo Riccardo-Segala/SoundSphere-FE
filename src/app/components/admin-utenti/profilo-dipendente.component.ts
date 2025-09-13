@@ -6,7 +6,7 @@ import {
     AdminUtenteControllerService,
     DipendenteControllerService, ResponseBenefitDTO, ResponseBranchDTO,
     ResponseEmployeeDTO, VantaggioControllerService,
-    CreateEmployeeFromAdminDTO
+    CreateEmployeeFromAdminDTO, ResponseRoleDTO, AdminRuoloControllerService
 } from "../../api-client";
 import {UtenteModel} from "../../models/utente.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
@@ -15,6 +15,7 @@ import {FormsModule} from "@angular/forms";
 import {VantaggioModel} from "../../models/vantaggio.model";
 import {FilialeModel} from "../../models/filiale.model";
 import {NgForOf, NgIf} from "@angular/common";
+import {RuoloModel} from "../../models/ruolo.model";
 
 @Component({
     selector:'app-profilo-dipendente',
@@ -34,6 +35,8 @@ export class ProfiloDipendenteComponent implements OnInit {
     vantaggi:VantaggioModel[]=[];
     filiali:FilialeModel[]=[];
     modifica:boolean=false;
+    ruoliSelezionati:RuoloModel[]=[];
+    adminRole:RuoloModel|undefined=undefined;
 
     constructor(
         private router: Router,
@@ -42,7 +45,8 @@ export class ProfiloDipendenteComponent implements OnInit {
         private dipendenteService:DipendenteControllerService,
         private adminDipService:AdminDipendenteControllerService,
         private vantaggioService:VantaggioControllerService,
-        private filialeService:AdminFilialeControllerService
+        private filialeService:AdminFilialeControllerService,
+        private ruoloService:AdminRuoloControllerService
     ) {
     }
 
@@ -100,17 +104,32 @@ export class ProfiloDipendenteComponent implements OnInit {
                 error:(err)=>{
                     console.log("Errore ottenimento filiali: "+err);
                 }
-            })
+            });
+        this.ruoloService.getAllRoles()
+            .pipe(map(dtos=>mapper.mapArray<ResponseRoleDTO,RuoloModel>(dtos,'ResponseRoleDTO','RuoloModel')))
+            .subscribe({
+                next:(res:RuoloModel[])=>{
+                    this.adminRole=res.find(elemento=>elemento.nome=="ADMIN");
+                    if(this.dipendente.ruoli){
+                        const nomiRuoli=this.dipendente.ruoli as unknown as string;
+                        this.ruoliSelezionati=res.filter(ruolo=>nomiRuoli.includes(ruolo.nome));
+                    }
+                },
+                error:(err)=>{
+                    console.log("Errore ruoli: ",JSON.stringify(err));
+                }
+            });
     }
 
     salvaDipendente(){
+        this.dipendente.ruoli=this.ruoliSelezionati;
         if(this.modifica){
             if(this.dipendenteId){
                 this.adminDipService.updateEmployee(this.dipendenteId,mapper.map(this.dipendente,'UtenteModel','UpdateEmployeeFromAdminDTO'))
                     .pipe(map(dto=>mapper.map(dto,'ResponseUserDTO','UtenteModel')))
                     .subscribe({
                         next:(res:UtenteModel)=>{
-                            this.router.navigate(["/dipendenti"]);
+                            this.router.navigate(["/utenti"]);
                         },
                         error:(err)=>{
                             console.log("Errore aggiornamento dipendente: "+err);
@@ -127,7 +146,7 @@ export class ProfiloDipendenteComponent implements OnInit {
                 .pipe(map(dto=>mapper.map<ResponseEmployeeDTO,UtenteModel>(dto,'ResponseEmployeeDTO','UtenteModel')))
                 .subscribe({
                     next:(res:UtenteModel)=>{
-                        this.router.navigate(["/dipendenti"]);
+                        this.router.navigate(["/utenti"]);
                     },
                     error:(err)=>{
                         console.log("Errore creazione dipendente: "+err)
@@ -136,6 +155,24 @@ export class ProfiloDipendenteComponent implements OnInit {
         }
     }
     annulla(){
-        this.router.navigate(["/dipendenti"]);
+        this.router.navigate(["/utenti"]);
+    }
+
+    ruoloSelezionato(){
+        if(this.dipendente.ruoli){
+            return this.ruoliSelezionati.find(ruolo=>ruolo.nome==="ADMIN");
+        }
+        return false;
+    }
+    ruoloCambiato(event:Event){
+        const checkbox=event.target as HTMLInputElement;
+        if(this.dipendente.ruoli){
+            if(checkbox.checked && this.adminRole){
+                this.ruoliSelezionati.push(this.adminRole);
+            }
+            else{
+                this.ruoliSelezionati=this.ruoliSelezionati.filter(ruolo=>ruolo.nome!=="ADMIN");
+            }
+        }
     }
 }

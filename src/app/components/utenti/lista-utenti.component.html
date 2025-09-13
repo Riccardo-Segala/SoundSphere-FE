@@ -1,8 +1,0 @@
-<section>
-    <button type="button" (click)="naviga(undefined)">Crea Utente</button>
-    <div *ngFor="let u of utenti">
-        <span>{{u.nome}} {{u.cognome}}, {{u.dataDiNascita}}, {{u.email}}, {{u.tipologia}}</span>
-        <button type="button" (click)="naviga(u.id)">Modifica</button>
-        <button type="button" (click)="elimina(u.id)">Elimina</button>
-    </div>
-</section>

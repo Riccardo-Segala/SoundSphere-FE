@@ -69,6 +69,7 @@ export class FormUtenteComponent implements OnInit{
             }
             else{
                 this.modifica=false;
+                this.caricaRuoli();
             }
             this.vantaggioService.getAllBenefits()
                 .pipe(map(dtos=>mapper.mapArray<ResponseBenefitDTO,VantaggioModel>(dtos,'ResponseBenefitDTO','VantaggioModel')))
@@ -94,13 +95,9 @@ export class FormUtenteComponent implements OnInit{
             .pipe(map(dtos=>mapper.mapArray<ResponseRoleDTO,RuoloModel>(dtos,'ResponseRoleDTO','RuoloModel')))
             .subscribe({
                 next:(res:RuoloModel[])=>{
-                    this.ruoli=res;
-                    console.log("Ruoli disponibili: ",JSON.stringify(this.ruoli));
-                    console.log("Ruoli utente:",JSON.stringify(this.utente.ruoli));
+                    this.ruoli=res.filter(ruolo=>ruolo.nome!=="DIPENDENTE");
                     const nomiRuoli=this.utente.ruoli?.map(r=>r.nome)||[];
-                    console.log("Nomi ruoli:",JSON.stringify(nomiRuoli));
                     this.ruoliSelezionati=this.ruoli.filter(ruolo=>nomiRuoli.includes(ruolo.nome));
-                    console.log("Ruoli selezionati: ",JSON.stringify(this.ruoliSelezionati));
                 },
                 error:(err)=>{
                     console.log("Errore ottenimento ruoli: "+err);

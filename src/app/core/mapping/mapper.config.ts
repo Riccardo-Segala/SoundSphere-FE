@@ -9,14 +9,15 @@ export function setupMapperMetadata():void{
         descrizione: String,
         prezzo: Number,
         marca: String,
-        pathImmagine: String
+        pathImmagine: String,
+        rentable:Boolean,
+        costoGiornaliero:Number
     });
     PojosMetadataMap.create('UpdateProductDTO',{
-        id: String,
         nome: String,
         descrizione: String,
         prezzo: Number,
-        isRentable: Boolean,
+        rentable: Boolean,
         costoGiornaliero: Number,
         pathImmagine: String
     });
@@ -25,7 +26,7 @@ export function setupMapperMetadata():void{
         descrizione: String,
         prezzo: Number,
         marca: String,
-        isRentable: Boolean,
+        rentable: Boolean,
         costoGiornaliero: Number,
         pathImmagine: String
     });
@@ -47,7 +48,7 @@ export function setupMapperMetadata():void{
         marca:String,
         prezzo:Number,
         costoGiornaliero:Number,
-        isRentable:Boolean,
+        rentable:Boolean,
         pathImmagine:String,
         stelleMedie:Number,
         quantitaDisponibile: Number,

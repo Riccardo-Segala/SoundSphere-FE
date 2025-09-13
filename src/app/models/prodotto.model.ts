@@ -5,7 +5,7 @@ export interface ProdottoModel{
     marca?:string;
     prezzo?:number;
     costoGiornaliero?:number;
-    isRentable?:boolean;
+    rentable?:boolean;
     pathImmagine?:string;
     stelleMedie?:number;
 }

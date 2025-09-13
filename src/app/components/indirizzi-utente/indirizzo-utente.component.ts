@@ -86,7 +86,7 @@ export class IndirizzoutenteComponent implements OnInit {
         }
     }
 
-    metodoInModifica(id:string|undefined){
+    indirizzoInModifica(id:string|undefined){
         if(id){
             if(id!==this.idModifica){
                 this.idModifica=id;

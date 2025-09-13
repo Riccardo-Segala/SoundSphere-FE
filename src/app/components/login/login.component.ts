@@ -53,7 +53,7 @@ export class LoginComponent {
                                 if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="ADMIN")){
                                     this.router.navigate(['/admin-page']);
                                 }
-                                else if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="UTENTE")){
+                                else if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="UTENTE" || ruolo.nome==="ORGANIZZATORE_EVENTI")){
                                     this.router.navigate(['/']);
                                 }
                                 else if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome=="DIPENDENTE")){

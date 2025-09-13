@@ -53,7 +53,9 @@ export class ListaFilialiComponent implements OnInit {
         if(id){
             this.router.navigate(["filiali/modifica",id]);
         }
-        this.router.navigate(['/filiali/crea']);
+        else{
+            this.router.navigate(['/filiali/crea']);
+        }
     }
     elimina(id:string|undefined){
         if(id){
