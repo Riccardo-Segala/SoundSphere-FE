@@ -23,17 +23,15 @@
         <div>
             <label>Sesso: </label>
             <div>
-                <label><input type="radio" name="sesso" value="MASCHIO" [(ngModel)]="utente.sesso">Maschio</label>
-                <label><input type="radio" value="FEMMINA"  [(ngModel)]="utente.sesso" name="sesso">Femmina</label>
-                <label><input type="radio" value="NON_SPECIFICATO" [(ngModel)]="utente.sesso" name="sesso">Non Specificato</label>
+                <label><input type="radio" name="sesso" value="MASCHIO" [(ngModel)]="utente.sesso" required>Maschio</label>
+                <label><input type="radio" value="FEMMINA"  [(ngModel)]="utente.sesso" name="sesso" required>Femmina</label>
+                <label><input type="radio" value="NON_SPECIFICATO" [(ngModel)]="utente.sesso" name="sesso" required checked="checked">Non Specificato</label>
             </div>
         </div><br>
         <div>
-            <label>Vantaggio: </label>
-            <select name="vantaggio" [(ngModel)]="utente.vantaggio" [compareWith]="confronta">
-                <option *ngFor="let v of vantaggi" [ngValue]="v">{{v.nome}}</option>
-            </select>
-        </div><br>
+            <label>Punti:</label>
+            <input type="number" name="punti" min="0" [(ngModel)]="utente.punti">
+        </div>
         <div>
             <label>
                 <div *ngFor="let r of ruoli">
@@ -42,7 +40,7 @@
                 </div>
             </label>
         </div>
-        <button name="salvataggio" type="submit" [disabled]="form.invalid && ruoliSelezionati.length>0">
+        <button name="salvataggio" type="submit" [disabled]="form.invalid || ruoliSelezionati.length===0">
             {{ modifica ? 'Salva' : 'Inserisci' }}
         </button>
     </form>

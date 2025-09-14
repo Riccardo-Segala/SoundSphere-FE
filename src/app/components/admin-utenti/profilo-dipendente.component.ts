@@ -22,8 +22,7 @@ import {RuoloModel} from "../../models/ruolo.model";
     standalone: true,
     imports: [
         FormsModule,
-        NgForOf,
-        NgIf
+        NgForOf
     ],
     templateUrl:'profilo-dipendente.component.html',
     styleUrls:['profilo-dipendente.component.scss']
@@ -75,26 +74,11 @@ export class ProfiloDipendenteComponent implements OnInit {
                     }
                 });
         }
-        this.vantaggioService.getAllBenefits()
-            .pipe(map(dtos=>mapper.mapArray<ResponseBenefitDTO,VantaggioModel>(dtos,'ResponseBenefitDTO','VantaggioModel')))
-            .subscribe({
-                next:(res:VantaggioModel[])=>{
-                    this.vantaggi=res;
-                },
-                error:(err)=>{
-                    console.log("Errore ottenimento vantaggi: "+err);
-                }
-            });
-        this.vantaggioService.getAllBenefits()
-            .pipe(map(dtos=>mapper.mapArray<ResponseBenefitDTO,VantaggioModel>(dtos,'ResponseBenefitDTO','VantaggioModel')))
-            .subscribe({
-                next:(res:VantaggioModel[])=>{
-                    this.vantaggi=res;
-                },
-                error:(err)=>{
-                    console.log("Errore ottenimento vantaggi: "+err);
-                }
-            });
+        else{
+            this.modifica=false;
+            this.dipendente.filialeId=undefined;
+            this.dipendente.sesso="NON_SPECIFICATO";
+        }
         this.filialeService.getAllBranches()
             .pipe(map(dtos=>mapper.mapArray<ResponseBranchDTO,FilialeModel>(dtos,'ResponseBranchDTO','FilialeModel')))
             .subscribe({
@@ -111,8 +95,17 @@ export class ProfiloDipendenteComponent implements OnInit {
                 next:(res:RuoloModel[])=>{
                     this.adminRole=res.find(elemento=>elemento.nome=="ADMIN");
                     if(this.dipendente.ruoli){
+                        //casting perchè in mappatura ruoli è un array di classe RuoloModel
+                        //ma di fatto è un array di stringhe perchè contiene solo il nome del ruolo
                         const nomiRuoli=this.dipendente.ruoli as unknown as string;
-                        this.ruoliSelezionati=res.filter(ruolo=>nomiRuoli.includes(ruolo.nome));
+                        this.ruoliSelezionati=res.filter(ruolo=>nomiRuoli.includes(ruolo.nome) || ruolo.nome==="DIPENDENTE");
+                    }
+                    else{
+                        const ruoloDipendente=res.find(ruolo=>ruolo.nome==="DIPENDENTE");
+                        if(ruoloDipendente){
+                            this.ruoliSelezionati.push(ruoloDipendente);
+                        }
+
                     }
                 },
                 error:(err)=>{
@@ -122,7 +115,7 @@ export class ProfiloDipendenteComponent implements OnInit {
     }
 
     salvaDipendente(){
-        this.dipendente.ruoli=this.ruoliSelezionati;
+        this.dipendente.ruoli= this.ruoliSelezionati.length>0 ? this.ruoliSelezionati : undefined;
         if(this.modifica){
             if(this.dipendenteId){
                 this.adminDipService.updateEmployee(this.dipendenteId,mapper.map(this.dipendente,'UtenteModel','UpdateEmployeeFromAdminDTO'))
@@ -166,13 +159,14 @@ export class ProfiloDipendenteComponent implements OnInit {
     }
     ruoloCambiato(event:Event){
         const checkbox=event.target as HTMLInputElement;
-        if(this.dipendente.ruoli){
-            if(checkbox.checked && this.adminRole){
-                this.ruoliSelezionati.push(this.adminRole);
-            }
-            else{
-                this.ruoliSelezionati=this.ruoliSelezionati.filter(ruolo=>ruolo.nome!=="ADMIN");
-            }
+        if(!this.dipendente.ruoli){
+            this.dipendente.ruoli=[];
+        }
+        if(checkbox.checked && this.adminRole){
+            this.ruoliSelezionati.push(this.adminRole);
+        }
+        else{
+            this.ruoliSelezionati=this.ruoliSelezionati.filter(ruolo=>ruolo.nome!=="ADMIN");
         }
     }
 }

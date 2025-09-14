@@ -40,8 +40,7 @@ export class CatalogoUtenteComponent implements OnInit {
                 private router:Router,
                 private session:SessionService,
                 private prodottoService: ProdottoControllerService,
-                private carrelloService:CarrelloControllerService,
-                private utenteService:UtenteControllerService) {
+                private carrelloService:CarrelloControllerService) {
     }
 
     ngOnInit() {

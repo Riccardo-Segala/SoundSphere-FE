@@ -67,7 +67,8 @@
         </div>
         <div>
             <label>Filiale: </label>
-            <select name="filiale" [(ngModel)]="dipendente.filialeId">
+            <select name="filiale" [(ngModel)]="dipendente.filialeId" required>
+                <option [ngValue]="undefined" disabled >-- Seleziona la filiale --</option>
                 <option *ngFor="let f of filiali" [ngValue]="f.id">{{f.nome}} - {{f.citta}}</option>
             </select>
         </div>
@@ -79,7 +80,7 @@
             </label>
         </div>
 
-        <button type="submit" [disabled]="form.invalid">
+        <button type="submit" [disabled]="form.invalid || ruoliSelezionati.length===0">
             {{modifica ? 'Salva' : 'Aggiungi'}}
         </button>
     </form>

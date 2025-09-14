@@ -4,7 +4,7 @@ import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
     AdminRuoloControllerService,
-    AdminUtenteControllerService,
+    AdminUtenteControllerService, CreateUserFromAdminDTO,
     ResponseBenefitDTO, ResponseRoleDTO,
     ResponseUserDTO,
     VantaggioControllerService
@@ -69,6 +69,7 @@ export class FormUtenteComponent implements OnInit{
             }
             else{
                 this.modifica=false;
+                this.utente.sesso="NON_SPECIFICATO";
                 this.caricaRuoli();
             }
             this.vantaggioService.getAllBenefits()
@@ -76,6 +77,9 @@ export class FormUtenteComponent implements OnInit{
                 .subscribe({
                     next:(res:VantaggioModel[])=>{
                         this.vantaggi=res;
+                        if(!this.utente.vantaggio){
+                            this.utente.vantaggio=res.find(vantaggio=>vantaggio.nome==="Base");
+                        }
                     },
                     error:(err)=>{
                         console.log("Errore ottenimento vantaggi");
@@ -98,6 +102,11 @@ export class FormUtenteComponent implements OnInit{
                     this.ruoli=res.filter(ruolo=>ruolo.nome!=="DIPENDENTE");
                     const nomiRuoli=this.utente.ruoli?.map(r=>r.nome)||[];
                     this.ruoliSelezionati=this.ruoli.filter(ruolo=>nomiRuoli.includes(ruolo.nome));
+
+                    const adminRole=res.find(ruolo=>ruolo.nome==="UTENTE");
+                    if(this.ruoliSelezionati.length===0 && adminRole){
+                        this.ruoliSelezionati.push(adminRole);
+                    }
                 },
                 error:(err)=>{
                     console.log("Errore ottenimento ruoli: "+err);
@@ -123,7 +132,7 @@ export class FormUtenteComponent implements OnInit{
     }
 
     salva(){
-        this.utente.ruoli=this.ruoliSelezionati;
+        this.utente.ruoli=this.ruoliSelezionati.length ? this.ruoliSelezionati : undefined;
         if(this.id){
             this.adminUtenteService.updateUser(this.id,mapper.map(this.utente,'UtenteModel','UpdateUserFromAdminDTO'))
                 .pipe(map(dto=>mapper.map<ResponseUserDTO,UtenteModel>(dto,'ResponseUserDTO','UtenteModel')))
@@ -138,7 +147,8 @@ export class FormUtenteComponent implements OnInit{
                 })
         }
         else{
-            this.adminUtenteService.createUser(mapper.map(this.utente,'UtenteModel','CreateUserFromAdminDTO'))
+            const userDto:CreateUserFromAdminDTO=mapper.map(this.utente,'UtenteModel','CreateUserFromAdminDTO')
+            this.adminUtenteService.createUser(userDto)
                 .pipe(map(dto=>mapper.map<ResponseUserDTO,UtenteModel>(dto,'ResponseUserDTO','UtenteModel')))
                 .subscribe({
                     next:(res:UtenteModel)=>{
