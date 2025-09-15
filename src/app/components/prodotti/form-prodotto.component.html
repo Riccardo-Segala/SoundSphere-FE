@@ -17,12 +17,13 @@
         <br>
         <div>
             <label>Immagine: </label>
-            <input type="text" name="path" [(ngModel)]="prodotto.pathImmagine">
+            <img src="http://localhost:8080{{previewUrl}}" alt="{{prodotto.nome}}">
+            <input type="file" #fileInput (change)="fileSelezionato($event)" accept="image/*">
         </div>
         <br>
         <div>
             <label>Prezzo (in €): </label>
-            <input type="text" inputmode="decimal" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{2})?$" required>
+            <input type="text" inputmode="decimal" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{1,2})?$" required>
         </div>
         <br>
         <div>
@@ -35,12 +36,6 @@
             <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{2})?$">
         </div>
         <br>
-
-        <div style="float:right">
-            <div>
-                <select name=""
-            </div>
-        </div>
         <button type="submit" [disabled]="form.invalid">
             {{modifica ? 'Salva':'Aggiungi' }}
         </button>

@@ -1,3 +1,5 @@
+import {CategoriaModel} from "./categoria.model";
+
 export interface ProdottoModel{
     id?:string;
     nome?:string;
@@ -8,4 +10,5 @@ export interface ProdottoModel{
     rentable?:boolean;
     pathImmagine?:string;
     stelleMedie?:number;
+    categorie?:CategoriaModel[]
 }
