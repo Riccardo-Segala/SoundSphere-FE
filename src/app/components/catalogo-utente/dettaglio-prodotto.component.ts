@@ -6,11 +6,11 @@ import {
     ResponseProductDTO,
     CarrelloControllerService,
     ResponseUserDTO,
-    UtenteControllerService
+    UtenteControllerService,
+    UpdateCartItemDTO
 } from "../../api-client";
 import {CommonModule,Location} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
 import {RecensioniComponent} from "../recensioni/recensioni.component";
 
 @Component({
@@ -54,7 +54,7 @@ export class DettaglioProdottoComponent implements OnInit {
         }
         else {
             this.errore="";
-            const cartItem:UpdateCartDTO={
+            const cartItem:UpdateCartItemDTO={
                 prodottoId:prodId,
                 quantita:this.quantita,
                 wishlist:true
@@ -80,7 +80,7 @@ export class DettaglioProdottoComponent implements OnInit {
         }
         else {
             this.errore="";
-            const cartItem:UpdateCartDTO={
+            const cartItem:UpdateCartItemDTO={
                 prodottoId:prodId,
                 quantita:this.quantita,
                 wishlist:false

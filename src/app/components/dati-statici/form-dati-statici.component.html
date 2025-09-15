@@ -1,0 +1,22 @@
+<section>
+    <form #form="ngForm" (ngSubmit)="salva()">
+        <div>
+            <label>
+                Nome:
+            </label>
+            <input type="text" name="nome" [(ngModel)]="datoStatico.nome" required>
+        </div>
+        <div>
+            <label>
+                Valore:
+            </label>
+            <input type="number" name="valore" [(ngModel)]="datoStatico.valore" required min="0">
+        </div>
+        <button type="submit" [disabled]="form.invalid">
+            {{ modifica ? 'Salva' : 'Inserisci' }}
+        </button>
+        <button type="button" *ngIf="modifica" (click)="elimina(datoStatico.id)">
+            Elimina
+        </button>
+    </form>
+</section>

@@ -1,1 +1,8 @@
-Ciao
+<section>
+    <button type="button" (click)="naviga(undefined)">Inserisci filiale</button>
+    <div *ngFor="let f of filiali">
+        <span>{{f.nome}} {{f.email}} {{f.citta}} </span>
+        <button type="button" (click)="naviga(f.id)">Modifica</button>
+        <button type="button" (click)="elimina(f.id)">Elimina</button>
+    </div>
+</section>

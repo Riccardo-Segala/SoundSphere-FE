@@ -1,0 +1,49 @@
+<section>
+    <form #form="ngForm" (ngSubmit)="salva()">
+        <div>
+            <label>Nome: </label>
+            <input type="text" name="nome" [(ngModel)]="prodotto.nome" required>
+        </div>
+        <br>
+        <div>
+            <label>Marca: </label>
+            <input type="text" name="marca" [(ngModel)]="prodotto.marca" required>
+        </div>
+        <br>
+        <div>
+            <label>Descrizione: </label>
+            <input type="text" name="descrizione" [(ngModel)]="prodotto.descrizione" required>
+        </div>
+        <br>
+        <div>
+            <label>Immagine: </label>
+            <input type="text" name="path" [(ngModel)]="prodotto.pathImmagine">
+        </div>
+        <br>
+        <div>
+            <label>Prezzo (in €): </label>
+            <input type="text" inputmode="decimal" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{2})?$" required>
+        </div>
+        <br>
+        <div>
+            <label>Noleggiabile: </label>
+            <input type="checkbox" name="check-rent" [(ngModel)]="prodotto.rentable">
+        </div>
+        <br>
+        <div *ngIf="prodotto.rentable">
+            <label>Costo Giornaliero di noleggio (in €): </label>
+            <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{2})?$">
+        </div>
+        <br>
+
+        <div style="float:right">
+            <div>
+                <select name=""
+            </div>
+        </div>
+        <button type="submit" [disabled]="form.invalid">
+            {{modifica ? 'Salva':'Aggiungi' }}
+        </button>
+    </form>
+    <button type="button" (click)="annulla()">Annulla</button>
+</section>

@@ -1,0 +1,8 @@
+<section>
+    <div>
+        <form-dati-statici [modifica]="false" [datoStatico]="{id:'',nome:'',valore:0}" (datoCambiato)="caricaDatiStatici()"></form-dati-statici>
+    </div><br>
+    <div *ngFor="let ds of datiStatici">
+        <form-dati-statici [modifica]="true" [datoStatico]="ds" (datoCambiato)="caricaDatiStatici()"></form-dati-statici>
+    </div><br>
+</section>

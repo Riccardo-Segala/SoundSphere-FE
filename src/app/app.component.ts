@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { SessionService } from './services/session.service';
@@ -23,7 +23,7 @@ import {map} from "rxjs";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
     loggedUser:UtenteModel|null=null;
     title='frontend';
     categorieMacro:CategoriaModel[]=[];
@@ -52,7 +52,7 @@ export class AppComponent {
                     this.categorieMacro=categorie;
                 },
                 error:(err)=>{
-                    console.log("Errore ottenimento macro categorie: "+err);
+                    console.log("Errore ottenimento macro categorie: "+JSON.stringify(err));
                 }
             });
     }
@@ -63,5 +63,15 @@ export class AppComponent {
     }
     carrello(path:string){
         this.router.navigate([path]);
+    }
+    adminPage(){
+        this.router.navigate(['admin-page']);
+    }
+    isAdmin():boolean{
+        if(this.loggedUser && this.loggedUser.ruoli){
+            return this.loggedUser.ruoli.some(ruolo=>ruolo.nome==="ADMIN");
+        }
+        return false;
+
     }
 }

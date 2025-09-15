@@ -1,0 +1,89 @@
+<section>
+    <form #form="ngForm" (ngSubmit)="salvaDipendente()">
+
+        <div>
+            <label>Nome: </label>
+            <input name="nome" type="text" [(ngModel)]="dipendente.nome" required>
+        </div>
+        <br>
+        <div>
+            <label>Cognome: </label>
+            <input name="cognome" type="text" [(ngModel)]="dipendente.cognome" required>
+        </div>
+        <br>
+        <div>
+            <label>Email: </label>
+            <input name="email" type="email" [(ngModel)]="dipendente.email" required>
+        </div>
+        <br>
+        <div>
+            <label>Password: </label>
+            <input name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" [attr.required]="!modifica">
+        </div>
+        <br>
+
+        <div>
+            <label>Data Di Nascita: </label>
+            <input type="date" name="data-nascita" [(ngModel)]="dipendente.dataDiNascita" required>
+        </div>
+        <br>
+        <div>
+            <label>Path Immagine: </label>
+            <input name="path" type="text" [(ngModel)]="dipendente.pathImmagine">
+        </div>
+        <br>
+        <div>
+            <label>Sesso: </label>
+            <div>
+                <label><input name="sesso" type="radio" value="MASCHIO" [(ngModel)]="dipendente.sesso">Maschio</label>
+                <label><input name="sesso" type="radio" value="FEMMINA" [(ngModel)]="dipendente.sesso">Femmina</label>
+                <label><input name="sesso" type="radio" value="NON_SPECIFICATO" [(ngModel)]="dipendente.sesso"> Non Specificato</label>
+            </div>
+        </div>
+        <br>
+        <div>
+            <label>Stipendio: </label>
+            <input type="number" name="stipendio" [(ngModel)]="dipendente.stipendio">
+        </div>
+        <br>
+
+        <!--
+         ruoliIds,stipendio,scadenzaContratto,dataAssunzione,filialeId
+       
+        <div>
+            <label>Vantaggio: </label>
+            <select name="vantaggio" [(ngModel)]="dipendente.vantaggio">
+                <option *ngFor="let v of vantaggi" [ngValue]="v">{{v.nome}}</option>
+            </select>
+        </div> -->
+        <!-- Inserire qui gestione dei ruoli quando disponibile -->
+        <div>
+            <label>Data scadenza contratto: </label>
+            <input name="scadenza" type="date" [(ngModel)]="dipendente.scadenzaContratto">
+        </div>
+        <div>
+            <label>dataAssunzione: </label>
+            <input name="data-assunzione" type="date" [(ngModel)]="dipendente.dataAssunzione" required>
+        </div>
+        <div>
+            <label>Filiale: </label>
+            <select name="filiale" [(ngModel)]="dipendente.filialeId" required>
+                <option [ngValue]="undefined" disabled >-- Seleziona la filiale --</option>
+                <option *ngFor="let f of filiali" [ngValue]="f.id">{{f.nome}} - {{f.citta}}</option>
+            </select>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="ruolo" [checked]="ruoloSelezionato()" (change)="ruoloCambiato($event)">
+                Rendi Admin
+            </label>
+        </div>
+
+        <button type="submit" [disabled]="form.invalid || ruoliSelezionati.length===0">
+            {{modifica ? 'Salva' : 'Aggiungi'}}
+        </button>
+    </form>
+
+    <button type="button" (click)="annulla()">Annulla</button>
+</section>

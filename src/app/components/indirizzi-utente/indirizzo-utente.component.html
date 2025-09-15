@@ -17,7 +17,7 @@
         <ng-container>
             <span>{{i.via}} {{i.civico}},
             {{i.citta}} {{i.cap}}, {{i.provincia}}, {{i.nazione}}</span>
-            <button type="button" (click)="metodoInModifica(i.id)">Modifica</button>
+            <button type="button" (click)="indirizzoInModifica(i.id)">Modifica</button>
             <button type="button" (click)="eliminaIndirizzo(i.id)">Elimina</button>
             <app-form-indirizzi [modifica]="modifica"  *ngIf="i.id===idModifica" [indirizzo]="i" (salvaIndirizzo)="salva($event)"></app-form-indirizzi>
         </ng-container>

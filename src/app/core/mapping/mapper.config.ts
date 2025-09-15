@@ -1,7 +1,6 @@
 import { pojos,PojosMetadataMap } from '@automapper/pojos';
 import {VantaggioModel} from "../../models/vantaggio.model";
 import {CreateUserDTO, UpdateUserAddressDTO, UpdateUserDTO} from "../../api-client";
-import {TipoPagamentoEnum} from "../../models/metodo-pagamento.model";
 
 export function setupMapperMetadata():void{
     PojosMetadataMap.create('ResponseProductDTO',{
@@ -10,14 +9,15 @@ export function setupMapperMetadata():void{
         descrizione: String,
         prezzo: Number,
         marca: String,
-        pathImmagine: String
+        pathImmagine: String,
+        rentable:Boolean,
+        costoGiornaliero:Number
     });
     PojosMetadataMap.create('UpdateProductDTO',{
-        id: String,
         nome: String,
         descrizione: String,
         prezzo: Number,
-        isRentable: Boolean,
+        rentable: Boolean,
         costoGiornaliero: Number,
         pathImmagine: String
     });
@@ -26,7 +26,7 @@ export function setupMapperMetadata():void{
         descrizione: String,
         prezzo: Number,
         marca: String,
-        isRentable: Boolean,
+        rentable: Boolean,
         costoGiornaliero: Number,
         pathImmagine: String
     });
@@ -48,7 +48,7 @@ export function setupMapperMetadata():void{
         marca:String,
         prezzo:Number,
         costoGiornaliero:Number,
-        isRentable:Boolean,
+        rentable:Boolean,
         pathImmagine:String,
         stelleMedie:Number,
         quantitaDisponibile: Number,
@@ -147,6 +147,7 @@ export function setupMapperMetadata():void{
         punteggioMassimo: Number
     });
     PojosMetadataMap.create('UtenteModel',{
+        id:String,
         nome:String,
         cognome:String,
         email:String,
@@ -158,7 +159,11 @@ export function setupMapperMetadata():void{
         dataRegistrazione:String,
         punti:Number,
         vantaggio:'VantaggioModel',
-        ruoli:[String]
+        ruoli:['RuoloModel'],
+        stipendio:Number,
+        scadenzaContratto:String,
+        dataAssunzione:String,
+        filialeId:String
     });
     PojosMetadataMap.create('UpdateUserDTO',{
         nome:String,
@@ -169,6 +174,7 @@ export function setupMapperMetadata():void{
         sesso:String,
     });
     PojosMetadataMap.create('ResponseUserDTO',{
+        id:String,
         nome:String,
         cognome:String,
         email:String,
@@ -277,5 +283,165 @@ export function setupMapperMetadata():void{
         tipoPagamento: String,
         main: Boolean,
         utenteId:String
+    });
+    PojosMetadataMap.create('CreateUserFromAdminDTO',{
+        nome: String,
+        cognome: String,
+        email:String,
+        password:String,
+        dataDiNascita: String,
+        pathImmagine:String,
+        sesso:String,
+        vantaggioId:String,
+        ruoliIds:[String]
+    });
+    PojosMetadataMap.create('ResponseEmployeeDTO',{
+        id:String,
+        nome: String,
+        cognome: String,
+        email:String,
+        dataDiNascita: String,
+        tipologia:String,
+        pathImmagine:String,
+        sesso:String,
+        dataRegistrazione:String,
+        stipendio:Number,
+        scadenzaContratto:String,
+        dataAssunzione:String,
+        filialeId:String,
+        ruoli:[String]
+    });
+    PojosMetadataMap.create('UpdateEmployeeDTO',{
+        stipendio:Number,
+        scadenzaContratto:String,
+        dataAssunzione:String,
+        filialeId:String
+    });
+    PojosMetadataMap.create('UpdateEmployeeFromAdminDTO',{
+        nome: String,
+        cognome: String,
+        email:String,
+        password:String,
+        dataDiNascita: String,
+        tipologia:String,
+        pathImmagine:String,
+        sesso:String,
+        stipendio:Number,
+        scadenzaContratto:String,
+        dataAssunzione:String,
+        filialeId:String,
+        ruoliIds:[String]
+    });
+    PojosMetadataMap.create('UpdateUserFromAdminDTO',{
+        nome: String,
+        cognome: String,
+        email:String,
+        password:String,
+        dataDiNascita: String,
+        pathImmagine:String,
+        sesso:String,
+        punti:Number,
+        vantaggioId:String,
+        ruoliIds:[String]
+    })
+    PojosMetadataMap.create('CreateEmployeeDTO',{
+        utente:'CreateUserDTO',
+        stipendio:Number,
+        scadenzaContratto:String,
+        dataAssunzione:String,
+        filialeId:String,
+    });
+    PojosMetadataMap.create('CreateEmployeeFromAdminDTO',{
+        utente:'CreateUserFromAdminDTO',
+        stipendio:Number,
+        scadenzaContratto:String,
+        dataAssunzione:String,
+        filialeId:String
+    });
+    PojosMetadataMap.create('FilialeModel',{
+        id: String,
+        nome: String,
+        telefono: String,
+        email: String,
+        via: String,
+        citta:String,
+        cap: String,
+        provincia: String,
+        nazione: String
+    });
+    PojosMetadataMap.create('BranchAddressDTO',{
+        via: String,
+        citta:String,
+        cap: String,
+        provincia: String,
+        nazione: String
+    });
+    PojosMetadataMap.create('ResponseBranchDTO',{
+        id: String,
+        nome: String,
+        telefono: String,
+        email: String,
+        indirizzo:'BranchAddressDTO'
+    });
+    PojosMetadataMap.create('CreateBranchDTO',{
+        nome: String,
+        telefono: String,
+        email: String,
+        via: String,
+        citta:String,
+        cap: String,
+        provincia: String,
+        nazione: String
+    });
+    PojosMetadataMap.create('UpdateBranchDTO',{
+        id: String,
+        nome: String,
+        telefono: String,
+        email: String,
+        via: String,
+        citta:String,
+        cap: String,
+        provincia: String,
+        nazione: String
+    });
+    PojosMetadataMap.create('ResponsePermissionDTO',{
+        id:String,
+        nome:String
+    });
+    PojosMetadataMap.create('PermessoModel',{
+        id:String,
+        nome:String
+    });
+    PojosMetadataMap.create('ResponseRoleDTO',{
+        id:String,
+        nome:String,
+        permessi:['ResponsePermissionDTO']
+    });
+    PojosMetadataMap.create('RuoloModel',{
+        id:String,
+        nome:String,
+        permessi:['PermessoModel']
+    });
+    PojosMetadataMap.create('CreateRoleDTO',{
+        nome:String,
+        permessiIds:[String]
+    });
+    PojosMetadataMap.create('UpdateRoleDTO',{
+        nome:String,
+        permessiIds:[String]
+    });
+    PojosMetadataMap.create('ResponseStaticDataDTO',{
+        id:String,
+        nome:String,
+        valore:Number
+    });
+    PojosMetadataMap.create('CreateOrUpdateStaticDataDTO',{
+        nome:String,
+        valore:Number
+    });
+    PojosMetadataMap.create('DatiStaticiModel',{
+        id:String,
+        nome:String,
+        valore:Number
     });
 }
