@@ -1,11 +1,11 @@
 import {Component, Inject, OnInit, ViewChild} from "@angular/core";
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
 import {
-    CreateUserDTO,
+    CreateUserDTO, ImageUploadControllerService,
     IndirizzoUtenteControllerService, JwtResponseDTO,
     ResponseUserAddressDTO,
     ResponseUserDTO
@@ -23,7 +23,7 @@ import {FormIndirizziUtenteComponent} from "../indirizzi-utente/form-indirizzi-u
 @Component({
     selector: 'app-profilo',
     standalone:true,
-    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule, ListaMetodoPagamentoComponent, FormIndirizziUtenteComponent],
+    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule, ListaMetodoPagamentoComponent, FormIndirizziUtenteComponent, NgOptimizedImage],
     templateUrl:'./profilo-utente.component.html',
     styleUrls:['./profilo-utente.component.scss']
 })
@@ -31,28 +31,34 @@ export class ProfiloUtenteComponent implements OnInit{
     utente:UtenteModel={};
     pathImmagine='';
     modifica:boolean=false;
+    previewUrl:string|ArrayBuffer|null='/images/placeholder-utente';
 
     @ViewChild('formIndirizzo',{static:false}) private addressFormComponent!:FormIndirizziUtenteComponent;
     profileForm!:FormGroup;
 
-    constructor(private http: HttpClient,
-                private router: Router,
-                private route:ActivatedRoute,
-                private fb:FormBuilder,
-                private sessionService:SessionService,
-                private authService:AuthenticationControllerService,
-                private utenteService:UtenteControllerService,
-                private indirizzoService:IndirizzoUtenteControllerService) {
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private route:ActivatedRoute,
+        private fb:FormBuilder,
+        private sessionService:SessionService,
+        private authService:AuthenticationControllerService,
+        private utenteService:UtenteControllerService,
+        private indirizzoService:IndirizzoUtenteControllerService,
+        private imageUploadService:ImageUploadControllerService
+    ) {
     }
 
     ngOnInit(){
         this.profileForm = this.fb.group({
-            pathImmagine:[''],
             nome:['',Validators.required],
             cognome:['',Validators.required],
             email:['',[Validators.required,Validators.email]],
             dataDiNascita:['',Validators.required],
-            sesso:['NON_SPECIFICATO',Validators.required]
+            sesso:['NON_SPECIFICATO',Validators.required],
+
+            pathImmagine:[this.previewUrl],
+            imageFile:[null]
         });
 
         //const id=this.route.snapshot.paramMap.get('id');
@@ -61,6 +67,9 @@ export class ProfiloUtenteComponent implements OnInit{
             if (this.sessionService.getUser()){
                 this.utente=this.sessionService.getUser() as UtenteModel;
                 this.profileForm.patchValue(this.utente);
+                if(this.utente.pathImmagine) {
+                    this.previewUrl = this.utente.pathImmagine;
+                }
             }
             else{
                 this.router.navigate(["/registrazione"]);
@@ -91,6 +100,9 @@ export class ProfiloUtenteComponent implements OnInit{
         }
 
         this.utente={...this.utente,...this.profileForm.value};
+        if(this.previewUrl) {
+            this.utente.pathImmagine = this.previewUrl as string;
+        }
         if(!this.modifica){
             this.authService.registerUser(mapper.map(this.utente,'UtenteModel','CreateUserDTO')).subscribe({
                 next:(res:JwtResponseDTO)=>{
@@ -143,6 +155,29 @@ export class ProfiloUtenteComponent implements OnInit{
     }
     annulla(){
         this.router.navigate(['/login']);
+    }
+
+    fileSelezionato(event:any){
+        const img:File=event.target.files[0];
+        if(!img){
+            return;
+        }
+        this.profileForm.patchValue({
+            imageFile:img
+        });
+        const reader=new FileReader();
+        reader.onload=()=>this.previewUrl=reader.result;
+        reader.readAsDataURL(img);
+
+        this.imageUploadService.uploadImage(img).subscribe({
+            next:(res:any)=>{
+                //this.utente.pathImmagine=res.path;
+                this.previewUrl=res.path;
+            },
+            error:(err)=>{
+                console.log("Errore caricamento immagine: ",JSON.stringify(err));
+            }
+        });
     }
 
 }

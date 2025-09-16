@@ -4,16 +4,17 @@ import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
     AdminProdottoControllerService,
-    CategoriaControllerService,
+    CategoriaControllerService, ImageUploadControllerService,
     ProdottoControllerService, ResponseCategoryDTO, ResponseCategoryNavigationDTO, ResponseParentCategoryDTO,
     ResponseProductDTO
 } from "../../api-client";
 import {UtenteModel} from "../../models/utente.model";
-import {map} from "rxjs";
+import {map, Observable} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {CategoriaModel} from "../../models/categoria.model";
+import {UploadImageRequest} from "../../api-client/model/uploadImageRequest";
 
 @Component({
     selector: "app-form-prodotto",
@@ -30,8 +31,10 @@ export class FormProdottoComponent implements OnInit {
     loggedUser:UtenteModel|null = null;
     modifica:boolean=false;
     id:string|null='';
+    categorieSelezionate:CategoriaModel[]=[];
     categorie:CategoriaModel[]=[];
     macroCategorie:CategoriaModel[]=[];
+    previewUrl:string|ArrayBuffer|null='/images/placeholder-prodotto'
 
     constructor(
         private session:SessionService,
@@ -39,7 +42,8 @@ export class FormProdottoComponent implements OnInit {
         private route:ActivatedRoute,
         private prodService:ProdottoControllerService,
         private adminProdService:AdminProdottoControllerService,
-        private categoriaService:CategoriaControllerService
+        private categoriaService:CategoriaControllerService,
+        private imageUploadService:ImageUploadControllerService
     ) {}
 
     ngOnInit() {
@@ -53,6 +57,11 @@ export class FormProdottoComponent implements OnInit {
                     .subscribe({
                         next:(res:ProdottoModel)=>{
                             this.prodotto=res;
+                            if(res.pathImmagine)
+                            {
+                                this.previewUrl=res.pathImmagine;
+                                this.caricaCategorie();
+                            }
                         },
                         error:(err)=>{
                             console.log("Errore ottenimento prodotto: "+err);
@@ -61,17 +70,29 @@ export class FormProdottoComponent implements OnInit {
             }
             else{
                 this.modifica=false;
+                this.caricaCategorie();
             }
         }
 
+
+    }
+
+    caricaCategorie(){
         this.categoriaService.getTopLevelCategories()
             .pipe(map(dtos=>mapper.mapArray<ResponseParentCategoryDTO,CategoriaModel>(dtos,'ResponseParentCategoryDTO','CategoriaModel')))
             .subscribe({
                 next:(res:CategoriaModel[])=>{
                     this.macroCategorie=res;
                     for(let c of res){
-                        this.caricaCategorie(c);
+                        this.caricaCategorieFoglie(c);
                     }
+                    this.categorieSelezionate.push({
+                        id:"e23e74ee-abf3-4ce0-b955-c81dc9b88f52",
+                        slug:"acustiche",
+                        isLeaf:true,
+                        name:"Acustiche",
+                        children:new Set<CategoriaModel>()
+                    });
                 },
                 error:(err)=>{
                     console.log("Errore ottenimento categorie: ",JSON.stringify(err));
@@ -79,25 +100,49 @@ export class FormProdottoComponent implements OnInit {
             })
     }
 
-    caricaCategorie(c:CategoriaModel){
+    caricaCategorieFoglie(c:CategoriaModel){
         this.categoriaService.getCategoryDetailsById(c.id)
             .pipe(map(dto=>mapper.map<ResponseCategoryNavigationDTO,CategoriaModel>(dto,'ResponseCategoryNavigationDTO','CategoriaModel')))
             .subscribe({
                 next:(res:CategoriaModel)=>{
                     if(res.isLeaf){
                         this.categorie.push(res);
-                        console.log(JSON.stringify(res));
                     }
                     else{
                         for(let sottocategoria of res.children){
-                            this.caricaCategorie(sottocategoria);
+                            this.caricaCategorieFoglie(sottocategoria);
                         }
                     }
                 }
             })
     }
     salva(){
+        this.prodotto.categorie=this.categorieSelezionate;
+        let api$:Observable<ProdottoModel>;
         if(this.modifica){
+            if(this.id){
+                api$=this.adminProdService.updateProduct(this.id,mapper.map(this.prodotto,'ProdottoModel','UpdateProductDTO'))
+                    .pipe(map(dto=>mapper.map<ResponseProductDTO,ProdottoModel>(dto,'ResponseProductDTO','ProdottoModel')));
+            }
+            else{
+                return;
+            }
+        }
+        else{
+            api$=this.adminProdService.createProduct(mapper.map(this.prodotto,'ProdottoModel','UpdateProductDTO'))
+                .pipe(map(dto=>mapper.map<ResponseProductDTO,ProdottoModel>(dto,'ResponseProductDTO','ProdottoModel')));
+        }
+
+        api$.subscribe({
+            next:(res:ProdottoModel)=>{
+                this.prodotto=res;
+            },
+            error:(err)=>{
+                console.log("Errore salvataggio prodotto: ",JSON.stringify(err));
+            }
+        })
+
+        /*if(this.modifica){
             if(this.id){
                 this.adminProdService.updateProduct(this.id,mapper.map(this.prodotto,'ProdottoModel','UpdateProductDTO'))
                     .pipe(map(dto=>mapper.map<ResponseProductDTO,ProdottoModel>(dto,'ResponseProductDTO','ProdottoModel')))
@@ -124,9 +169,29 @@ export class FormProdottoComponent implements OnInit {
                         console.log("Errore inserimento prodotto: "+err);
                     }
                 })
-        }
+        }*/
     }
     annulla(){
         this.router.navigate(["/prodotti"]);
+    }
+
+    fileSelezionato(event:any){
+        const img:File=event.target.files[0];
+        if(!img){
+            return;
+        }
+        const reader=new FileReader();
+        reader.onload=()=>this.previewUrl=reader.result;
+        reader.readAsDataURL(img);
+
+        this.imageUploadService.uploadImage(img).subscribe({
+            next:(res:any)=>{
+                this.prodotto.pathImmagine=res.path;
+                this.previewUrl=res.path;
+            },
+            error:(err)=>{
+                console.log("Errore caricamento immagine: ",JSON.stringify(err));
+            }
+        });
     }
 }

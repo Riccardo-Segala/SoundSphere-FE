@@ -4,7 +4,7 @@ import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
     AdminRuoloControllerService,
-    AdminUtenteControllerService, CreateUserFromAdminDTO,
+    AdminUtenteControllerService, CreateUserFromAdminDTO, ImageUploadControllerService,
     ResponseBenefitDTO, ResponseRoleDTO,
     ResponseUserDTO,
     VantaggioControllerService
@@ -38,6 +38,7 @@ export class FormUtenteComponent implements OnInit{
     vantaggi:VantaggioModel[]=[];
     ruoli:RuoloModel[]=[];
     ruoliSelezionati:RuoloModel[]=[];
+    previewUrl:string|ArrayBuffer|null='/images/placeholder-utente';
 
     constructor(
         private session:SessionService,
@@ -45,7 +46,8 @@ export class FormUtenteComponent implements OnInit{
         private route:ActivatedRoute,
         private adminUtenteService:AdminUtenteControllerService,
         private vantaggioService:VantaggioControllerService,
-        private ruoloService:AdminRuoloControllerService
+        private ruoloService:AdminRuoloControllerService,
+        private imageUploadService:ImageUploadControllerService
     ) {
     }
 
@@ -60,6 +62,9 @@ export class FormUtenteComponent implements OnInit{
                     .subscribe({
                         next:(res:UtenteModel)=>{
                             this.utente=res;
+                            if(res.pathImmagine) {
+                                this.previewUrl = res.pathImmagine;
+                            }
                             this.caricaRuoli();
                         },
                         error:(err)=>{
@@ -164,5 +169,25 @@ export class FormUtenteComponent implements OnInit{
 
     annulla(){
         this.router.navigate(['utenti']);
+    }
+
+    fileSelezionato(event:any){
+        const img:File=event.target.files[0];
+        if(!img){
+            return;
+        }
+        const reader=new FileReader();
+        reader.onload=()=>this.previewUrl=reader.result;
+        reader.readAsDataURL(img);
+
+        this.imageUploadService.uploadImage(img).subscribe({
+            next:(res:any)=>{
+                this.utente.pathImmagine=res.path;
+                this.previewUrl=res.path;
+            },
+            error:(err)=>{
+                console.log("Errore caricamento immagine: ",JSON.stringify(err));
+            }
+        });
     }
 }

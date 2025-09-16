@@ -19,7 +19,7 @@ import {UtenteModel} from "../../models/utente.model";
 @Component({
     selector: "app-catalogo",
     standalone: true,
-    templateUrl: `./catalogo-utente.component.html`,
+    templateUrl: `catalogo-utente.component.html`,
     styleUrl: `./catalogo-utente.component.scss`,
     imports: [
         FormsModule,

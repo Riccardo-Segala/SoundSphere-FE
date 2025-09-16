@@ -1,6 +1,11 @@
 <section>
     <form #form="ngForm" (ngSubmit)="salva()">
         <div>
+            <label>Immagine profilo: </label>
+            <img src="http://localhost:8080{{previewUrl}}" alt="{{utente.nome}} {{utente.cognome}}">
+            <input type="file" (change)="fileSelezionato($event)" accept="image/*">
+        </div>
+        <div>
             <label>Nome: </label>
             <input type="text" name="nome" [(ngModel)]="utente.nome" required>
         </div><br>
