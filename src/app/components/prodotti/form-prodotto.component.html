@@ -33,7 +33,7 @@
         <br>
         <div *ngIf="prodotto.rentable">
             <label>Costo Giornaliero di noleggio (in €): </label>
-            <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{2})?$">
+            <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{1,2})?$">
         </div>
         <br>
 

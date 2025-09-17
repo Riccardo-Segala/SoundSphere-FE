@@ -17,6 +17,7 @@ import {CategoriaModel} from "../../models/categoria.model";
 import {CategoriaComponent} from "./categorie/categoria.component";
 import {UploadImageRequest} from "../../api-client/model/uploadImageRequest";
 
+
 @Component({
     selector: "app-form-prodotto",
     standalone: true,
@@ -60,11 +61,6 @@ export class FormProdottoComponent implements OnInit {
                     .subscribe({
                         next:(res:ProdottoModel)=>{
                             this.prodotto=res;
-                            if(res.pathImmagine)
-                            {
-                                this.previewUrl=res.pathImmagine;
-                                this.caricaCategorie();
-                            }
                             if(this.prodotto.prezzo) {
                                 this.prodotto.prezzo = Number.parseFloat(this.prodotto.prezzo.toFixed(2));
                             }
@@ -97,7 +93,6 @@ export class FormProdottoComponent implements OnInit {
             .pipe(map(dtos=>mapper.mapArray<ResponseParentCategoryDTO,CategoriaModel>(dtos,'ResponseParentCategoryDTO','CategoriaModel')))
             .subscribe({
                 next:(res:CategoriaModel[])=>{
-                    this.macroCategorie=res;
                     for(let c of res){
                         this.categoriaService.getCategoryDetailsById(c.id)
                             .pipe(map(dto=>mapper.map<ResponseCategoryNavigationDTO,CategoriaModel>(dto,'ResponseCategoryNavigationDTO','CategoriaModel')))
@@ -207,6 +202,31 @@ export class FormProdottoComponent implements OnInit {
                 console.log("Errore caricamento immagine: ",JSON.stringify(err));
             }
         });
+    }
+
+    selezionaCategoria(id:string){
+        if(id){
+            if(this.selectedCategoria!==id){
+                this.selectedCategoria=id;
+            }else{
+                this.selectedCategoria=undefined;
+            }
+        }
+    }
+
+    aggiungi(id:string){
+        if(id && this.prodotto.categorie){
+            const category=this.categorie.find(categ=>categ.id===id);
+            if(!this.prodotto.categorie?.find(categ=>categ.id===id) && category){
+                this.prodotto.categorie?.push(category);
+            }
+        }
+    }
+
+    rimuoviCategoria(id:string){
+        if(id && this.prodotto.categorie){
+            this.prodotto.categorie=this.prodotto.categorie.filter(categ=>categ.id!==id);
+        }
     }
 
     selezionaCategoria(id:string){
