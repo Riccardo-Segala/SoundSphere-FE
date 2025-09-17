@@ -22,7 +22,7 @@
         <br>
         <div>
             <label>Prezzo (in €): </label>
-            <input type="text" inputmode="decimal" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{2})?$" required>
+            <input type="text" inputmode="decimal" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{1,2})?$" required>
         </div>
         <br>
         <div>
@@ -32,16 +32,20 @@
         <br>
         <div *ngIf="prodotto.rentable">
             <label>Costo Giornaliero di noleggio (in €): </label>
-            <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{2})?$">
+            <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{1,2})?$">
         </div>
         <br>
 
         <div style="float:right">
-            <div>
-                <select name=""
+            <div *ngFor="let c of prodotto.categorie">
+                <span (click)="rimuoviCategoria(c.id)">{{c.name}}</span>
+            </div>
+            <div *ngFor="let c of macroCategorie">
+                <button style="background-color:red" type="button" (click)="selezionaCategoria(c.id)">{{c.name}}</button>
+                <app-categorie-prodotto *ngIf="c.id===selectedCategoria" [categorieProdotto]="prodotto.categorie" [categoriaInput]="c" (categoriaSelezionata)="aggiungi($event)"></app-categorie-prodotto>
             </div>
         </div>
-        <button type="submit" [disabled]="form.invalid">
+        <button type="submit" [disabled]="form.invalid || prodotto.categorie?.length===0">
             {{modifica ? 'Salva':'Aggiungi' }}
         </button>
     </form>
