@@ -1,7 +1,7 @@
 import {mapper} from "../mapper.initializer";
 import {createMap, forMember, mapFrom, Mapper} from "@automapper/core";
 import {CategoriaModel} from "../../../models/categoria.model";
-import {ResponseCategoryNavigationDTO, ResponseParentCategoryDTO} from "../../../api-client";
+import {ResponseCategoryDTO, ResponseCategoryNavigationDTO, ResponseParentCategoryDTO} from "../../../api-client";
 
 export const categoriaProfile=(mapper:Mapper)=>{
     createMap(mapper, 'ResponseCategoryNavigationDTO', 'CategoriaModel',
@@ -22,5 +22,15 @@ export const categoriaProfile=(mapper:Mapper)=>{
             })
         )
     );
+
+    createMap(mapper,'ResponseCategoryDTO','CategoriaModel',
+        forMember(
+            (destination:CategoriaModel)=>destination.parent,
+            mapFrom((source:ResponseCategoryDTO)=>
+                source.parent
+                    ? mapper.map<ResponseParentCategoryDTO, CategoriaModel>(source.parent, 'ResponseParentCategoryDTO', 'CategoriaModel')
+                    : undefined
+            )
+        ));
     createMap(mapper,'ResponseParentCategoryDTO','CategoriaModel');
 }

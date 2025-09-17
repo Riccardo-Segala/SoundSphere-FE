@@ -10,5 +10,5 @@ export interface ProdottoModel{
     rentable?:boolean;
     pathImmagine?:string;
     stelleMedie?:number;
-    categorie?:CategoriaModel[]
+    categorie?:CategoriaModel[];
 }
