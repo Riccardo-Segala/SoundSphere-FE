@@ -1,4 +1,11 @@
 <section class="registrazione">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8">
+                <h2 class="text-center mb-4">Registrazione</h2>
+            </div>
+        </div>
+    </div>
     <form [formGroup]="profileForm" (ngSubmit)="registrazione()">
         <!--<label>Foto Profilo:
             <input type="file" name="profilo" (click)="fileSelezionato($event)"/>
@@ -33,6 +40,9 @@
             <button type="submit" *ngIf="modifica" name="aggiornamento-profilo" [disabled]="isFormInvalid">Salva</button>
         </div>
         <br>
+
+
+
         <div id="indirizzi">
             <h1>{{modifica?'Indirizzi':'Indirizzo di Residenza'}}</h1>
             <app-form-indirizzi #formIndirizzo *ngIf="!modifica" [modifica]="modifica"></app-form-indirizzi>
