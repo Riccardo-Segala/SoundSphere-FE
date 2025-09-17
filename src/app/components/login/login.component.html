@@ -1,16 +1,23 @@
-<section class="login">
-    <form name="form-login" #form="ngForm" (ngSubmit)="login()">
-        <label>Email:
-            <input name="email" type="email" inputmode="email" [(ngModel)]="credenziali.email" required/>
-        </label>
-        <label>Password:
-            <input name="password" type="password" minlength="8" [(ngModel)]="credenziali.password" required/>
-        </label>
-        <button type="submit" [disabled]="form.invalid">
-            Login
-        </button>
-        <br><span>{{errore}}</span>
-        <button type="button" (click)="annulla()" class="cancel-link">Annulla</button>
-    </form>
-    <a href="../registrazione">Non sei ancora registrato? Clicca qui</a>
-</section>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8">
+            <h2 class="text-center mb-4">Login</h2>
+
+            <form name="form-login" #form="ngForm" (ngSubmit)="login()">
+                <div class="mb-3">
+                    <label class="form-label">Email:</label>
+                    <input name="email" type="email" class="form-control" inputmode="email" [(ngModel)]="credenziali.email" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password:</label>
+                    <input name="password" type="password" class="form-control" minlength="8" [(ngModel)]="credenziali.password" required/>
+                </div>
+
+                <button type="submit" [disabled]="form.invalid" class="btn btn-primary w-100 mt-3">Login</button>
+                <br><span>{{errore}}</span>
+            </form>
+            <a href="../registrazione">Non sei ancora registrato? Clicca qui</a>
+        </div>
+    </div>
+</div>

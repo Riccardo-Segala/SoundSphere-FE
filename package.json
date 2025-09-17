@@ -23,6 +23,8 @@
     "@automapper/classes": "^8.8.1",
     "@automapper/core": "^8.8.1",
     "@automapper/pojos": "^8.8.1",
+    "bootstrap": "^5.3.8",
+    "bootswatch": "^5.3.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
