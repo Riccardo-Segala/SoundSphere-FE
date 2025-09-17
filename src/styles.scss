@@ -5,12 +5,14 @@
 .btn-primary {
   background-color: #000;
   border-color: #000;
+  transition: transform 0.1s
 
 }
 
 .btn-primary:hover,{
-  background-color: #3c3c3c;
-  border-color: #3c3c3c;
+  background-color: #000;
+  border-color: #000;
+  transform: scale(1.05);
 }
 
 .btn-primary:active {
