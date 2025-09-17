@@ -69,7 +69,7 @@ export class FormFilialeComponent implements OnInit{
                         error:(err)=>{
                             console.log("Errore aggiornamento filiale: "+err);
                         }
-                    })
+                    });
             }
         }
         else{
