@@ -6,7 +6,7 @@ import {
     AdminUtenteControllerService,
     DipendenteControllerService, ResponseBenefitDTO, ResponseBranchDTO,
     ResponseEmployeeDTO, VantaggioControllerService,
-    CreateEmployeeFromAdminDTO, ResponseRoleDTO, AdminRuoloControllerService
+    CreateEmployeeFromAdminDTO, ResponseRoleDTO, AdminRuoloControllerService, ImageUploadControllerService
 } from "../../api-client";
 import {UtenteModel} from "../../models/utente.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
@@ -36,6 +36,7 @@ export class ProfiloDipendenteComponent implements OnInit {
     modifica:boolean=false;
     ruoliSelezionati:RuoloModel[]=[];
     adminRole:RuoloModel|undefined=undefined;
+    previewUrl:string|ArrayBuffer|null='images/placeholder-utente';
 
     constructor(
         private router: Router,
@@ -45,7 +46,8 @@ export class ProfiloDipendenteComponent implements OnInit {
         private adminDipService:AdminDipendenteControllerService,
         private vantaggioService:VantaggioControllerService,
         private filialeService:AdminFilialeControllerService,
-        private ruoloService:AdminRuoloControllerService
+        private ruoloService:AdminRuoloControllerService,
+        private imageUploadService:ImageUploadControllerService
     ) {
     }
 
@@ -68,6 +70,9 @@ export class ProfiloDipendenteComponent implements OnInit {
                 .subscribe({
                     next:(res:UtenteModel)=>{
                         this.dipendente=res;
+                        if(res.pathImmagine){
+                            this.previewUrl=res.pathImmagine;
+                        }
                     },
                     error:(err)=>{
                         console.log("Errore ottenimento dipendente: "+err);
@@ -168,5 +173,24 @@ export class ProfiloDipendenteComponent implements OnInit {
         else{
             this.ruoliSelezionati=this.ruoliSelezionati.filter(ruolo=>ruolo.nome!=="ADMIN");
         }
+    }
+    fileSelezionato(event:any){
+        const img:File=event.target.files[0];
+        if(!img){
+            return;
+        }
+        const reader=new FileReader();
+        reader.onload=()=>this.previewUrl=reader.result;
+        reader.readAsDataURL(img);
+
+        this.imageUploadService.uploadImage(img).subscribe({
+            next:(res:any)=>{
+                this.dipendente.pathImmagine=res.path;
+                this.previewUrl=res.path;
+            },
+            error:(err)=>{
+                console.log("Errore caricamento immagine: ",JSON.stringify(err));
+            }
+        });
     }
 }

@@ -12,7 +12,8 @@
         </label>-->
         <div>
             <label>Foto Profilo:
-                <input type="text" formControlName="pathImmagine"/>
+                <img src="http://localhost:8080{{previewUrl}}" alt="{{utente.nome}} {{utente.cognome}}">
+                <input type="file" #fileInput (change)="fileSelezionato($event)" accept="image/*"/>
             </label>
             <br>
             <label>Nome:

@@ -11,15 +11,18 @@ export function setupMapperMetadata():void{
         marca: String,
         pathImmagine: String,
         rentable:Boolean,
-        costoGiornaliero:Number
+        costoGiornaliero:Number,
+        categorie:['ResponseCategoryDTO']
     });
     PojosMetadataMap.create('UpdateProductDTO',{
         nome: String,
         descrizione: String,
         prezzo: Number,
+        marca:String,
         rentable: Boolean,
         costoGiornaliero: Number,
-        pathImmagine: String
+        pathImmagine: String,
+        categorieIds:[String]
     });
     PojosMetadataMap.create('CreateProductDTO',{
         nome: String,
@@ -28,7 +31,8 @@ export function setupMapperMetadata():void{
         marca: String,
         rentable: Boolean,
         costoGiornaliero: Number,
-        pathImmagine: String
+        pathImmagine: String,
+        categorieIds:[String]
     });
     PojosMetadataMap.create('CatalogProductDTO',{
         id:String,
@@ -52,7 +56,8 @@ export function setupMapperMetadata():void{
         pathImmagine:String,
         stelleMedie:Number,
         quantitaDisponibile: Number,
-        quantitaDisponibileAlNoleggio: Number
+        quantitaDisponibileAlNoleggio: Number,
+        categorie:['CategoriaModel']
     });
 
     PojosMetadataMap.create('ResponseCartDTO',{
@@ -201,6 +206,12 @@ export function setupMapperMetadata():void{
         name:String,
         slug:String
     });
+    PojosMetadataMap.create('ResponseCategoryDTO',{
+        id:String,
+        name:String,
+        slug:String,
+        parent:'ResponseParentCategoryDTO'
+    })
     PojosMetadataMap.create('ResponseCategoryNavigationDTO',{
         id:String,
         name:String,
@@ -213,7 +224,8 @@ export function setupMapperMetadata():void{
         name:String,
         slug:String,
         children:['CategoriaModel'],
-        isLeaf:Boolean
+        isLeaf:Boolean,
+        parent:'CategoriaModel'
     });
     PojosMetadataMap.create('ResponseReviewDTO',{
         prodottoId:String,
