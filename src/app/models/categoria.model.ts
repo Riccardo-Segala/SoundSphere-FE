@@ -6,4 +6,5 @@ export interface CategoriaModel {
     slug: string;
     children: Set<CategoriaModel>;
     isLeaf: boolean;
+    parent:CategoriaModel;
 }
