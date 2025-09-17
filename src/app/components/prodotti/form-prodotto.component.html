@@ -36,7 +36,17 @@
             <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{2})?$">
         </div>
         <br>
-        <button type="submit" [disabled]="form.invalid">
+
+        <div style="float:right">
+            <div *ngFor="let c of prodotto.categorie">
+                <span (click)="rimuoviCategoria(c.id)">{{c.name}}</span>
+            </div>
+            <div *ngFor="let c of macroCategorie">
+                <button style="background-color:red" type="button" (click)="selezionaCategoria(c.id)">{{c.name}}</button>
+                <app-categorie-prodotto *ngIf="c.id===selectedCategoria" [categorieProdotto]="prodotto.categorie" [categoriaInput]="c" (categoriaSelezionata)="aggiungi($event)"></app-categorie-prodotto>
+            </div>
+        </div>
+        <button type="submit" [disabled]="form.invalid || prodotto.categorie?.length===0">
             {{modifica ? 'Salva':'Aggiungi' }}
         </button>
     </form>
