@@ -145,40 +145,12 @@ export class FormProdottoComponent implements OnInit {
         api$.subscribe({
             next:(res:ProdottoModel)=>{
                 this.prodotto=res;
+                this.router.navigate(['prodotti']);
             },
             error:(err)=>{
                 console.log("Errore salvataggio prodotto: ",JSON.stringify(err));
             }
         })
-
-        /*if(this.modifica){
-            if(this.id){
-                this.adminProdService.updateProduct(this.id,mapper.map(this.prodotto,'ProdottoModel','UpdateProductDTO'))
-                    .pipe(map(dto=>mapper.map<ResponseProductDTO,ProdottoModel>(dto,'ResponseProductDTO','ProdottoModel')))
-                    .subscribe({
-                        next:(res:ProdottoModel)=>{
-                            this.prodotto=res;
-                            this.router.navigate(['/prodotti']);
-                        },
-                        error:(err)=>{
-                            console.log("Errore aggiornamento prodotto: "+err);
-                        }
-                    })
-            }
-
-        }else{
-            this.adminProdService.createProduct(mapper.map(this.prodotto,'ProdottoModel','UpdateProductDTO'))
-                .pipe(map(dto=>mapper.map<ResponseProductDTO,ProdottoModel>(dto,'ResponseProductDTO','ProdottoModel')))
-                .subscribe({
-                    next:(res:ProdottoModel)=>{
-                        this.prodotto=res;
-                        this.router.navigate(['/prodotti']);
-                    },
-                    error:(err)=>{
-                        console.log("Errore inserimento prodotto: "+err);
-                    }
-                })
-        }*/
     }
     annulla(){
         this.router.navigate(["/prodotti"]);
@@ -204,25 +176,6 @@ export class FormProdottoComponent implements OnInit {
         });
     }
 
-    selezionaCategoria(id:string){
-        if(id){
-            if(this.selectedCategoria!==id){
-                this.selectedCategoria=id;
-            }else{
-                this.selectedCategoria=undefined;
-            }
-        }
-    }
-
-    aggiungi(id:string){
-        if(id && this.prodotto.categorie){
-            const category=this.categorie.find(categ=>categ.id===id);
-            if(!this.prodotto.categorie?.find(categ=>categ.id===id) && category){
-                this.prodotto.categorie?.push(category);
-            }
-        }
-    }
-
     rimuoviCategoria(id:string){
         if(id && this.prodotto.categorie){
             this.prodotto.categorie=this.prodotto.categorie.filter(categ=>categ.id!==id);
@@ -245,12 +198,6 @@ export class FormProdottoComponent implements OnInit {
             if(!this.prodotto.categorie?.find(categ=>categ.id===id) && category){
                 this.prodotto.categorie?.push(category);
             }
-        }
-    }
-
-    rimuoviCategoria(id:string){
-        if(id && this.prodotto.categorie){
-            this.prodotto.categorie=this.prodotto.categorie.filter(categ=>categ.id!==id);
         }
     }
 }
