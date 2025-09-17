@@ -1,12 +1,35 @@
 <section id="inserimento-recensione">
     <div [formGroup]="addressForm">
-        <input formControlName="nazione" placeholder="Nazione">
-        <input formControlName="provincia" placeholder="Provincia">
-        <input formControlName="citta" placeholder="Città">
-        <input formControlName="cap" placeholder="CAP">
-        <input formControlName="via" placeholder="Via/Piazza">
-        <input formControlName="civico" placeholder="Civico">
-        <button *ngIf="modifica" type="submit" (click)="salva()" [disabled]="addressForm.invalid">Salva</button>
-        <button type="button" (click)="clear()">Pulisci</button>
+        <div class="mb-3">
+            <label class="form-label">Nazione:</label>
+            <input class="form-control" formControlName="nazione">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Provincia:</label>
+            <input class="form-control" formControlName="provincia">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Città:</label>
+            <input class="form-control" formControlName="citta">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Cap:</label>
+            <input class="form-control" formControlName="cap">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Via:</label>
+            <input class="form-control" formControlName="via">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Civico:</label>
+            <input class="form-control" formControlName="civico">
+        </div>
+
+        <button class="btn btn-primary" *ngIf="modifica" type="submit" (click)="salva()" [disabled]="addressForm.invalid">Salva</button>
     </div>
 </section>
