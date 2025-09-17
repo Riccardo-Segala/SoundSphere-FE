@@ -1,32 +1,45 @@
-<header>
-    <nav class="clearfix">
-        <h1 style="display: flex;justify-content: center"><a routerLink="/">SoundSphere</a></h1>
-        <!-- controllo se utente loggato per pulsante logout o login -->
-        <br>
-        <button *ngIf="loggedUser && isAdmin()" style="float:left" (click)="adminPage()">Admin</button>
-        <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('carrello')">Carrello</button>
-        <br>
-        <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('wishlist')">Wishlist</button>
-        <br>
-        <a style="float:right" *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
-        <br><a style="float:right" *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
-        <br>
-        <ul>
-            <li *ngFor="let c of categorieMacro">
-                <a [routerLink]="['categorie',c.id]">{{c.name}}</a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<ng-template #benvenuto>
-    <section style="float:right" >
-        <a routerLink="/modifica-profilo"  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</a>
-    </section>
-</ng-template>
-<main class="clearfix">
-    <router-outlet></router-outlet>
-</main>
 
-<footer>
 
-</footer>
+    <header>
+        <h1 style="display: flex;justify-content: center">
+            <a routerLink="/" class="text-decoration-none text-dark title">SoundSphere</a>
+        </h1>
+        <nav class="navbar navbar-expand-sm bg-body-tertiary">
+            <div class="container-fluid">
+                <div class="collapse-navbar-collapse" id="navbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" *ngFor="let c of categorieMacro">
+                            <a class="nav-link" [routerLink]="['categorie',c.id]">{{c.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- controllo se utente loggato per pulsante logout o login -->
+            <br>
+            <button *ngIf="loggedUser && isAdmin()" style="float:left" (click)="adminPage()">Admin</button>
+            <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('carrello')">Carrello</button>
+            <br>
+            <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('wishlist')">Wishlist</button>
+            <br>
+            <a class="btn btn-primary" *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
+            <br><a style="float:right" *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
+            <br>
+            <ul>
+
+            </ul>
+        </nav>
+    </header>
+    <ng-template #benvenuto>
+        <section style="float:right" >
+            <a routerLink="/modifica-profilo"  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</a>
+        </section>
+    </ng-template>
+    <main class="clearfix">
+        <router-outlet></router-outlet>
+    </main>
+
+    <footer>
+
+    </footer>
+

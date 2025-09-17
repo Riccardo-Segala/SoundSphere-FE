@@ -1,4 +1,4 @@
-nav{
+/*nav{
   border:2px solid black;
 }
 nav ul{
@@ -6,7 +6,14 @@ nav ul{
   display:flex;
   justify-content: space-around;
   align-items: center;
-}
+}*/
 nav li{
   margin: 0 10px;
+}
+.title{
+  transition: transform 0.2s
+}
+
+.title:hover{
+  transform: scale(1.05);
 }

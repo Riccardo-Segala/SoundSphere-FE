@@ -1,16 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.btn {
+  border-radius: 20px;
 }
 
-//html, body { height: 100%; }
-body {
-  color: #666;
-  font-family: "Trebuchet MS",Arial, Helvetica, sans-serif;
-  font-size: 1em;
-  width:980px;
-  margin: 0 auto;
-  box-shadow: 0 0 0 2px #222;
+.btn-primary {
+  background-color: #000;
+  border-color: #000;
+  transition: transform 0.1s
+
+}
+
+.btn-primary:hover,{
+  background-color: #000;
+  border-color: #000;
+  transform: scale(1.05);
+}
+
+.btn-primary:active {
+  background-color: #000000 !important;
+  transform: scale(0.98) !important;
+}
+
+.btn-secondary {
+  background-color: #34495E;
+  border-color: #2C3E50;
+}
+
+.btn-secondary:hover {
+  background-color: #2C3E50;
+  border-color: #212F3D;
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+  background-color: #383838FF;
+  border-color: #383838FF;
+  cursor: not-allowed;
 }
