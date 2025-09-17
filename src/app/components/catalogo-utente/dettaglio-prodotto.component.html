@@ -2,7 +2,7 @@
 
     <button style="float:right" type="button" name="addToWishlist" (click)="addToWishlist()">Aggiungi alla Wishlist</button>
     <button style="float:right" type="button" name="addToCart" (click)="addToCart()">Aggiungi al Carrello</button>
-    <img id="profile-pic" [src]="prodotto.pathImmagine" alt="Profile Picture">
+    <img src="http://localhost:8080{{prodotto.pathImmagine}}" alt="Prodotto {{prodotto.id}}">
     <br>
     <label>
         Nome Prodotto:

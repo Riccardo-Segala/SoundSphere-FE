@@ -28,8 +28,9 @@
         </div>
         <br>
         <div>
-            <label>Path Immagine: </label>
-            <input name="path" type="text" [(ngModel)]="dipendente.pathImmagine">
+            <label>Immagine Profilo: </label>
+            <img src="http://localhost:8080{{previewUrl}}" alt="Foto Profilo">
+            <input name="path" type="file" (change)="fileSelezionato($event)">
         </div>
         <br>
         <div>
@@ -46,17 +47,6 @@
             <input type="number" name="stipendio" [(ngModel)]="dipendente.stipendio">
         </div>
         <br>
-
-        <!--
-         ruoliIds,stipendio,scadenzaContratto,dataAssunzione,filialeId
-       
-        <div>
-            <label>Vantaggio: </label>
-            <select name="vantaggio" [(ngModel)]="dipendente.vantaggio">
-                <option *ngFor="let v of vantaggi" [ngValue]="v">{{v.nome}}</option>
-            </select>
-        </div> -->
-        <!-- Inserire qui gestione dei ruoli quando disponibile -->
         <div>
             <label>Data scadenza contratto: </label>
             <input name="scadenza" type="date" [(ngModel)]="dipendente.scadenzaContratto">
