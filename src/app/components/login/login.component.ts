@@ -57,7 +57,7 @@ export class LoginComponent {
                                     this.router.navigate(['/']);
                                 }
                                 else if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome=="DIPENDENTE")){
-                                    this.router.navigate(['/catalogo-dipendente']);
+                                    this.router.navigate(['/stock']);
                                 }
                         })
                     }else{

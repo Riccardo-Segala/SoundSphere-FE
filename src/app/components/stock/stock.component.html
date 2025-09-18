@@ -1,0 +1,14 @@
+<section>
+    <div *ngFor="let s of stockFiliale">
+        <div>
+            <span>{{s.prodotto.marca}} {{s.prodotto.nome}}</span>
+            <br>
+            <button type="button" (click)="decrementa(s.prodotto.id)" [disabled]="s.prodotto.quantitaDisponibile===0">-</button>
+            <input type="number" name="quantita" [(ngModel)]="s.quantita" min="0">
+            <button type="button" (click)="incrementa(s.prodotto.id)">+</button>
+        </div>
+        <div>
+            <button type="button" (click)="salva(s.prodotto.id)" [disabled]="s.quantita===s.quantitaAggiornata">Salva</button>
+        </div>
+    </div>
+</section>
