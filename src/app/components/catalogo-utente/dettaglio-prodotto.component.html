@@ -1,30 +1,42 @@
 <section *ngIf="prodotto">
 
-    <button style="float:right" type="button" name="addToWishlist" (click)="addToWishlist()">Aggiungi alla Wishlist</button>
+    <button style="float:right"  type="button" name="addToWishlist" (click)="addToWishlist()">Aggiungi alla Wishlist</button>
     <button style="float:right" type="button" name="addToCart" (click)="addToCart()">Aggiungi al Carrello</button>
-    <img src="http://localhost:8080{{prodotto.pathImmagine}}" alt="Prodotto {{prodotto.id}}">
+    <div>
+        <img src="http://localhost:8080{{prodotto.pathImmagine}}" alt="Prodotto {{prodotto.id}}">
+    </div>
+
     <br>
     <label>
         Nome Prodotto:
     </label>
     <br>
-    <input type="text" readonly [value]="prodotto.nome">
+    <input type="text" name="nome" readonly [value]="prodotto.nome">
     <br>
     <label>
         Marca:
     </label>
     <br>
-    <input type="text" readonly [value]="prodotto.marca">
+    <input type="text" name="marca" readonly [value]="prodotto.marca">
     <br>
     <label>
         Prezzo:
     </label>
     <br>
-    <input type="text" readonly [value]="prodotto.prezzo">
+    <input type="text" name="prezzo" readonly [value]="prodotto.prezzo">
 
     <br><br>
-    <label>Quantità:</label>
+    <div *ngIf="canRent()">
+        <label>Costo Giornaliero:</label>
+        <input type="text" min="1" readonly name="costo-giornaliero" [(ngModel)]="prodotto.costoGiornaliero">
+    </div>
+
+
+    <br><br>
+    <label>Quantità:</label><br>
+    <button type="button" (click)="decrementaQuantita()" [disabled]="quantita===0">-</button>
     <input type="number" min="1" name="quantita-carrello" [(ngModel)]="quantita">
+    <button type="button" (click)="incrementaQuantita()">+</button>
 
     <button type="button" (click)="annulla()">Torna a Catalogo</button>
 

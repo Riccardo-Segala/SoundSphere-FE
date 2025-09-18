@@ -10,19 +10,30 @@
         </div>
 
         <br><br>
-        <label>Seleziona un indirizzo di spedizione</label><br>
-        <select name="indirizzi" [(ngModel)]="indirizzoCorrente">
-            <option *ngFor="let i of indirizzi" [ngValue]="i.id" [selected]="i.main">
-                {{i.via}} {{i.civico}},
-                {{i.citta}} ({{i.cap}}), {{i.provincia}}, {{i.nazione}}
-            </option>
-        </select>
+        <div>
+            <label>Seleziona un indirizzo di spedizione</label><br>
+            <select name="indirizzi" [(ngModel)]="indirizzoCorrente">
+                <option *ngFor="let i of indirizzi" [ngValue]="i.id" [selected]="i.main">
+                    {{i.via}} {{i.civico}},
+                    {{i.citta}} ({{i.cap}}), {{i.provincia}}, {{i.nazione}}
+                </option>
+            </select>
+        </div>
     </div>
     <div id="carrello" *ngFor="let c of carrello">
-        <span>{{c.quantita}}x {{c.prodotto.marca}} {{c.prodotto.nome}} - {{c.prodotto.prezzo}}</span>
+        <span>{{c.quantita}}x {{c.prodotto.marca}} {{c.prodotto.nome}} - {{c.prodotto.prezzo}}€ - {{c.prodotto.costoGiornaliero}}€/gg</span>
+    </div>
+
+    <div *ngIf="router.url==='/checkout/noleggio'">
+        <label>Selezione Data Di Inizio Noleggio:</label><br>
+        <input type="date" name="inizio-noleggio" [(ngModel)]="inizioNoleggio" [min]="oggi">
+        <br>
+        <label>Selezione Data Di Fine Noleggio:</label><br>
+        <input type="date" name="fine-noleggio" [(ngModel)]="fineNoleggio" [min]="inizioNoleggio">
     </div>
     <div style="float:right">
-        <span id="totale">{{totale}}</span>
+        <span id="totalePrezzo" *ngIf="router.url==='/checkout/ordine'">{{totalePrezzo}}€</span><br>
+        <span id="totaleGiornaliero" *ngIf="router.url==='/checkout/noleggio'">{{totaleGiornaliero}}€</span>
         <br>
         <button type="button" (click)="paga()">Conferma Ordine</button>
     </div>

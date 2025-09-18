@@ -2,22 +2,39 @@
     <div *ngFor="let c of carrello">
         <label>Nome:</label>
         <textarea readonly>{{c.prodotto?.nome}}</textarea>
+        <br>
 
         <label>Marca:</label>
         <textarea readonly>{{c.prodotto?.marca}}</textarea>
+        <br>
 
         <label>Valutazione:</label>
         <textarea readonly>{{c.prodotto.stelleMedie}}</textarea>
+        <br>
 
         <label>Prezzo:</label>
-        <textarea readonly>{{c.prodotto?.prezzo}}</textarea>
+        <textarea readonly>{{c.prodotto?.prezzo}}€</textarea>
+        <br>
+
+        <div *ngIf="canRent()">
+            <label>Costo Giornaliero:</label>
+            <textarea readonly>{{c.prodotto.costoGiornaliero}}€/gg</textarea>
+        </div>
+        <br>
 
         <label *ngIf="!c.wishlist">Quantità:</label>
         <input *ngIf="!c.wishlist" readonly type="number" min="1" [(ngModel)]="c.quantita">
+        <br>
 
         <button type="button" (click)="rimuovi(c.prodotto.id)"><span>trash</span></button>
         <br><br>
     </div>
-    <button type="button" (click)="checkout()">Vai al checkout</button>
+    <div style="float:right">
+        <span>Totale: {{totalePrezzo}}€</span>
+        <span>TotaleGiornaliero: {{totaleGiornaliero}}€/gg</span>
+    </div>
+
+    <button type="button" (click)="checkoutOrdine()">Vai a checkout ordine</button>
+    <button type="button" (click)="checkoutNoleggio()">Vai a checkout noleggio</button>
     <button type="button" (click)="rimuoviTutto()"><span>Rimuovi tutto</span></button>
 </section>
