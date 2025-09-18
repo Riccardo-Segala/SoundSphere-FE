@@ -38,8 +38,8 @@ export class CategorieComponent implements OnInit {
     ngOnInit() {
         //this.id=this.route.snapshot.paramMap.get("id");
         this.routeSub = this.route.paramMap.subscribe(params =>{
-            const id = params.get("id");
-            this.caricaCategoria(id);
+            const slug = params.get("slug");
+            this.caricaCategoria(slug);
         });
     }
 
@@ -49,9 +49,9 @@ export class CategorieComponent implements OnInit {
         }
     }
 
-    caricaCategoria(id:string|null){
-        if(id){
-            this.categorieService.getCategoryDetailsById(id)
+    caricaCategoria(slug:string|null){
+        if(slug){
+            this.categorieService.getCategoryDetailsBySlug(slug)
                 .pipe(map(dtos=>mapper.map<ResponseCategoryNavigationDTO,CategoriaModel>(
                     dtos,
                     'ResponseCategoryNavigationDTO',
@@ -60,7 +60,7 @@ export class CategorieComponent implements OnInit {
                 .subscribe({
                     next: (categoria:CategoriaModel) => {
                         if(categoria.isLeaf){
-                            this.router.navigate(["catalogo-utente",categoria.id]);
+                            this.router.navigate(["catalogo-utente",categoria.slug]);
                         }
                         else{
                             this.categoria=categoria;

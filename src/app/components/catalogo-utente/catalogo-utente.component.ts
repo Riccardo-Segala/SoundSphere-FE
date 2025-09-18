@@ -1,17 +1,14 @@
 import {Component, OnInit} from "@angular/core";
-import {HttpClient, HttpContext} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
-import {Router,RouterModule} from "@angular/router";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ActivatedRoute, Router, RouterModule} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
 import {
     CarrelloControllerService, CatalogProductDTO,
     ProdottoControllerService, ResponseCartDTO,
-    ResponseUserDTO,
-    UtenteControllerService, UpdateCartItemDTO
 } from "../../api-client";
-import {ResponseProductDTO} from "../../api-client";
-import {map, Observable} from "rxjs";
+import {map} from "rxjs";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";
@@ -37,6 +34,7 @@ export class CatalogoUtenteComponent implements OnInit {
     errore:string="";
 
     constructor(private http:HttpClient,
+                private route:ActivatedRoute,
                 private router:Router,
                 private session:SessionService,
                 private prodottoService: ProdottoControllerService,
@@ -44,23 +42,29 @@ export class CatalogoUtenteComponent implements OnInit {
     }
 
     ngOnInit() {
+        const slug=this.route.snapshot.paramMap.get("slug");
         //servirebbe get da filiale 'online'
         if(this.session.getUser()){
             this.loggedUser=this.session.getUser() as UtenteModel;
         }
         console.log(this.loggedUser.nome+" "+this.loggedUser.cognome);
-        this.prodottoService.getOnlineCatalog().subscribe({
-            next:(prodotti) => {
-                this.prodotti = prodotti;
-                this.filtraProdotti();
-            },
-            error: (err) => {
-                console.log(err);
-            }
-        });
-        this.carrelloService.getAllCartOfUser()
-            .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
-            .subscribe(c=>this.carrello = c);
+        if(slug)
+        {
+            this.prodottoService.getOnlineCatalogBySlug(slug).subscribe({
+                next:(prodotti) => {
+                    this.prodotti = prodotti;
+                    this.filtraProdotti();
+                },
+                error: (err) => {
+                    console.log(err);
+                }
+            });
+            this.carrelloService.getAllCartOfUser()
+                .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
+                .subscribe(c=>this.carrello = c);
+        }
+
+
     }
 
     filtraProdotti() {

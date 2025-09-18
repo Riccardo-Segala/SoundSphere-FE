@@ -1,5 +1,5 @@
 <section>
     <div *ngFor="let c of categorieView">
-        <a [routerLink]="c.isLeaf?['/catalogo-utente',c.id]:['/categorie',c.id]">{{c.name}}</a><br>
+        <a [routerLink]="c.isLeaf?['/catalogo-utente',c.slug]:['/categorie',c.slug]">{{c.name}}</a><br>
     </div>
 </section>
