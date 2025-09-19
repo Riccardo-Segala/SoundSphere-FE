@@ -43,6 +43,8 @@ export class FormMetodoPagamentoComponent implements OnInit{
             next:(res:MetodoPagamentoModel)=>{
                 this.paypal=false;
                 this.metodo=this.azzeraMetodo();
+                this.nome="";
+                this.cognome="";
                 this.salvaMetodo.emit();
             },
             error:(err)=>{

@@ -21,7 +21,6 @@ export class ListaMetodoPagamentoComponent implements OnInit{
     metodi:MetodoPagamentoModel[]=[];
     nuovoMetodo!:MetodoPagamentoModel;
     loggedUser:UtenteModel|null = null;
-    @Input() modifica:boolean=false;
     modificaMP:boolean=false;
     paypal:boolean=false;
 
@@ -33,9 +32,14 @@ export class ListaMetodoPagamentoComponent implements OnInit{
     }
 
     ngOnInit() {
-        if(this.modifica){
+        this.loggedUser=this.sessionService.getUser();
+        if(this.loggedUser){
             this.caricaMetodi();
         }
+        else{
+            this.router.navigate(['/']);
+        }
+
     }
     caricaMetodi(){
         this.mpService.getAllUserPaymentMethod()

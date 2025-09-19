@@ -34,16 +34,10 @@
             <button type="submit" *ngIf="modifica" name="aggiornamento-profilo" [disabled]="isFormInvalid">Salva</button>
         </div>
         <br>
-        <div id="indirizzi">
-            <h1>{{modifica?'Indirizzi':'Indirizzo di Residenza'}}</h1>
+        <div id="indirizzi" *ngIf="!modifica">
+            <h1>Indirizzo di Residenza</h1>
             <app-form-indirizzi #formIndirizzo *ngIf="!modifica" [modifica]="modifica"></app-form-indirizzi>
-            <app-address *ngIf="modifica" [modifica]="modifica"></app-address>
         </div>
-
-        <div id="metodi" *ngIf="modifica">
-            <app-lista-metodi-pagamento [modifica]="modifica"></app-lista-metodi-pagamento>
-        </div>
-
         <button *ngIf="!modifica" name="salvataggio" type="submit" [disabled]="isFormInvalid">
             Registrati
         </button>

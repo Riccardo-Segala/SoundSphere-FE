@@ -16,12 +16,16 @@ import {FormFilialeComponent} from "./components/filiali/form-filiale.component"
 import {ListaUtentiComponent} from "./components/admin-utenti/lista-utenti.component";
 import {FormUtenteComponent} from "./components/admin-utenti/form-utente.component";
 import {DatiStaticiComponent} from "./components/dati-statici/dati-statici.component";
+import {IndirizzoutenteComponent} from "./components/indirizzi-utente/indirizzo-utente.component";
+import {ListaMetodoPagamentoComponent} from "./components/metodo-pagamento/lista-metodo-pagamento.component";
 
 export const routes: Routes = [
   {path: '', redirectTo: '/categorie', pathMatch: 'full' },
   {path: 'login', component: LoginComponent },
   {path: 'registrazione', component: ProfiloUtenteComponent },
   {path: 'modifica-profilo', component: ProfiloUtenteComponent},
+    {path:'indirizzi-utente',component:IndirizzoutenteComponent},
+    {path:'metodi-pagamento',component:ListaMetodoPagamentoComponent},
   {path: 'catalogo-utente', component: CatalogoUtenteComponent },
   {path:'catalogo-utente/:idCategoria',component:CatalogoUtenteComponent},
   {path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },

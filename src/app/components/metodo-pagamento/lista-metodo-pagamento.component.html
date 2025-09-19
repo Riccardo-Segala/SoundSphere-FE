@@ -1,4 +1,4 @@
-<section *ngIf="modifica">
+<section>
     <h1>Metodi di pagamento</h1>
     <app-form-mp (salvaMetodo)="onSalvaMetodo($event)"></app-form-mp>
     <div id="lista-metodi" *ngIf="metodi.length>0">

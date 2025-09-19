@@ -6,7 +6,7 @@
         <input formControlName="cap" placeholder="CAP">
         <input formControlName="via" placeholder="Via/Piazza">
         <input formControlName="civico" placeholder="Civico">
-        <button *ngIf="modifica" type="submit" (click)="salva()" [disabled]="addressForm.invalid">Salva</button>
-        <button type="button" (click)="clear()">Pulisci</button>
+        <button type="submit" *ngIf="modifica" (click)="salva()" [disabled]="addressForm.invalid">Salva</button>
+        <button type="button" (click)="clear()" *ngIf="modifica">Pulisci</button>
     </div>
 </section>

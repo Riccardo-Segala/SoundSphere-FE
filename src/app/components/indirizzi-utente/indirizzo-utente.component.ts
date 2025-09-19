@@ -35,6 +35,7 @@ export class IndirizzoutenteComponent implements OnInit {
         const user=this.session.getUser();
         if(user)
         {
+            this.modifica=true;
             this.loggedUser=user as UtenteModel;
             this.caricaListaIndirizzi();
         }

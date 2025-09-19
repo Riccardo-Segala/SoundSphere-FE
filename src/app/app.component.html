@@ -22,19 +22,25 @@
             <br>
             <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('wishlist')">Wishlist</button>
             <br>
-            <a class="btn btn-primary" *ngIf="!loggedUser&&router.url!=='/login';else benvenuto" routerLink="/login">Login</a>
-            <br><a style="float:right" *ngIf="loggedUser" href="#" (click)="logout()">Logout</a>
-            <br>
-            <ul>
-
-            </ul>
+            <a class="btn btn-primary" *ngIf="!loggedUser&&router.url!=='/login'" routerLink="/login">Login</a>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown"  *ngIf="loggedUser&&router.url!=='/login' && router.url!=='/registrazione'">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Benvenuto {{ loggedUser?.nome }} {{loggedUser?.cognome}}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" routerLink="/modifica-profilo">Modifica Profilo</a></li>
+                            <li><a class="dropdown-item" routerLink="/indirizzi-utente">Gestisci Indirizzi</a></li>
+                            <li><a class="dropdown-item" href="/metodi-pagamento">Gestisci Metodi di Pagamento</a></li>
+                            <li><a class="dropdown-item" href="/ordini">Visualizza Ordini</a></li>
+                            <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
-    <ng-template #benvenuto>
-        <section style="float:right" >
-            <a routerLink="/modifica-profilo"  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</a>
-        </section>
-    </ng-template>
     <main class="clearfix">
         <router-outlet></router-outlet>
     </main>

@@ -114,7 +114,7 @@ export class ProfiloUtenteComponent implements OnInit{
                         this.indirizzoService.createUserAddress(mapper.map(indirizzo,'IndirizzoUtenteModel','CreateUserAddressDTO'))
                             .subscribe({
                                 next:(res)=>{
-                                    console.log("Indirizzo creato: "+res);
+                                    console.log("Indirizzo creato: "+JSON.stringify(res));
                                     this.utenteService.getCurrentUser()
                                         .pipe(map(dto=>mapper.map<ResponseUserDTO,UtenteModel>(dto,'ResponseUserDTO','UtenteModel')))
                                         .subscribe({
