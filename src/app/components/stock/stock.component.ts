@@ -26,6 +26,9 @@ import {FormsModule} from "@angular/forms";
 export class StockComponent implements OnInit{
     loggedUser:UtenteModel|null=null;
     stockFiliale:StockModel[]=[];
+    stockFiltrati:StockModel[]=[];
+    checked:boolean=false;
+    stringaFiltro:string="";
 
     constructor(
         private session:SessionService,
@@ -42,6 +45,7 @@ export class StockComponent implements OnInit{
                 .subscribe({
                     next:(res:StockModel[])=>{
                         this.stockFiliale=res;
+                        this.stockFiltrati=this.stockFiliale;
                     },
                     error:(err)=>{
                         console.log("Errore ottenimento stock filiale: ",JSON.stringify(err));
@@ -50,6 +54,19 @@ export class StockComponent implements OnInit{
         }
         else{
             this.router.navigate(['/']);
+        }
+    }
+
+    filtra(){
+        this.stockFiltrati=this.stockFiliale;
+        if(this.checked){
+            this.stockFiltrati=this.stockFiltrati.filter(stock=>stock.quantita!==stock.quantitaAggiornata || stock.quantitaPerNoleggio!==stock.quantitaNoleggioAggiornata);
+        }
+
+        if(this.stringaFiltro!==""){
+            this.stockFiltrati=this.stockFiltrati.filter(stock=>
+                stock.prodotto.nome?.toLowerCase().includes(this.stringaFiltro.toLowerCase()) ||
+                stock.prodotto.marca?.toLowerCase().includes(this.stringaFiltro.toLowerCase()))
         }
     }
 

@@ -73,8 +73,6 @@ export class CheckoutComponent implements OnInit {
                     this.indirizzi=inidrizziRes as IndirizzoUtenteModel[];
                     this.metodiPagamento=mdRes as MetodoPagamentoModel[];
 
-                    this.calcolaTotali();
-
                     const oggi=new Date();
                     const anno=oggi.getFullYear();
                     const mese=String(oggi.getMonth()+1).padStart(2,'0');
@@ -84,6 +82,7 @@ export class CheckoutComponent implements OnInit {
                     this.fineNoleggio=`${anno}-${mese}-${giorno}`;
                     this.oggi=`${anno}-${mese}-${giorno}`;
 
+                    this.calcolaTotali();
                     //per impostare l'opzione selezionata nella select
                     const md=this.metodiPagamento.find(m=>m.main)
                     if(md)
