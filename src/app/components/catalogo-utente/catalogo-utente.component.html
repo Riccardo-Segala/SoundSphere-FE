@@ -3,15 +3,23 @@
         <input style="float:left" name="ricerca" type="text" [(ngModel)]="cercaProd" (keyup)="filtraProdotti()"/>
     </form>
 </section><br>
-<section style="float:left">
-    <div class="prodotto" *ngFor="let p of prodFiltrati">
-        <img src="http://localhost:8080{{p.pathImmagine}}">
-        <span>{{p.nome}} </span>
-        <span>{{p.marca}} </span>
-        <span>{{p.stelleMedie}} </span>
-        <span>{{p.prezzo}} </span><br>
-        <a style="justify-content:center" [routerLink]="['/dettaglio-prodotto',p.id]">Vai a Dettaglio</a>
-        <button type="button" *ngIf="disponibileCarrello(p.id)" (click)="aggiungiCarrello(p.id,false)">Aggiungi al Carrello</button>
-        <button type="button" *ngIf="disponibileWishlist(p.id)" (click)="aggiungiCarrello(p.id,true)">Aggiungi alla Wishlist</button>
-    </div><br>
+<section >
+    <div class="container my-5">
+        <div class="row g-4">
+            <ng-container *ngFor="let prodotto of prodFiltrati">
+                <div class="col-lg-auto d-flex">
+                    <app-product-card
+                            *ngIf="prodotto && prodotto.id"
+                            [product]="prodotto"
+                            [isCartAvailable]="disponibileCarrello(prodotto.id)"
+                            [isWishlistAvailable]="disponibileWishlist(prodotto.id)"
+                            (addToCartClick)="aggiungiCarrello($event, false)"
+                            (addToWishlistClick)="aggiungiCarrello($event, true)">
+                    </app-product-card>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+    <br>
 </section>

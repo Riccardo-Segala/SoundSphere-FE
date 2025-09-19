@@ -12,6 +12,7 @@ import {map} from "rxjs";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";
+import {ProductCardComponent} from "../../shared/components/product-card/product-card.component";
 
 @Component({
     selector: "app-catalogo",
@@ -22,7 +23,8 @@ import {UtenteModel} from "../../models/utente.model";
         FormsModule,
         NgForOf,
         RouterModule,
-        CommonModule
+        CommonModule,
+        ProductCardComponent
     ]
 })
 export class CatalogoUtenteComponent implements OnInit {
@@ -69,7 +71,6 @@ export class CatalogoUtenteComponent implements OnInit {
 
     filtraProdotti() {
         if(this.cercaProd==""){
-            //get prodotti by name/descrizione e filiale
             this.prodFiltrati=this.prodotti;
             return;
         }
