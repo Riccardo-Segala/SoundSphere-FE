@@ -2,7 +2,13 @@ import {createMap, defaultStrategyInitializerOptions, forMember, mapFrom, Mapper
 import {mapper} from "../mapper.initializer";
 import {ProdottoModel} from "../../../models/prodotto.model";
 import {StockModel} from "../../../models/stock.model";
-import {CreateStockDTO, ResponseProductDTO, ResponseStockDTO, UpdateStockDTO} from "../../../api-client";
+import {
+    CreateStockDTO,
+    ResponseProductDTO,
+    ResponseStockDTO,
+    UpdateStockDTO,
+    UpdateStockFromAdminDTO
+} from "../../../api-client";
 
 export const stockProfile=(mapper:Mapper)=>{
     createMap(mapper,'ResponseStockDTO','StockModel',
@@ -32,6 +38,12 @@ export const stockProfile=(mapper:Mapper)=>{
     createMap(mapper,'StockModel','CreateStockDTO',
         forMember(
             (destination:CreateStockDTO)=>destination.prodottoId,
+            mapFrom((source:StockModel)=>source.prodotto.id)
+        ));
+
+    createMap(mapper,'StockModel','UpdateStockFromAdminDTO',
+        forMember(
+            (destination:UpdateStockFromAdminDTO)=>destination.prodottoId,
             mapFrom((source:StockModel)=>source.prodotto.id)
         ));
 }

@@ -482,4 +482,11 @@ export function setupMapperMetadata():void{
         quantitaPerNoleggio:Number,
         quantitaNoleggioAggiornata:Number
     });
+    PojosMetadataMap.create('UpdateStockFromAdminDTO',{
+        filialeId:String,
+        prodottoId:String,
+        quantita:Number,
+        quantitaPerNoleggio:Number
+    })
+
 }
