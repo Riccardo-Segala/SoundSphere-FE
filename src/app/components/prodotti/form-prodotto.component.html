@@ -27,11 +27,6 @@
         </div>
         <br>
         <div>
-            <label>Noleggiabile: </label>
-            <input type="checkbox" name="check-rent" [(ngModel)]="prodotto.rentable">
-        </div>
-        <br>
-        <div *ngIf="prodotto.rentable">
             <label>Costo Giornaliero di noleggio (in €): </label>
             <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{1,2})?$">
         </div>

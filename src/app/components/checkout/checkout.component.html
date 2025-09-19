@@ -23,18 +23,18 @@
     <div id="carrello" *ngFor="let c of carrello">
         <span>{{c.quantita}}x {{c.prodotto.marca}} {{c.prodotto.nome}} - {{c.prodotto.prezzo}}€ - {{c.prodotto.costoGiornaliero}}€/gg</span>
     </div>
-
+    <br>
     <div *ngIf="router.url==='/checkout/noleggio'">
         <label>Selezione Data Di Inizio Noleggio:</label><br>
-        <input type="date" name="inizio-noleggio" [(ngModel)]="inizioNoleggio" [min]="oggi">
+        <input type="date" name="inizio-noleggio" [(ngModel)]="inizioNoleggio" [min]="oggi" (change)="calcolaTotali()">
         <br>
         <label>Selezione Data Di Fine Noleggio:</label><br>
-        <input type="date" name="fine-noleggio" [(ngModel)]="fineNoleggio" [min]="inizioNoleggio">
+        <input type="date" name="fine-noleggio" [(ngModel)]="fineNoleggio" [min]="inizioNoleggio" (change)="calcolaTotali()">
     </div>
     <div style="float:right">
         <span id="totalePrezzo" *ngIf="router.url==='/checkout/ordine'">{{totalePrezzo}}€</span><br>
         <span id="totaleGiornaliero" *ngIf="router.url==='/checkout/noleggio'">{{totaleGiornaliero}}€</span>
         <br>
-        <button type="button" (click)="paga()">Conferma Ordine</button>
+        <button type="button" (click)="paga()" [disabled]="inizioNoleggio>fineNoleggio">Conferma Ordine</button>
     </div>
 </section>

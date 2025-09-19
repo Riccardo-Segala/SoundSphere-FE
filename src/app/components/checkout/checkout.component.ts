@@ -36,8 +36,8 @@ export class CheckoutComponent implements OnInit {
     metodiPagamento:MetodoPagamentoModel[]=[];
     indirizzi:IndirizzoUtenteModel[]=[];
     carrello:CarrelloModel[]=[];
-    totalePrezzo:number=0;
-    totaleGiornaliero:number=0;
+    totalePrezzo:string="0";
+    totaleGiornaliero:string="0";
     indirizzoCorrente:string|undefined="";
     metodoCorrente:string|undefined="";
     inizioNoleggio:string="";
@@ -73,8 +73,6 @@ export class CheckoutComponent implements OnInit {
                     this.indirizzi=inidrizziRes as IndirizzoUtenteModel[];
                     this.metodiPagamento=mdRes as MetodoPagamentoModel[];
 
-                    this.calcolaTotali();
-
                     const oggi=new Date();
                     const anno=oggi.getFullYear();
                     const mese=String(oggi.getMonth()+1).padStart(2,'0');
@@ -84,6 +82,7 @@ export class CheckoutComponent implements OnInit {
                     this.fineNoleggio=`${anno}-${mese}-${giorno}`;
                     this.oggi=`${anno}-${mese}-${giorno}`;
 
+                    this.calcolaTotali();
                     //per impostare l'opzione selezionata nella select
                     const md=this.metodiPagamento.find(m=>m.main)
                     if(md)
@@ -145,14 +144,14 @@ export class CheckoutComponent implements OnInit {
         const msGiorno=1000*60*60*24;
         const msDifferenza=dataFine.getTime()-dataInizio.getTime();
 
-        this.totalePrezzo=0;
-        this.totaleGiornaliero=0;
+        this.totalePrezzo="0";
+        this.totaleGiornaliero="0";
 
         if(!(dataInizio>dataFine)){
             const giorniNoleggio=Math.round(msDifferenza/msGiorno);
             for(let c of this.carrello){
-                this.totalePrezzo+= c.prodotto.prezzo ? c.prodotto.prezzo : 0;
-                this.totaleGiornaliero+= c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero*(giorniNoleggio+1) : 0;
+                this.totalePrezzo = c.prodotto.prezzo ? String(c.prodotto.prezzo.toFixed(2)) : "0";
+                this.totaleGiornaliero = c.prodotto.costoGiornaliero ? String((c.prodotto.costoGiornaliero*(giorniNoleggio+1)).toFixed(2)) : "0";
             }
         }
     }
