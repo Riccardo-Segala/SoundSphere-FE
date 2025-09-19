@@ -456,4 +456,37 @@ export function setupMapperMetadata():void{
         nome:String,
         valore:Number
     });
+    PojosMetadataMap.create('ResponseStockDTO',{
+        filialeId:String,
+        filialeNome:String,
+        prodotto:'ResponseProductDTO',
+        quantita:Number,
+        quantitaPerNoleggio:Number
+    });
+    PojosMetadataMap.create('UpdateStockDTO',{
+        prodottoId:String,
+        quantita:Number
+    });
+    PojosMetadataMap.create('CreateStockDTO',{
+        filialeId:String,
+        prodottoId:String,
+        quantita:Number,
+        quantitaPerNoleggio:Number
+    });
+    PojosMetadataMap.create('StockModel',{
+        filialeId:String,
+        filialeNome:String,
+        prodotto:'ProdottoModel',
+        quantita:Number,
+        quantitaAggiornata:Number,
+        quantitaPerNoleggio:Number,
+        quantitaNoleggioAggiornata:Number
+    });
+    PojosMetadataMap.create('UpdateStockFromAdminDTO',{
+        filialeId:String,
+        prodottoId:String,
+        quantita:Number,
+        quantitaPerNoleggio:Number
+    })
+
 }

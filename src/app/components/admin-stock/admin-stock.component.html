@@ -1,0 +1,35 @@
+<section>
+    <div>
+        <div>
+            <select [(ngModel)]="filialeSelezionata" (change)="filtra()">
+                <option [ngValue]="null">Tutte</option>
+                <option *ngFor="let f of filiali" [ngValue]="f">{{f.nome}} - {{f.citta}}</option>
+            </select>
+        </div>
+        <div>
+            <label><input type="checkbox" [(ngModel)]="checked" (change)="filtra()">Mostra Solo Modificati</label>
+        </div>
+        <div>
+            <input type="text" [(ngModel)]="stringaFiltro" (keyup)="filtra()">
+        </div>
+
+    </div>
+    <div>
+        <div *ngFor="let s of stocksFiltrati">
+            <span>{{s.filialeNome}} - {{s.prodotto.marca}} {{s.prodotto.nome}}</span><br>
+            <div>
+                <label>Quantità per Ordini:</label><br>
+                <button type="button" (click)="decrementa(s.prodotto.id,s.filialeId)" [disabled]="s.quantita===0">-</button>
+                <input type="number" min="0" [(ngModel)]="s.quantita">
+                <button type="button" (click)="incrementa(s.prodotto.id,s.filialeId)">+</button>
+            </div>
+            <div *ngIf="s.filialeNome==='OnlineStore'">
+                <label>Quantità per Noleggi:</label><br>
+                <button type="button" (click)="decrementaNoleggio(s.prodotto.id,s.filialeId)" [disabled]="s.quantitaPerNoleggio===0">-</button>
+                <input type="number" min="0" [(ngModel)]="s.quantitaPerNoleggio">
+                <button type="button" (click)="incrementaNoleggio(s.prodotto.id,s.filialeId)">+</button>
+            </div>
+            <button type="button" (click)="salva(s.prodotto.id,s.filialeId)" [disabled]="s.quantita===s.quantitaAggiornata && s.quantitaPerNoleggio===s.quantitaNoleggioAggiornata">Salva</button>
+        </div>
+    </div>
+</section>

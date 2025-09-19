@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {HttpClient, HttpContext} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
-import {Router,RouterModule} from "@angular/router";
+import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
 import {
@@ -15,12 +15,13 @@ import {map, Observable} from "rxjs";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";
+import {ProdottoModel} from "../../models/prodotto.model";
 
 @Component({
     selector: "app-catalogo",
     standalone: true,
     templateUrl: `catalogo-utente.component.html`,
-    styleUrl: `./catalogo-utente.component.scss`,
+    styleUrl: `catalogo-utente.component.scss`,
     imports: [
         FormsModule,
         NgForOf,
@@ -30,33 +31,37 @@ import {UtenteModel} from "../../models/utente.model";
 })
 export class CatalogoUtenteComponent implements OnInit {
     cercaProd:string='';
-    prodotti:CatalogProductDTO[]=[];
-    loggedUser:UtenteModel={};
-    prodFiltrati:CatalogProductDTO[]=[];
+    prodotti:ProdottoModel[]=[];
+    loggedUser:UtenteModel|null=null;
+    prodFiltrati:ProdottoModel[]=[];
     carrello:CarrelloModel[]=[];
     errore:string="";
+    idCategoria:string|null=null;
 
     constructor(private http:HttpClient,
                 private router:Router,
+                private route:ActivatedRoute,
                 private session:SessionService,
                 private prodottoService: ProdottoControllerService,
                 private carrelloService:CarrelloControllerService) {
     }
 
     ngOnInit() {
-        //servirebbe get da filiale 'online'
-        if(this.session.getUser()){
-            this.loggedUser=this.session.getUser() as UtenteModel;
+        this.loggedUser=this.session.getUser();
+        this.idCategoria=this.route.snapshot.paramMap.get('id');
+        if(this.idCategoria){
+
         }
-        console.log(this.loggedUser.nome+" "+this.loggedUser.cognome);
-        this.prodottoService.getOnlineCatalog().subscribe({
-            next:(prodotti) => {
-                this.prodotti = prodotti;
-                this.filtraProdotti();
-            },
-            error: (err) => {
-                console.log(err);
-            }
+        this.prodottoService.getOnlineCatalog()
+            .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
+            .subscribe({
+                next:(prodotti:ProdottoModel[]) => {
+                    this.prodotti = prodotti;
+                    this.filtraProdotti();
+                },
+                error: (err) => {
+                    console.log(err);
+                }
         });
         this.carrelloService.getAllCartOfUser()
             .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
@@ -117,4 +122,10 @@ export class CatalogoUtenteComponent implements OnInit {
         const cart=this.carrello.find(c=>c.prodotto.id==id)
         return !(cart && cart.wishlist);
     }
+
+    canRent(){
+        const ruoliUtente=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);
+        return ruoliUtente?.includes("ORGANIZZATORE_EVENTI");
+    }
+    protected readonly unescape = unescape;
 }
