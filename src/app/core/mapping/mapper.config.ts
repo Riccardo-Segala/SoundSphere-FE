@@ -1,6 +1,12 @@
 import { pojos,PojosMetadataMap } from '@automapper/pojos';
 import {VantaggioModel} from "../../models/vantaggio.model";
-import {CreateUserDTO, UpdateUserAddressDTO, UpdateUserDTO} from "../../api-client";
+import {
+    CreateUserDTO,
+    ResponseOrderDetailsDTO,
+    ResponseOrderDTO,
+    UpdateUserAddressDTO,
+    UpdateUserDTO
+} from "../../api-client";
 
 export function setupMapperMetadata():void{
     PojosMetadataMap.create('ResponseProductDTO',{
@@ -455,5 +461,33 @@ export function setupMapperMetadata():void{
         id:String,
         nome:String,
         valore:Number
+    });
+    PojosMetadataMap.create('ResponseOrderDetailsDTO',{
+        ordineId:String,
+        prodotto:'ResponseProductDTO',
+        quantita:Number
+    });
+    PojosMetadataMap.create('DettaglioOrdineModel',{
+        ordineId:String,
+        prodotto:'ProdottoModel',
+        quantita:Number
+    });
+    PojosMetadataMap.create('ResponseOrderDTO',{
+        id: String,
+        dataAcquisto: String,
+        dataConsegna: String,
+        spedizioneGratuita: Boolean,
+        totale: Number,
+        stato: String,
+        dettagli: ['ResponseOrderDetailsDTO']
+    });
+    PojosMetadataMap.create('OrdineModel',{
+        id: String,
+        dataAcquisto: String,
+        dataConsegna: String,
+        spedizioneGratuita: Boolean,
+        totale: Number,
+        stato: String,
+        dettagli: ['DettaglioOrdineModel']
     });
 }

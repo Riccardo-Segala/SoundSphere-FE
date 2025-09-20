@@ -1,0 +1,20 @@
+<section>
+    <div class="accordion" id="accordionOrdini">
+        <div class="accordion-item" *ngFor="let o of ordini">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+o.id">
+                    {{o.id}} - {{o.dataAcquisto}} - {{o.totale?.toFixed(2)}}€ - {{o.stato}}
+                </button>
+            </h2>
+            <div [attr.id]="'collapse'+o.id" class="accordion-collapse collapse" data-bs-parent="#accordionOrdini">
+                <div class="acciordion-body">
+                    <div *ngFor="let d of o.dettagli">
+                        <div *ngIf="d.prodotto">
+                            {{d.quantita}}x {{d.prodotto?.marca}} {{d.prodotto?.nome}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -18,6 +18,7 @@ import {FormUtenteComponent} from "./components/admin-utenti/form-utente.compone
 import {DatiStaticiComponent} from "./components/dati-statici/dati-statici.component";
 import {IndirizzoutenteComponent} from "./components/indirizzi-utente/indirizzo-utente.component";
 import {ListaMetodoPagamentoComponent} from "./components/metodo-pagamento/lista-metodo-pagamento.component";
+import {ListaOrdiniComponent} from "./components/ordini/lista-ordini.component";
 
 export const routes: Routes = [
   {path: '', redirectTo: '/categorie', pathMatch: 'full' },
@@ -27,7 +28,7 @@ export const routes: Routes = [
     {path:'indirizzi-utente',component:IndirizzoutenteComponent},
     {path:'metodi-pagamento',component:ListaMetodoPagamentoComponent},
   {path: 'catalogo-utente', component: CatalogoUtenteComponent },
-  {path:'catalogo-utente/:idCategoria',component:CatalogoUtenteComponent},
+  {path:'catalogo-utente/:slug',component:CatalogoUtenteComponent},
   {path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },
   {path: 'carrello',component:CarrelloComponent},
   {path:'wishlist',component:CarrelloComponent},
@@ -47,5 +48,6 @@ export const routes: Routes = [
   {path:'utenti',component:ListaUtentiComponent},
   {path:'utenti/modifica/:id',component:FormUtenteComponent},
   {path:'utenti/crea',component:FormUtenteComponent},
-  {path:'dati-statici',component:DatiStaticiComponent}
+  {path:'dati-statici',component:DatiStaticiComponent},
+    {path:'ordini',component:ListaOrdiniComponent}
 ];
