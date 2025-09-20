@@ -4,12 +4,12 @@
         <h1 style="display: flex;justify-content: center">
             <a routerLink="/" class="text-decoration-none text-dark title">SoundSphere</a>
         </h1>
-        <nav class="navbar navbar-expand-sm bg-body-tertiary">
+        <nav class="navbar navbar-expand-sm bg-black bg-opacity-10 border rounded-5 shadow-sm">
             <div class="container-fluid">
                 <div class="collapse-navbar-collapse" id="navbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item" *ngFor="let c of categorieMacro">
-                            <a class="nav-link" [routerLink]="['categorie',c.id]">{{c.name}}</a>
+                            <a class="nav-link" [routerLink]="['categorie',c.slug]">{{c.name}}</a>
                         </li>
                     </ul>
                 </div>
@@ -32,7 +32,7 @@
     </header>
     <ng-template #benvenuto>
         <section style="float:right" >
-            <a routerLink="/modifica-profilo"  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</a>
+            <a *ngIf="loggedUser" routerLink="/modifica-profilo"  style="color:blue">Benvenuto {{loggedUser?.nome}} {{loggedUser?.cognome}}</a>
         </section>
     </ng-template>
     <main class="clearfix">

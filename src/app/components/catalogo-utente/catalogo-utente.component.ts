@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {HttpClient, HttpContext} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -7,14 +7,12 @@ import {CommonModule, NgForOf} from "@angular/common";
 import {
     CarrelloControllerService, CatalogProductDTO,
     ProdottoControllerService, ResponseCartDTO,
-    ResponseUserDTO,
-    UtenteControllerService, UpdateCartItemDTO
 } from "../../api-client";
-import {ResponseProductDTO} from "../../api-client";
-import {map, Observable} from "rxjs";
+import {map} from "rxjs";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";
+import {ProductCardComponent} from "../../shared/components/product-card/product-card.component";
 import {ProdottoModel} from "../../models/prodotto.model";
 
 @Component({
@@ -26,7 +24,8 @@ import {ProdottoModel} from "../../models/prodotto.model";
         FormsModule,
         NgForOf,
         RouterModule,
-        CommonModule
+        CommonModule,
+        ProductCardComponent
     ]
 })
 export class CatalogoUtenteComponent implements OnInit {
@@ -39,6 +38,7 @@ export class CatalogoUtenteComponent implements OnInit {
     idCategoria:string|null=null;
 
     constructor(private http:HttpClient,
+                private route:ActivatedRoute,
                 private router:Router,
                 private route:ActivatedRoute,
                 private session:SessionService,
@@ -48,13 +48,12 @@ export class CatalogoUtenteComponent implements OnInit {
 
     ngOnInit() {
         this.loggedUser=this.session.getUser();
-        this.idCategoria=this.route.snapshot.paramMap.get('id');
-        if(this.idCategoria){
-
-        }
-        this.prodottoService.getOnlineCatalog()
-            .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
-            .subscribe({
+        const slug=this.route.snapshot.paramMap.get("slug");
+        if(slug)
+        {
+            this.prodottoService.getOnlineCatalogBySlug(slug)
+              .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
+              .subscribe({
                 next:(prodotti:ProdottoModel[]) => {
                     this.prodotti = prodotti;
                     this.filtraProdotti();
@@ -62,15 +61,15 @@ export class CatalogoUtenteComponent implements OnInit {
                 error: (err) => {
                     console.log(err);
                 }
-        });
-        this.carrelloService.getAllCartOfUser()
-            .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
-            .subscribe(c=>this.carrello = c);
+            });
+            this.carrelloService.getAllCartOfUser()
+                .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
+                .subscribe(c=>this.carrello = c);
+        }
     }
 
     filtraProdotti() {
         if(this.cercaProd==""){
-            //get prodotti by name/descrizione e filiale
             this.prodFiltrati=this.prodotti;
             return;
         }
