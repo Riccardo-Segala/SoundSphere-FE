@@ -1,14 +1,71 @@
 <section>
+    <div class="mb-4">
+        <h2>I tuoi ordini</h2>
+        <hr>
+    </div>
+    <div class="row text-secondary fw-bold small p-2 d-none d-md-flex">
+        <div class="col-3">ID Ordine</div>
+        <div class="col-3">Data Acquisto</div>
+        <div class="col-3">Totale</div>
+        <div class="col-3">Stato</div>
+    </div>
     <div class="accordion" id="accordionOrdini">
         <div class="accordion-item" *ngFor="let o of ordini">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+o.id">
-                    {{o.id}} - {{o.dataAcquisto}} - {{o.totale?.toFixed(2)}}€ - {{o.stato}}
+                    <div class="row w-100 align-items-center">
+                        <div class="col-3"><strong>{{o.id}}</strong></div>
+                        <div class="col-3">{{o.dataAcquisto}}</div>
+                        <div class="col-3">{{o.totale?.toFixed(2)}}€</div>
+                        <div class="col-3"><span class="badge" [ngClass]="getBadgeOrdineClass(o.stato)">{{o.stato?.replaceAll('_',' ')}}</span></div>
+                    </div>
                 </button>
             </h2>
             <div [attr.id]="'collapse'+o.id" class="accordion-collapse collapse" data-bs-parent="#accordionOrdini">
                 <div class="acciordion-body">
                     <div *ngFor="let d of o.dettagli">
+                        <div *ngIf="d.prodotto">
+                            {{d.quantita}}x {{d.prodotto?.marca}} {{d.prodotto?.nome}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<section>
+    <div class="mb-4">
+        <h2>I tuoi noleggi</h2>
+        <hr>
+    </div>
+    <div class="row text-secondary fw-bold small p-2 d-none d-md-flex">
+        <div class="col">ID Noleggio</div>
+        <div class="col">Data Inizio</div>
+        <div class="col">Data Scadenza</div>
+        <div class="col">Data Restituzione</div>
+        <div class="col">Totale</div>
+    </div>
+    <div class="accordion" id="accordionNoleggi">
+        <div class="accordion-item" *ngFor="let n of noleggi">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+n.id">
+                    <div class="row w-100 align-items-center">
+                        <div class="col"><strong>{{n.id}}</strong></div>
+                        <div class="col">{{n.dataInizio}}</div>
+                        <div class="col">{{n.dataScadenza}}</div>
+                        <div class="col">
+                            <span class="badge" [ngClass]="getBadgeNoleggioClass(n.dataScadenza,n.dataRestituzione)">
+                                {{n.dataRestituzione ? n.dataRestituzione : 'DA RESTITUIRE'}}
+                            </span>
+                        </div>
+                        <div class="col">{{n.totale?.toFixed(2)}}€</div>
+                    </div>
+                </button>
+            </h2>
+            <div [attr.id]="'collapse'+n.id" class="accordion-collapse collapse" data-bs-parent="#accordionOrdini">
+                <div class="acciordion-body">
+                    <div *ngFor="let d of n.dettagli">
                         <div *ngIf="d.prodotto">
                             {{d.quantita}}x {{d.prodotto?.marca}} {{d.prodotto?.nome}}
                         </div>

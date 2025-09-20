@@ -26,8 +26,8 @@
             <div class="collapse navbar-collapse" id="navbarNavDarkDropdown"  *ngIf="loggedUser&&router.url!=='/login' && router.url!=='/registrazione'">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Benvenuto {{ loggedUser?.nome }} {{loggedUser?.cognome}}
+                        <button class="nav-user-dropdown dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            BENVENUTO {{ loggedUser?.nome?.toUpperCase() }} {{loggedUser?.cognome?.toUpperCase()}}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" routerLink="/modifica-profilo">Modifica Profilo</a></li>

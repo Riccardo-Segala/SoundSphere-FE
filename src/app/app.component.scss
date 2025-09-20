@@ -18,6 +18,33 @@ nav li{
   transform: scale(1.05);
 }
 
+/* rimuove frecca del dropdown */
 .dropdown-toggle::after {
   display:none;
+}
+
+/* Stile pulsante dropdown del profilo */
+.nav-user-dropdown{
+  border:none;
+  background-color: transparent;
+
+  border-left:1px solid rgba(105,105,105,0.25);
+  margin-left: 1rem;
+  //padding-left: 1rem;
+
+  color:black;
+  padding: 12px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Quando premo sul mio profilo */
+.nav-user-dropdown:hover{
+  background-color: rgba(80,80,80,0.05);
+}
+
+/* Stile dropdown attivo */
+.nav-user-dropdown:focus, .nav-user-dropdown.show{
+  background-color: rgba(255,255,255,0.15);
+  box-shadow: none; // rimuove l'ombra di default inserita da bootstrap sui bottoni
 }
