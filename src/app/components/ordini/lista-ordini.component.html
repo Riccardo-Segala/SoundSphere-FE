@@ -1,0 +1,38 @@
+<section>
+    <div *ngFor="let o of ordini">
+        <p class="d-inline-flex gap-1">
+            <button class="btn btn-toolbar" data-bs-toggle="collapse" data-bs-target="#dettaglioOrdine">
+                <div>
+                    <span>{{o.id}}</span>
+                </div>
+                <div>
+                    <span>{{o.dataAcquisto}}</span>
+                </div>
+                <div>
+                    <span>{{o.totale?.toFixed(2)}}</span>
+                </div>
+                <div>
+                    <span>{{o.stato}}</span>
+                </div>
+                <div *ngIf="o.stato==='CONSEGNATO'">
+                    <span>{{o.dataConsegna}}</span>
+                </div>
+            </button>
+        </p>
+        <div class="collapse" id="#dettaglioOrdine">
+            <div class="card card-body">
+                Ciao
+            </div>
+        </div>
+
+        <!--
+        id: String,
+        dataAcquisto: String,
+        dataConsegna: String,
+        spedizioneGratuita: Boolean,
+        totale: Number,
+        stato: String,
+        dettagli: ['DettaglioOrdineModel']
+        -->
+    </div>
+</section>

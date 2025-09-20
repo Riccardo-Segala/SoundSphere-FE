@@ -36,7 +36,7 @@ export class CatalogoUtenteComponent implements OnInit {
     prodFiltrati:ProdottoModel[]=[];
     carrello:CarrelloModel[]=[];
     errore:string="";
-    idCategoria:string|null=null;
+    slug:string|null=null;
 
     constructor(private http:HttpClient,
                 private router:Router,
@@ -48,24 +48,33 @@ export class CatalogoUtenteComponent implements OnInit {
 
     ngOnInit() {
         this.loggedUser=this.session.getUser();
-        this.idCategoria=this.route.snapshot.paramMap.get('id');
-        if(this.idCategoria){
-
+        this.slug=this.route.snapshot.paramMap.get('slug');
+        if(this.slug){
+            this.prodottoService.getOnlineCatalogBySlug(this.slug)
+                .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
+                .subscribe({
+                    next:(prodotti:ProdottoModel[]) => {
+                        this.prodotti = prodotti;
+                        this.filtraProdotti();
+                    },
+                    error: (err) => {
+                        console.log(err);
+                    }
+                });
         }
-        this.prodottoService.getOnlineCatalog()
-            .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
-            .subscribe({
-                next:(prodotti:ProdottoModel[]) => {
-                    this.prodotti = prodotti;
-                    this.filtraProdotti();
-                },
-                error: (err) => {
-                    console.log(err);
-                }
-        });
-        this.carrelloService.getAllCartOfUser()
-            .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
-            .subscribe(c=>this.carrello = c);
+        if(this.loggedUser){
+            this.carrelloService.getAllCartOfUser()
+                .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
+                .subscribe({
+                    next:(res:CarrelloModel[])=>{
+                        this.carrello=res;
+                    },
+                    error:(err)=>{
+                        console.log("Errore ottenimento carrello: ",JSON.stringify(err));
+                    }
+                });
+        }
+
     }
 
     filtraProdotti() {

@@ -128,8 +128,20 @@ export class CheckoutComponent implements OnInit {
 
         api$.subscribe({
             next:(res:CheckoutOutputDTO|CheckoutOutputRentalDTO)=>{
-                console.log("Ordine: ")
+                let id:string|undefined="";
+                if('ordineId' in res){
+                    id=res.ordineId;
+                }
+                if('noleggioId' in res){
+                    id=res.noleggioId;
+                }
+                if(id){
+                    alert("Ordine confermato: "+id);
+                }
+
+                console.log("Ordine: ");
                 console.log("Checkout riuscito!!!!");
+                this.router.navigate(['/']);
             },
             error:(err)=>{
                 console.log("Errore checkout: ",JSON.stringify(err));
@@ -144,15 +156,16 @@ export class CheckoutComponent implements OnInit {
         const msGiorno=1000*60*60*24;
         const msDifferenza=dataFine.getTime()-dataInizio.getTime();
 
-        this.totalePrezzo="0";
-        this.totaleGiornaliero="0";
-
         if(!(dataInizio>dataFine)){
             const giorniNoleggio=Math.round(msDifferenza/msGiorno);
+            let totale=0;
+            let totaleNoleggi=0;
             for(let c of this.carrello){
-                this.totalePrezzo = c.prodotto.prezzo ? String(c.prodotto.prezzo.toFixed(2)) : "0";
-                this.totaleGiornaliero = c.prodotto.costoGiornaliero ? String((c.prodotto.costoGiornaliero*(giorniNoleggio+1)).toFixed(2)) : "0";
+                totale += c.prodotto.prezzo ? c.prodotto.prezzo : 0;
+                totaleNoleggi += c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero*(giorniNoleggio+1) : 0;
             }
+            this.totalePrezzo=String(totale.toFixed(2));
+            this.totaleGiornaliero=String(totaleNoleggi.toFixed(2));
         }
     }
 }
