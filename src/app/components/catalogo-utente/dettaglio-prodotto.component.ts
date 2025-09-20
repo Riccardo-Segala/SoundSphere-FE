@@ -12,6 +12,10 @@ import {
 import {CommonModule,Location} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {RecensioniComponent} from "../recensioni/recensioni.component";
+import {UtenteModel} from "../../models/utente.model";
+import {ProdottoModel} from "../../models/prodotto.model";
+import {map} from "rxjs";
+import {mapper} from "../../core/mapping/mapper.initializer";
 
 @Component({
     selector: "app-dettaglio",
@@ -22,10 +26,10 @@ import {RecensioniComponent} from "../recensioni/recensioni.component";
 })
 
 export class DettaglioProdottoComponent implements OnInit {
-    prodotto:ResponseProductDTO={};
+    prodotto:ProdottoModel={};
     quantita:number=0;
     errore:string="";
-    user:ResponseUserDTO={};
+    loggedUser:UtenteModel|null=null;
 
     constructor(private route:ActivatedRoute,
                 private session: SessionService,
@@ -39,11 +43,18 @@ export class DettaglioProdottoComponent implements OnInit {
     ngOnInit() {
         const id=this.route.snapshot.paramMap.get("id");
         if(id){
-            this.prodottoService.getProductById(id).subscribe(prodotto=>this.prodotto = prodotto);
+            this.prodottoService.getProductById(id)
+                .pipe(map(dto=>mapper.map<ResponseProductDTO,ProdottoModel>(dto,'ResponseProductDTO','ProdottoModel')))
+                .subscribe({
+                    next:(res:ProdottoModel)=>{
+                        this.prodotto=res;
+                    },
+                    error:(err)=>{
+                        console.log("Errore ottenimento prodotto: ",JSON.stringify(err));
+                    }
+                });
         }
-        const u=this.session.getUser();
-        if(u)
-            this.user=this.session.getUser() as ResponseUserDTO;
+        this.loggedUser=this.session.getUser();
     }
 
     addToWishlist(){
@@ -99,5 +110,16 @@ export class DettaglioProdottoComponent implements OnInit {
     }
     annulla(){
         this.location.back();
+    }
+
+    incrementaQuantita(){
+        this.quantita+=1;
+    }
+    decrementaQuantita(){
+        this.quantita-=1;
+    }
+    canRent(){
+        const nomiRuoli=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);
+        return nomiRuoli?.includes("ORGANIZZATORE_EVENTI");
     }
 }

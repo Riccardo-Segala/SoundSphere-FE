@@ -1,0 +1,22 @@
+<section>
+    <div>
+        <div>
+            <label><input type="checkbox" [(ngModel)]="checked" (change)="filtra()">Mostra solo modificati</label>
+        </div>
+        <div>
+            <input type="text" [(ngModel)]="stringaFiltro" (keyup)="filtra()">
+        </div>
+    </div>
+    <div *ngFor="let s of stockFiltrati">
+        <div>
+            <span>{{s.prodotto.marca}} {{s.prodotto.nome}}</span>
+            <br>
+            <button type="button" (click)="decrementa(s.prodotto.id)" [disabled]="s.prodotto.quantitaDisponibile===0">-</button>
+            <input type="number" name="quantita" [(ngModel)]="s.quantita" min="0">
+            <button type="button" (click)="incrementa(s.prodotto.id)">+</button>
+        </div>
+        <div>
+            <button type="button" (click)="salva(s.prodotto.id)" [disabled]="s.quantita===s.quantitaAggiornata">Salva</button>
+        </div>
+    </div>
+</section>

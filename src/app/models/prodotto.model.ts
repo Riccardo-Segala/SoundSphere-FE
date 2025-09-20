@@ -6,7 +6,9 @@ export interface ProdottoModel{
     descrizione?:string;
     marca?:string;
     prezzo?:number;
+    quantitaDisponibile?:number;
     costoGiornaliero?:number;
+    quantitaDisponibileAlNoleggio?:number;
     rentable?:boolean;
     pathImmagine?:string;
     stelleMedie?:number;

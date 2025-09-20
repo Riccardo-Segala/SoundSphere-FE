@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
 import {
     CarrelloControllerService, CatalogProductDTO,
@@ -13,12 +13,13 @@ import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";
 import {ProductCardComponent} from "../../shared/components/product-card/product-card.component";
+import {ProdottoModel} from "../../models/prodotto.model";
 
 @Component({
     selector: "app-catalogo",
     standalone: true,
     templateUrl: `catalogo-utente.component.html`,
-    styleUrl: `./catalogo-utente.component.scss`,
+    styleUrl: `catalogo-utente.component.scss`,
     imports: [
         FormsModule,
         NgForOf,
@@ -29,31 +30,31 @@ import {ProductCardComponent} from "../../shared/components/product-card/product
 })
 export class CatalogoUtenteComponent implements OnInit {
     cercaProd:string='';
-    prodotti:CatalogProductDTO[]=[];
-    loggedUser:UtenteModel={};
-    prodFiltrati:CatalogProductDTO[]=[];
+    prodotti:ProdottoModel[]=[];
+    loggedUser:UtenteModel|null=null;
+    prodFiltrati:ProdottoModel[]=[];
     carrello:CarrelloModel[]=[];
     errore:string="";
+    idCategoria:string|null=null;
 
     constructor(private http:HttpClient,
                 private route:ActivatedRoute,
                 private router:Router,
+                private route:ActivatedRoute,
                 private session:SessionService,
                 private prodottoService: ProdottoControllerService,
                 private carrelloService:CarrelloControllerService) {
     }
 
     ngOnInit() {
+        this.loggedUser=this.session.getUser();
         const slug=this.route.snapshot.paramMap.get("slug");
-        //servirebbe get da filiale 'online'
-        if(this.session.getUser()){
-            this.loggedUser=this.session.getUser() as UtenteModel;
-        }
-        console.log(this.loggedUser.nome+" "+this.loggedUser.cognome);
         if(slug)
         {
-            this.prodottoService.getOnlineCatalogBySlug(slug).subscribe({
-                next:(prodotti) => {
+            this.prodottoService.getOnlineCatalogBySlug(slug)
+              .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
+              .subscribe({
+                next:(prodotti:ProdottoModel[]) => {
                     this.prodotti = prodotti;
                     this.filtraProdotti();
                 },
@@ -65,8 +66,6 @@ export class CatalogoUtenteComponent implements OnInit {
                 .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
                 .subscribe(c=>this.carrello = c);
         }
-
-
     }
 
     filtraProdotti() {
@@ -122,4 +121,10 @@ export class CatalogoUtenteComponent implements OnInit {
         const cart=this.carrello.find(c=>c.prodotto.id==id)
         return !(cart && cart.wishlist);
     }
+
+    canRent(){
+        const ruoliUtente=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);
+        return ruoliUtente?.includes("ORGANIZZATORE_EVENTI");
+    }
+    protected readonly unescape = unescape;
 }
