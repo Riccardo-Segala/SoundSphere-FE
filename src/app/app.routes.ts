@@ -16,6 +16,8 @@ import {FormFilialeComponent} from "./components/filiali/form-filiale.component"
 import {ListaUtentiComponent} from "./components/admin-utenti/lista-utenti.component";
 import {FormUtenteComponent} from "./components/admin-utenti/form-utente.component";
 import {DatiStaticiComponent} from "./components/dati-statici/dati-statici.component";
+import {StockComponent} from "./components/stock/stock.component";
+import {AdminStockComponent} from "./components/admin-stock/admin-stock.component";
 
 export const routes: Routes = [
   {path: '', redirectTo: '/categorie', pathMatch: 'full' },
@@ -44,5 +46,7 @@ export const routes: Routes = [
   {path:'utenti',component:ListaUtentiComponent},
   {path:'utenti/modifica/:id',component:FormUtenteComponent},
   {path:'utenti/crea',component:FormUtenteComponent},
-  {path:'dati-statici',component:DatiStaticiComponent}
+  {path:'dati-statici',component:DatiStaticiComponent},
+    {path:'stock',component:StockComponent},
+    {path:'stock-admin',component:AdminStockComponent}
 ];

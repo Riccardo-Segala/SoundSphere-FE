@@ -1,0 +1,48 @@
+.card {
+  width: 260px !important;
+  height: 400px !important;
+  border: 2px solid rgba(136, 136, 136, 0.5);
+  border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  transition: transform 0.1s
+}
+
+.card:hover{
+    transform: scale(1.05);
+}
+
+.card-title {
+  font-size: 20px;
+}
+
+.card-subtitle {
+  font-size: 16px;
+}
+
+.card-price {
+  font-size: 19px;
+  font-weight: bold;
+  margin-top: 3px;
+  color: #333;
+}
+
+.card-img-top {
+  height: 200px;
+  width: 200px;
+  margin: auto;
+
+  border-radius: 15px;
+  object-position: center;
+}
+
+.btn-card{
+  font-size: 15px;
+}
+
+
+
+
+

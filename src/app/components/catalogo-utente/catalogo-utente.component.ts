@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {HttpClient, HttpContext} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -7,14 +7,12 @@ import {CommonModule, NgForOf} from "@angular/common";
 import {
     CarrelloControllerService, CatalogProductDTO,
     ProdottoControllerService, ResponseCartDTO,
-    ResponseUserDTO,
-    UtenteControllerService, UpdateCartItemDTO
 } from "../../api-client";
-import {ResponseProductDTO} from "../../api-client";
-import {map, Observable} from "rxjs";
+import {map} from "rxjs";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";
+import {ProductCardComponent} from "../../shared/components/product-card/product-card.component";
 import {ProdottoModel} from "../../models/prodotto.model";
 
 @Component({
@@ -26,7 +24,8 @@ import {ProdottoModel} from "../../models/prodotto.model";
         FormsModule,
         NgForOf,
         RouterModule,
-        CommonModule
+        CommonModule,
+        ProductCardComponent
     ]
 })
 export class CatalogoUtenteComponent implements OnInit {
@@ -39,6 +38,7 @@ export class CatalogoUtenteComponent implements OnInit {
     slug:string|null=null;
 
     constructor(private http:HttpClient,
+                private route:ActivatedRoute,
                 private router:Router,
                 private route:ActivatedRoute,
                 private session:SessionService,
@@ -74,12 +74,10 @@ export class CatalogoUtenteComponent implements OnInit {
                     }
                 });
         }
-
     }
 
     filtraProdotti() {
         if(this.cercaProd==""){
-            //get prodotti by name/descrizione e filiale
             this.prodFiltrati=this.prodotti;
             return;
         }
