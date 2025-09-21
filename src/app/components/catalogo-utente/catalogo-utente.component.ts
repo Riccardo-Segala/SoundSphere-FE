@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
 import {
     CarrelloControllerService, CatalogProductDTO,
@@ -40,7 +40,6 @@ export class CatalogoUtenteComponent implements OnInit {
     constructor(private http:HttpClient,
                 private route:ActivatedRoute,
                 private router:Router,
-                private route:ActivatedRoute,
                 private session:SessionService,
                 private prodottoService: ProdottoControllerService,
                 private carrelloService:CarrelloControllerService) {
