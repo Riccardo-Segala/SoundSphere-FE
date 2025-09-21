@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {CreateReviewDTO, RecensioneControllerService, ResponseReviewDTO} from "../../api-client";
-import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
 import {RecensioneModel} from "../../models/recensione.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
@@ -20,7 +18,7 @@ import {CommonModule} from "@angular/common";
 })
 export class RecensioniComponent implements OnInit {
     @Input({required:true}) prodottoId: string|undefined;
-    stelleMedie: number|undefined;
+    @Input({required:true}) stelleMedie: number|undefined;
     recensioni:RecensioneModel[]=[];
     nuovaRecensione:RecensioneModel={prodottoId:""};
 

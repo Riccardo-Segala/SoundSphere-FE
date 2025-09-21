@@ -1,22 +1,15 @@
-<!-- Contenitore principale della sezione recensioni -->
 <div class="reviews-container">
 
-    <!-- Sezione Riepilogo Voto Medio -->
-    <div class="d-flex align-items-center gap-4 mb-4 pb-3 border-bottom">
-        <div class="average-rating">
-            <span class="rating-value">{{ stelleMedie | number:'1.1-1' }}</span>
-        </div>
+    <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
         <div class="summary-details">
-            <h3 class="fs-4">Valutazione Media Clienti</h3>
+            <h3 class="fs-4">Valutazione Media Clienti: {{ stelleMedie | number:'1.1-1' }}</h3>
         </div>
     </div>
 
-    <!-- Sezione Form per Inserire Nuova Recensione -->
     <section id="inserimento-recensione" class="review-form mb-5">
         <h4 class="fs-5">Lascia la tua recensione</h4>
         <form #form="ngForm" (ngSubmit)="inserisciRecensione()">
 
-            <!-- Input Stelle Interattivo -->
             <div class="mb-3 star-input">
                 <label class="form-label">La tua valutazione</label>
                 <div class="star-rating interactive">
@@ -29,37 +22,29 @@
                 </div>
             </div>
 
-            <!-- Input Titolo -->
             <div class="mb-3">
                 <label for="titolo-recensione" class="form-label">Titolo della recensione</label>
-                <!-- Usa la classe .form-control di Bootstrap -->
                 <input id="titolo-recensione" type="text" name="titolo" [(ngModel)]="nuovaRecensione.titolo" required class="form-control" placeholder="Es: Ottimo prodotto!">
             </div>
 
-            <!-- Input Descrizione -->
             <div class="mb-3">
                 <label for="descrizione-recensione" class="form-label">La tua recensione</label>
-                <!-- Usa la classe .form-control di Bootstrap -->
                 <textarea id="descrizione-recensione" name="descrizione" [(ngModel)]="nuovaRecensione.descrizione" required rows="4" class="form-control" placeholder="Scrivi qui cosa ne pensi..."></textarea>
             </div>
 
-            <!-- Usa le classi .btn e .btn-dark di Bootstrap -->
-            <button type="submit" class="btn btn-dark" [disabled]="form.invalid">Invia Recensione</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Invia Recensione</button>
         </form>
     </section>
 
-    <!-- Sezione Lista delle Recensioni Esistenti -->
     <section id="lista-recensioni" class="reviews-list">
-        <!-- Usa la card di Bootstrap come contenitore per la recensione -->
         <div *ngFor="let r of recensioni" class="card mb-3">
             <div class="card-header d-flex align-items-center gap-3">
                 <div class="user-avatar">{{ r.nomeUtente?.charAt(0) }}{{ r.cognomeUtente?.charAt(0) }}</div>
                 <div class="user-details">
                     <span class="fw-bold">{{r.nomeUtente}} {{r.cognomeUtente}}</span>
-                    <small class="text-muted">{{r.data | date:'dd/MM/yyyy'}}</small>
                 </div>
-                <!-- Spinge le stelle a destra -->
                 <div class="star-rating ms-auto">
+                    <small class="text-muted">{{r.data | date:'dd/MM/yyyy'}}</small>
                     <svg *ngFor="let i of [1,2,3,4,5]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" [class.filled]="i <= r.numStelle!"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                 </div>
             </div>

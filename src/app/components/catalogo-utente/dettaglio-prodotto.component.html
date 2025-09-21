@@ -39,9 +39,16 @@
 
 </section>
 
+<section>
+    <div class="product-description">
+        <h3>Descrizione prodotto</h3>
+        <p class="description">{{ prodotto.descrizione }}</p>
+    </div>
+</section>
+
 <div *ngIf="prodotto && prodotto.id" class="reviews-section">
     @defer (on viewport){
-        <app-recensioni [prodottoId]="prodotto.id"/>
+        <app-recensioni [prodottoId]="prodotto.id" [stelleMedie]="stelleMedie"/>
     } @placeholder {
         <div>
             <p>Caricamento sezione recensioni</p>
