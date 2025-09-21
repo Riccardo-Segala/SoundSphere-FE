@@ -20,13 +20,12 @@ import {CommonModule} from "@angular/common";
 })
 export class RecensioniComponent implements OnInit {
     @Input({required:true}) prodottoId: string|undefined;
+    stelleMedie: number|undefined;
     recensioni:RecensioneModel[]=[];
     nuovaRecensione:RecensioneModel={prodottoId:""};
 
     constructor(
-        private recensioniService: RecensioneControllerService,
-        private http: HttpClient,
-        private location:Location
+        private recensioniService: RecensioneControllerService
     ) {
     }
 

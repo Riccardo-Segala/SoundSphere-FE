@@ -1,57 +1,52 @@
-<section *ngIf="prodotto">
+<section *ngIf="prodotto && prodotto.id" class="product-container">
 
-    <button style="float:right"  type="button" name="addToWishlist" (click)="addToWishlist()">Aggiungi alla Wishlist</button>
-    <button style="float:right" type="button" name="addToCart" (click)="addToCart()">Aggiungi al Carrello</button>
-    <div>
-        <img src="http://localhost:8080{{prodotto.pathImmagine}}" alt="Prodotto {{prodotto.id}}">
+    <div class="product-image-column">
+        <img src="http://localhost:8080{{prodotto.pathImmagine}}" alt="Immagine di {{prodotto.nome}}">
     </div>
 
-    <br>
-    <label>
-        Nome Prodotto:
-    </label>
-    <br>
-    <input type="text" name="nome" readonly [value]="prodotto.nome">
-    <br>
-    <label>
-        Marca:
-    </label>
-    <br>
-    <input type="text" name="marca" readonly [value]="prodotto.marca">
-    <br>
-    <label>
-        Prezzo:
-    </label>
-    <br>
-    <input type="text" name="prezzo" readonly [value]="prodotto.prezzo">
+    <div class="product-details-column">
 
-    <br><br>
-    <div *ngIf="canRent()">
-        <label>Costo Giornaliero:</label>
-        <input type="text" min="1" readonly name="costo-giornaliero" [(ngModel)]="prodotto.costoGiornaliero">
+        <h1 class="product-title">{{ prodotto.nome }}</h1>
+        <h3 class="product-brand">{{ prodotto.marca }}</h3>
+
+        <div class="product-price">
+            <span>{{ prodotto.prezzo | currency:'EUR':'symbol':'1.2-2' }}</span>
+        </div>
+
+        <div class="quantity-selector">
+            <label for="quantita-carrello">Quantità:</label>
+            <div class="quantity-controls">
+                <button type="button" (click)="decrementaQuantita()" [disabled]="quantita <= 1" class="quantity-btn">-</button>
+                <input id="quantita-carrello" type="number" min="1" name="quantita-carrello" [(ngModel)]="quantita" class="quantity-input">
+                <button type="button" (click)="incrementaQuantita()" class="quantity-btn">+</button>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button type="button" name="addToCart" (click)="addToCart()" class="btn btn-primary">Aggiungi al Carrello</button>
+            <button type="button" name="addToWishlist" (click)="addToWishlist()" class="btn btn-secondary">Aggiungi alla Wishlist</button>
+        </div>
+
+        <div *ngIf="canRent()" class="rental-info">
+            <label>Costo Giornaliero:</label>
+            <span>{{ prodotto.costoGiornaliero | currency:'EUR' }}</span>
+        </div>
+
+        <span class="error-message">{{errore}}</span>
+
+        <button type="button" (click)="annulla()" class="btn-link">Torna al Catalogo</button>
     </div>
 
+</section>
 
-    <br><br>
-    <label>Quantità:</label><br>
-    <button type="button" (click)="decrementaQuantita()" [disabled]="quantita===0">-</button>
-    <input type="number" min="1" name="quantita-carrello" [(ngModel)]="quantita">
-    <button type="button" (click)="incrementaQuantita()">+</button>
-
-    <button type="button" (click)="annulla()">Torna a Catalogo</button>
-
-    <br><br><br>
-    <span>{{errore}}</span>
-
-    <br><br>
+<div *ngIf="prodotto && prodotto.id" class="reviews-section">
     @defer (on viewport){
         <app-recensioni [prodottoId]="prodotto.id"/>
     } @placeholder {
         <div>
-            <p>Caricamento sezione recensioni<</p>
+            <p>Caricamento sezione recensioni</p>
         </div>
     } @loading {
         <p>Inizializzazione recensioni</p>
     }
-
-</section>
+</div>

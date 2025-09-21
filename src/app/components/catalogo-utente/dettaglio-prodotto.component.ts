@@ -21,13 +21,13 @@ import {mapper} from "../../core/mapping/mapper.initializer";
     selector: "app-dettaglio",
     standalone: true,
     imports: [CommonModule, FormsModule, RecensioniComponent],
-    templateUrl: "/dettaglio-prodotto.component.html",
-    styleUrls: ["/dettaglio-prodotto.component.scss"],
+    templateUrl: "./dettaglio-prodotto.component.html",
+    styleUrls: ["./dettaglio-prodotto.component.scss"],
 })
 
 export class DettaglioProdottoComponent implements OnInit {
     prodotto:ProdottoModel={};
-    quantita:number=0;
+    quantita:number=1;
     errore:string="";
     loggedUser:UtenteModel|null=null;
 
