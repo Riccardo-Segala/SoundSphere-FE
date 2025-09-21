@@ -1,12 +1,46 @@
-<section id="inserimento-recensione">
-    <div [formGroup]="addressForm">
-        <input formControlName="nazione" placeholder="Nazione">
-        <input formControlName="provincia" placeholder="Provincia">
-        <input formControlName="citta" placeholder="Città">
-        <input formControlName="cap" placeholder="CAP">
-        <input formControlName="via" placeholder="Via/Piazza">
-        <input formControlName="civico" placeholder="Civico">
-        <button type="submit" *ngIf="modifica" (click)="salva()" [disabled]="addressForm.invalid">Salva</button>
-        <button type="button" (click)="clear()" *ngIf="modifica">Pulisci</button>
-    </div>
-</section>
+<div class="container p-4 bg-black bg-opacity-10 rounded-2">
+    <form [formGroup]="addressForm" class="row justify-content-center align-items-center">
+        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2">
+            <div class="mb-3">
+                <label class="form-label">Nazione:</label>
+                <input class="form-control" formControlName="nazione" placeholder="Nazione">
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2">
+            <div class="mb-3">
+                <label class="form-label">Provincia:</label>
+                <input class="form-control" formControlName="provincia" placeholder="Provincia">
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2">
+            <div class="mb-3">
+                <label class="form-label">Città:</label>
+                <input class="form-control" formControlName="citta" placeholder="Città">
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2">
+            <div class="mb-3">
+                <label class="form-label">CAP:</label>
+                <input class="form-control" formControlName="cap" placeholder="CAP">
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2">
+            <div class="mb-3">
+                <label class="form-label">Via/Piazza:</label>
+                <input class="form-control" formControlName="via" placeholder="Via/Piazza">
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2">
+            <div class="mb-3">
+                <label class="form-label">Civico:</label>
+                <input class="form-control" formControlName="civico" placeholder="Civico">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 d-flex justify-content-center gap-3">
+                <button class="btn btn-primary w-25" type="submit" *ngIf="modifica" (click)="salva()" [disabled]="addressForm.invalid">Salva</button>
+                <button class="btn btn-primary w-25" type="button" (click)="clear()" *ngIf="modifica">Pulisci</button>
+            </div>
+        </div>
+    </form>
+</div>
