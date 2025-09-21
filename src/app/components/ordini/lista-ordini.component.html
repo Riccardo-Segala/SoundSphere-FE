@@ -23,11 +23,20 @@
             </h2>
             <div [attr.id]="'collapse'+o.id" class="accordion-collapse collapse" data-bs-parent="#accordionOrdini">
                 <div class="acciordion-body">
-                    <div *ngFor="let d of o.dettagli">
-                        <div *ngIf="d.prodotto">
-                            {{d.quantita}}x {{d.prodotto?.marca}} {{d.prodotto?.nome}}
-                        </div>
-                    </div>
+                    <ul class="list-unstyled">
+                        <li *ngFor="let d of o.dettagli" class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div class="fw-bold" *ngIf="d && d.prodotto && d.prodotto.prezzo">
+                                <span class="fw-bold">{{d.quantita}}x</span> {{d.prodotto?.marca}} {{d.prodotto?.nome}}
+                            </div>
+                            <div class="text-end">
+                                <span class="text-muted small">
+                                    {{prezzoDettaglio(d.prodotto?.prezzo).toFixed(2)}}€/cad.
+                                    <br>
+                                    <strong class="ms-3">{{prezzoTotaleDettaglio(d.prodotto?.prezzo,d.quantita,'ordine')}}€</strong>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -63,13 +72,28 @@
                     </div>
                 </button>
             </h2>
-            <div [attr.id]="'collapse'+n.id" class="accordion-collapse collapse" data-bs-parent="#accordionOrdini">
+            <div [attr.id]="'collapse'+n.id" class="accordion-collapse collapse" data-bs-parent="#accordionNoleggi">
                 <div class="acciordion-body">
-                    <div *ngFor="let d of n.dettagli">
+                    <ul class="list-unstyled">
+                        <li *ngFor="let d of n.dettagli" class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div class="fw-bold" *ngIf="d && d.prodotto && d.prodotto.prezzo">
+                                <span class="fw-bold">{{d.quantita}}x</span> {{d.prodotto?.marca}} {{d.prodotto?.nome}}
+                            </div>
+                            <div class="text-end">
+                                <span class="text-muted small">
+                                    {{prezzoDettaglio(d.prodotto?.costoGiornaliero).toFixed(2)}}€/gg
+                                    <br>
+                                    <strong class="ms-3">{{prezzoTotaleDettaglio(d.prodotto?.costoGiornaliero,d.quantita,'noleggio').toFixed(2)}}€</strong>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!--<div>
                         <div *ngIf="d.prodotto">
                             {{d.quantita}}x {{d.prodotto?.marca}} {{d.prodotto?.nome}}
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

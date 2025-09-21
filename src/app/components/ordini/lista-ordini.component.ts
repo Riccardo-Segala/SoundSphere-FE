@@ -103,4 +103,17 @@ export class ListaOrdiniComponent implements OnInit{
             return 'badge-status-secondary';
         }
     }
+
+    prezzoDettaglio(prezzo:number|undefined):number{
+        if(prezzo){
+            return prezzo;
+        }
+        return 0;
+    }
+    prezzoTotaleDettaglio(prezzo:number|undefined,quantita:number|undefined,tipologia:string){
+        if(prezzo && quantita){
+            return prezzo*quantita;
+        }
+        return 0;
+    }
 }
