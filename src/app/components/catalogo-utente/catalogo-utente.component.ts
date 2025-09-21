@@ -35,7 +35,7 @@ export class CatalogoUtenteComponent implements OnInit {
     prodFiltrati:ProdottoModel[]=[];
     carrello:CarrelloModel[]=[];
     errore:string="";
-    idCategoria:string|null=null;
+    slug:string|null=null;
 
     constructor(private http:HttpClient,
                 private route:ActivatedRoute,
@@ -48,23 +48,31 @@ export class CatalogoUtenteComponent implements OnInit {
 
     ngOnInit() {
         this.loggedUser=this.session.getUser();
-        const slug=this.route.snapshot.paramMap.get("slug");
-        if(slug)
-        {
-            this.prodottoService.getOnlineCatalogBySlug(slug)
-              .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
-              .subscribe({
-                next:(prodotti:ProdottoModel[]) => {
-                    this.prodotti = prodotti;
-                    this.filtraProdotti();
-                },
-                error: (err) => {
-                    console.log(err);
-                }
-            });
+        this.slug=this.route.snapshot.paramMap.get('slug');
+        if(this.slug){
+            this.prodottoService.getOnlineCatalogBySlug(this.slug)
+                .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
+                .subscribe({
+                    next:(prodotti:ProdottoModel[]) => {
+                        this.prodotti = prodotti;
+                        this.filtraProdotti();
+                    },
+                    error: (err) => {
+                        console.log(err);
+                    }
+                });
+        }
+        if(this.loggedUser){
             this.carrelloService.getAllCartOfUser()
                 .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
-                .subscribe(c=>this.carrello = c);
+                .subscribe({
+                    next:(res:CarrelloModel[])=>{
+                        this.carrello=res;
+                    },
+                    error:(err)=>{
+                        console.log("Errore ottenimento carrello: ",JSON.stringify(err));
+                    }
+                });
         }
     }
 

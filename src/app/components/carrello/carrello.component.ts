@@ -52,6 +52,7 @@ export class CarrelloComponent implements OnInit {
                         next:(carrello:CarrelloModel[])=>{
                             this.carrello=carrello;
                             this.calcolaStelleMedie();
+                            this.calcolaTotali();
                         },
                         error:(err)=>{
                             console.log("Errore ottenimento carrello: "+err)
@@ -65,6 +66,7 @@ export class CarrelloComponent implements OnInit {
                         next:(carrello:CarrelloModel[])=>{
                             this.carrello=carrello;
                             this.calcolaStelleMedie();
+
                         },
                         error:(err)=>{
                             console.log("Errore ottenimento carrello: "+err)
@@ -105,6 +107,7 @@ export class CarrelloComponent implements OnInit {
         this.carrelloService.removeItemsFromCart(items).subscribe({
             next:(res)=>{
                 console.log("Rimozione riuscita");
+                this.carrello=[];
             },
             error:(err)=>{
                 console.log("Errore rimozione prodotto: "+err);

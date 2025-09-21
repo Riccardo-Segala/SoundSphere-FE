@@ -25,7 +25,7 @@ import {mapper} from "../../core/mapping/mapper.initializer";
 export class CategorieComponent implements OnInit {
     categorieView:CategoriaModel[]=[];
     categoria:CategoriaModel|null=null;
-    id:string|null=null;
+    slug:string|null=null;
     private routeSub:Subscription=new Subscription();
 
     constructor(
@@ -36,7 +36,6 @@ export class CategorieComponent implements OnInit {
     }
 
     ngOnInit() {
-        //this.id=this.route.snapshot.paramMap.get("id");
         this.routeSub = this.route.paramMap.subscribe(params =>{
             const slug = params.get("slug");
             this.caricaCategoria(slug);
