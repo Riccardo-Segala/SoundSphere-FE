@@ -1,0 +1,42 @@
+:host {
+  --star-color: #ffc107;
+  --star-color-empty: #e4e5e9;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.25rem;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--star-color-empty);
+    &.filled {
+      fill: var(--star-color);
+    }
+  }
+}
+
+.star-input {
+  .interactive {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+
+    label {
+      cursor: pointer;
+      transition: color 0.2s;
+      svg {
+        fill: var(--star-color-empty);
+      }
+    }
+
+    label:hover,
+    label:hover ~ label,
+    input[type="radio"]:checked ~ label {
+      svg {
+        fill: var(--star-color);
+      }
+    }
+  }
+}

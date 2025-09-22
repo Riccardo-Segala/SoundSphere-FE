@@ -1,11 +1,10 @@
 import {Component, OnInit} from "@angular/core";
 import {SessionService} from "../../services/session.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
     ProdottoControllerService,
     ResponseProductDTO,
     CarrelloControllerService,
-    ResponseUserDTO,
     UtenteControllerService,
     UpdateCartItemDTO
 } from "../../api-client";
@@ -21,14 +20,15 @@ import {mapper} from "../../core/mapping/mapper.initializer";
     selector: "app-dettaglio",
     standalone: true,
     imports: [CommonModule, FormsModule, RecensioniComponent],
-    templateUrl: "/dettaglio-prodotto.component.html",
-    styleUrls: ["/dettaglio-prodotto.component.scss"],
+    templateUrl: "./dettaglio-prodotto.component.html",
+    styleUrls: ["./dettaglio-prodotto.component.scss"],
 })
 
 export class DettaglioProdottoComponent implements OnInit {
     prodotto:ProdottoModel={};
-    quantita:number=0;
+    quantita:number=1;
     errore:string="";
+    stelleMedie:number|undefined=undefined;
     loggedUser:UtenteModel|null=null;
 
     constructor(private route:ActivatedRoute,
@@ -53,6 +53,14 @@ export class DettaglioProdottoComponent implements OnInit {
                         console.log("Errore ottenimento prodotto: ",JSON.stringify(err));
                     }
                 });
+            this.prodottoService.getAverageStars(id).subscribe({
+                next:(res)=>{
+                    this.stelleMedie=res;
+                },
+                error:(err)=>{
+                    console.log("Errore ottenimento stelle medie: ",JSON.stringify(err));
+                }
+            })
         }
         this.loggedUser=this.session.getUser();
     }
@@ -73,7 +81,7 @@ export class DettaglioProdottoComponent implements OnInit {
             this.cartService.updateItemInCart(cartItem).subscribe({
                 next:(response)=>{
                     if(response){
-                        this.location.back();
+                        //this.location.back();
                     }
                 },
                 error:()=>{

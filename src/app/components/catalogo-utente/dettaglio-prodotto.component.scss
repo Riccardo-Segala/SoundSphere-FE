@@ -1,0 +1,139 @@
+$primary-color: #000;
+$secondary-color: #6c757d;
+$border-color: #dee2e6;
+$background-color: #fff;
+
+:host {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --border-color: #{$border-color};
+  --background-color: #{$background-color};
+
+  --primary-color-hover: #{lighten($primary-color, 15%)};
+
+  --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  font-family: var(--font-family);
+}
+
+.product-image-column {
+  flex: 7 1 0;
+  min-width: 500px;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+}
+
+.product-details-column {
+  flex: 3 1 0;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.product-brand {
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.product-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.product-price {
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.quantity-selector {
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+  }
+  .quantity-input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-left: none;
+    border-right: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    &:focus {
+      outline: none;
+    }
+
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+  .quantity-btn {
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--secondary-color);
+  cursor: pointer;
+  text-decoration: underline;
+  align-self: flex-start;
+  padding: 0.5rem 0;
+}
+
+.error-message {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.reviews-section {
+  margin-top: 4rem;
+}
+
+.description {
+  font-family: var(--font-family);
+}
