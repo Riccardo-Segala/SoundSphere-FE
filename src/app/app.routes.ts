@@ -53,7 +53,7 @@ export const routes: Routes = [
   {path:'utenti/modifica/:id',component:FormUtenteComponent},
   {path:'utenti/crea',component:FormUtenteComponent},
   {path:'dati-statici',component:DatiStaticiComponent},
-    {path:'ordini',component:ListaOrdiniComponent}
+    {path:'ordini',component:ListaOrdiniComponent},
     {path:'stock',component:StockComponent},
     {path:'stock-admin',component:AdminStockComponent}
 ];
