@@ -28,9 +28,9 @@
                     <label class="form-label">Email:</label>
                     <input class="form-control" type="email" formControlName="email"/>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" *ngIf="!modifica">Password:</label>
-                    <input class="form-control" type="password" *ngIf="!modifica" formControlName="password"/>
+                <div class="mb-3" *ngIf="!modifica">
+                    <label class="form-label">Password:</label>
+                    <input class="form-control" type="password" formControlName="password"/>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Data di Nascita:</label>

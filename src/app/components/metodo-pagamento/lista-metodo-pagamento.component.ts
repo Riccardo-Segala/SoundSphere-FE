@@ -19,9 +19,7 @@ import {FormMetodoPagamentoComponent} from "./form-metodo-pagamento/form-metodo-
 })
 export class ListaMetodoPagamentoComponent implements OnInit{
     metodi:MetodoPagamentoModel[]=[];
-    nuovoMetodo!:MetodoPagamentoModel;
     loggedUser:UtenteModel|null = null;
-    modificaMP:boolean=false;
     paypal:boolean=false;
 
     constructor(
@@ -57,14 +55,36 @@ export class ListaMetodoPagamentoComponent implements OnInit{
         this.caricaMetodi();
     }
     delete(id:string){
-        this.mpService.deletePaymentMethod(id).subscribe({
-            next:(res)=>{
-                console.log("Cancellazione effettuata: "+res);
-                this.caricaMetodi();
-            },
-            error:(err)=>{
-                console.log("Errore cancellazione metodo: "+err);
+        const conferma=window.confirm("Sei sicuro di eliminarlo?");
+        if(conferma){
+            this.mpService.deletePaymentMethod(id).subscribe({
+                next:(res)=>{
+                    console.log("Cancellazione effettuata: "+res);
+                    this.caricaMetodi();
+                },
+                error:(err)=>{
+                    console.log("Errore cancellazione metodo: "+err);
+                }
+            });
+        }
+    }
+
+    impostaPredefinito(id:string|undefined){
+        if(id){
+            const aggiornaMetodo:MetodoPagamentoModel|undefined=this.metodi.find(metodo=>metodo.id===id);
+            if(aggiornaMetodo){
+                const index=this.metodi.indexOf(aggiornaMetodo);
+                aggiornaMetodo.main=true;
+                this.mpService.updatePaymentMethod(id,mapper.map(aggiornaMetodo,'MetodoPagamentoModel','UpdatePaymentMethodDTO'))
+                    .subscribe({
+                        next:()=>{
+                            this.caricaMetodi();
+                        },
+                        error:(err)=>{
+                            console.log("Errore aggiornamento metodo di pagamento: ",JSON.stringify(err));
+                        }
+                    });
             }
-        });
+        }
     }
 }

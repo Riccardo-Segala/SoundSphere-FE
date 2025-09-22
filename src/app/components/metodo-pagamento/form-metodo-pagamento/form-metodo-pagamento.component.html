@@ -1,34 +1,67 @@
-<div>
+<div class="container py-2 px-4 bg-black bg-opacity-10 rounded-2">
     <form name="formMetodi" #form="ngForm" (ngSubmit)="salva()">
-        <label>Nome</label>
-        <input name="nome" type="text" [(ngModel)]="nome" required>
-        <br>
-        <label>Cognome</label>
-        <input name="cognome" type="text" [(ngModel)]="cognome" required>
-        <br>
-        <label>Numero</label>
-        <input name="numero" type="text" [(ngModel)]="metodo.numero" pattern="^\d{16}$" placeholder="0000 0000 0000 0000" required>
-        <br>
-        <label>CVV</label>
-        <input name="cvv" type="text" [(ngModel)]="metodo.cvv" pattern="^\d{3}$" placeholder="000" required>
-        <br>
-        <label>Data Scadenza</label>
-        <input name="data-scadenza" type="date" [(ngModel)]="metodo.dataScadenza" required>
-        <br>
-        <div>
-            <label><input type="radio" name="tipo-metodo" value="CARTA_DI_CREDITO" [(ngModel)]="metodo.tipoPagamento">Carta di Credito </label>
-            <label><input type="radio" name="tipo-metodo" value="PAYPAL" [(ngModel)]="metodo.tipoPagamento">Paypal</label>
+        <div class="row justify-content-evenly">
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2 d-flex flex-column">
+                <div class="mb-3">
+                    <label class="form-label">Nome:</label>
+                    <input class="form-control" name="nome" type="text" [(ngModel)]="nome" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Cognome:</label>
+                    <input class="form-control" name="cognome" type="text" [(ngModel)]="cognome" required>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-9">
+                        <label class="form-label">Numero:</label>
+                        <input class="form-control" name="numero" type="text" [(ngModel)]="metodo.numero" pattern="^\d{16}$" placeholder="0000 0000 0000 0000" required>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label">CVV:</label>
+                        <input class="form-control" name="cvv" type="text" [(ngModel)]="metodo.cvv" pattern="^\d{3}$" placeholder="000" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2 d-flex flex-column">
+                <div class="mb-3">
+                    <label class="form-label">Data Scadenza:</label>
+                    <input class="form-control" name="data-scadenza" type="month" [(ngModel)]="meseAnno" (ngModelChange)="dataCambiata($event)" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tipologia:</label>
+                    <div class="d-flex gap-1">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label flex-fill">
+                                <input class="form-check-input" type="radio" name="tipo-metodo" value="CARTA_DI_CREDITO" [(ngModel)]="metodo.tipoPagamento">
+                                Carta di Credito
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label flex-fill">
+                                <input class="form-check-input" type="radio" name="tipo-metodo" value="PAYPAL" [(ngModel)]="metodo.tipoPagamento">
+                                Paypal
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 mt-auto" *ngIf="metodo.tipoPagamento==='PAYPAL'">
+                    <label class="form-label">Email di paypal</label>
+                    <input class="form-control" name="paypal-email" type="email" [(ngModel)]="metodo.paypalEmail">
+                </div>
+            </div>
         </div>
-        <br>
-        <div *ngIf="metodo.tipoPagamento==='PAYPAL'">
-            <label>Email di paypal</label>
-            <input name="paypal-email" type="email" [(ngModel)]="metodo.paypalEmail">
+        <div class="row justify-content-evenly">
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 p-2 d-flex">
+                <div class="mb-3 form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" name="default" type="checkbox" [(ngModel)]="metodo.main">
+                        Impostare come metodo di default?
+                    </label>
+                </div>
+            </div>
+            <div class="col-4"></div>
         </div>
-
-        <br>
-        <label>Impostare come metodo di default?</label>
-        <input name="default" type="checkbox" [(ngModel)]="metodo.main">
-        <br>
-        <button name="salva" type="submit" [disabled]="form.invalid">Salva</button>
+        <div class="row justify-content-center">
+            <button class="btn btn-primary w-25 m-2" name="salva" type="submit" [disabled]="form.invalid">Salva</button>
+        </div>
     </form>
 </div>
