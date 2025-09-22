@@ -19,6 +19,9 @@ import {DatiStaticiComponent} from "./components/dati-statici/dati-statici.compo
 import {IndirizzoutenteComponent} from "./components/indirizzi-utente/indirizzo-utente.component";
 import {ListaMetodoPagamentoComponent} from "./components/metodo-pagamento/lista-metodo-pagamento.component";
 import {ListaOrdiniComponent} from "./components/ordini/lista-ordini.component";
+import {StockComponent} from "./components/stock/stock.component";
+import {AdminStockComponent} from "./components/admin-stock/admin-stock.component";
+
 
 export const routes: Routes = [
   {path: '', redirectTo: '/categorie', pathMatch: 'full' },
@@ -33,8 +36,9 @@ export const routes: Routes = [
   {path: 'carrello',component:CarrelloComponent},
   {path:'wishlist',component:CarrelloComponent},
   {path:'categorie',component:CategorieComponent},
-  {path:'categorie/:id',component:CategorieComponent},
-  {path:'checkout',component:CheckoutComponent},
+  {path:'categorie/:slug',component:CategorieComponent},
+  {path:'checkout/ordine',component:CheckoutComponent},
+    {path:'checkout/noleggio',component:CheckoutComponent},
   {path:'admin-page',component:AdminPageComponent},
   {path:'filiali',component:ListaFilialiComponent},
   {path:'filiali/modifica/:id',component:FormFilialeComponent},
@@ -50,4 +54,6 @@ export const routes: Routes = [
   {path:'utenti/crea',component:FormUtenteComponent},
   {path:'dati-statici',component:DatiStaticiComponent},
     {path:'ordini',component:ListaOrdiniComponent}
+    {path:'stock',component:StockComponent},
+    {path:'stock-admin',component:AdminStockComponent}
 ];

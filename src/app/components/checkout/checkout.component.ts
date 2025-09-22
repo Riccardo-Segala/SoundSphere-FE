@@ -3,9 +3,9 @@ import {Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
 import {
     CarrelloControllerService,
-    CheckoutInputDTO, CheckoutOutputDTO,
+    CheckoutInputDTO, CheckoutInputRentalDTO, CheckoutOutputDTO, CheckoutOutputRentalDTO,
     IndirizzoUtenteControllerService,
-    MetodoPagamentoControllerService,
+    MetodoPagamentoControllerService, NoleggioControllerService,
     OrdineControllerService,
     ResponseCartDTO,
     ResponsePaymentMethodDTO,
@@ -15,7 +15,7 @@ import {UtenteModel} from "../../models/utente.model";
 import {MetodoPagamentoModel} from "../../models/metodo-pagamento.model";
 import {IndirizzoUtenteModel} from "../../models/indirizzo-utente.model";
 import {CarrelloModel} from "../../models/carrello.model";
-import {forkJoin, map, take} from "rxjs";
+import {forkJoin, map, Observable, take} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -36,17 +36,22 @@ export class CheckoutComponent implements OnInit {
     metodiPagamento:MetodoPagamentoModel[]=[];
     indirizzi:IndirizzoUtenteModel[]=[];
     carrello:CarrelloModel[]=[];
-    totale:number=0;
+    totalePrezzo:string="0";
+    totaleGiornaliero:string="0";
     indirizzoCorrente:string|undefined="";
     metodoCorrente:string|undefined="";
+    inizioNoleggio:string="";
+    fineNoleggio:string="";
+    oggi:string="";
 
     constructor(
-        private router: Router,
+        public router: Router,
         private session: SessionService,
         private mdService:MetodoPagamentoControllerService,
         private indirizzoService:IndirizzoUtenteControllerService,
         private carrelloService:CarrelloControllerService,
-        private ordineService:OrdineControllerService
+        private ordineService:OrdineControllerService,
+        private noleggioService:NoleggioControllerService
     ) {
     }
 
@@ -68,12 +73,24 @@ export class CheckoutComponent implements OnInit {
                     this.indirizzi=inidrizziRes as IndirizzoUtenteModel[];
                     this.metodiPagamento=mdRes as MetodoPagamentoModel[];
 
+                    const oggi=new Date();
+                    const anno=oggi.getFullYear();
+                    const mese=String(oggi.getMonth()+1).padStart(2,'0');
+                    const giorno=String(oggi.getDate()).padStart(2,'0');
+
+                    this.inizioNoleggio=`${anno}-${mese}-${giorno}`;
+                    this.fineNoleggio=`${anno}-${mese}-${giorno}`;
+                    this.oggi=`${anno}-${mese}-${giorno}`;
+
+                    this.calcolaTotali();
+                    //per impostare l'opzione selezionata nella select
                     const md=this.metodiPagamento.find(m=>m.main)
                     if(md)
                         this.metodoCorrente=md.id;
                     else
                         this.metodoCorrente=this.metodiPagamento[0].id;
 
+                    //per impostare l'opzione selezionata nella select
                     const ind=this.indirizzi.find(i=>i.main)
                     if(ind)
                         this.indirizzoCorrente=ind.id as string;
@@ -85,56 +102,70 @@ export class CheckoutComponent implements OnInit {
                     this.router.navigate(["/carrello"]);
                 }
             })
-
-            //versione sequenziale
-            /*this.carrelloService.getAllCartOfUser()
-                .pipe(map(dtos=>mapper.mapArray<ResponseCartDTO,CarrelloModel>(dtos,'ResponseCartDTO','CarrelloModel')))
-                .subscribe({
-                    next:(res:CarrelloModel[])=>{
-                        this.carrello = res;
-                        this.indirizzoService.getAllUserAddressesByUserId()
-                            .pipe(map(dtos=>mapper.mapArray<ResponseUserAddressDTO,IndirizzoUtenteModel>(dtos,'ResponseUserAddressDTO','IndirizzoUtenteModel')))
-                            .subscribe({
-                                next:(res:IndirizzoUtenteModel[])=>{
-                                    this.indirizzi = res;
-                                    this.mdService.getAllPaymentMethod()
-                                        .pipe(map(dtos=>mapper.mapArray<ResponsePaymentMethodDTO,MetodoPagamentoModel>(dtos,'ResponsePaymentMethodDTO','MetodoPagamentoModel')))
-                                        .subscribe({
-                                            next:(res:MetodoPagamentoModel[])=>{
-                                                this.metodiPagamento = res;
-                                            },
-                                            error:(err)=>{
-                                                console.log("Errore metodi pagamento: "+err);
-                                            }
-                                        })
-                                },
-                                error:(err)=>{
-                                    console.log("Errore indirizzi : "+err);
-                                }
-                            })
-                    },
-                    error:(err)=>{
-                        console.log("Errore carrello: "+err);
-                    }
-                })*/
         }else{
             this.router.navigate(["/"]);
         }
     }
     paga(){
-        const checkout:CheckoutInputDTO={
-            metodoPagamentoId:this.metodoCorrente,
-            indirizzoSpedizioneId:this.indirizzoCorrente
+        let api$:Observable<CheckoutOutputDTO|CheckoutOutputRentalDTO>
+        let dto:CheckoutInputDTO|CheckoutInputRentalDTO;
+        if(this.router.url==="/checkout/ordine"){
+            dto={
+                metodoPagamentoId:this.metodoCorrente,
+                indirizzoSpedizioneId:this.indirizzoCorrente
+            }
+            api$=this.ordineService.checkout(dto);
         }
-        this.ordineService.checkout(checkout).subscribe({
-            next:(res:CheckoutOutputDTO)=>{
-                console.log("Id ordine: "+res.ordineId);
-                console.log("Checkout riuscito!!!!!!!!!!!!!!!!!!!!!");
-                this.router.navigate(["/"]);
+        else{
+            dto={
+                metodoPagamentoId:this.metodoCorrente,
+                indirizzoSpedizioneId:this.indirizzoCorrente,
+                dataInizio:this.inizioNoleggio,
+                dataFine:this.fineNoleggio
+            }
+            api$=this.noleggioService.noleggia(dto);
+        }
+
+        api$.subscribe({
+            next:(res:CheckoutOutputDTO|CheckoutOutputRentalDTO)=>{
+                let id:string|undefined="";
+                if('ordineId' in res){
+                    id=res.ordineId;
+                }
+                if('noleggioId' in res){
+                    id=res.noleggioId;
+                }
+                if(id){
+                    alert("Ordine confermato: "+id);
+                }
+
+                console.log("Ordine: ");
+                console.log("Checkout riuscito!!!!");
+                this.router.navigate(['/']);
             },
             error:(err)=>{
-                console.log("Errore checkout: "+err);
+                console.log("Errore checkout: ",JSON.stringify(err));
             }
         })
+    }
+
+    calcolaTotali(){
+        const dataInizio=new Date(this.inizioNoleggio);
+        const dataFine=new Date(this.fineNoleggio);
+
+        const msGiorno=1000*60*60*24;
+        const msDifferenza=dataFine.getTime()-dataInizio.getTime();
+
+        if(!(dataInizio>dataFine)){
+            const giorniNoleggio=Math.round(msDifferenza/msGiorno);
+            let totale=0;
+            let totaleNoleggi=0;
+            for(let c of this.carrello){
+                totale += c.prodotto.prezzo ? c.prodotto.prezzo : 0;
+                totaleNoleggi += c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero*(giorniNoleggio+1) : 0;
+            }
+            this.totalePrezzo=String(totale.toFixed(2));
+            this.totaleGiornaliero=String(totaleNoleggi.toFixed(2));
+        }
     }
 }

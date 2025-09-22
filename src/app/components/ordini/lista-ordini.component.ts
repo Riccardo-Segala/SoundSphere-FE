@@ -26,8 +26,10 @@ import {NoleggioModel} from "../../models/noleggio.model";
     styleUrls:['lista-ordini.component.scss']
 })
 export class ListaOrdiniComponent implements OnInit{
+
     ordini:OrdineModel[]=[];
     noleggi:NoleggioModel[]=[];
+
     loggedUser:UtenteModel|null=null;
 
     constructor(
@@ -36,6 +38,7 @@ export class ListaOrdiniComponent implements OnInit{
         private ordineService:OrdineControllerService,
         private noleggioService:NoleggioControllerService
     ){}
+
 
     ngOnInit() {
         this.loggedUser=this.session.getUser();

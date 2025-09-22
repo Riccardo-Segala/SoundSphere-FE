@@ -11,6 +11,7 @@ import {NgForOf} from "@angular/common";
 import {CategoriaModel} from "../../models/categoria.model";
 import {map, Subscription} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
+import {CategoryCardComponent} from "../../shared/components/category-card/category-card.component";
 
 @Component({
     selector: "app-categorie",
@@ -18,7 +19,8 @@ import {mapper} from "../../core/mapping/mapper.initializer";
     templateUrl: "./categorie.component.html",
     imports: [
         RouterLink,
-        NgForOf
+        NgForOf,
+        CategoryCardComponent
     ],
     styleUrl: "./categorie.component.scss"
 })
@@ -36,7 +38,6 @@ export class CategorieComponent implements OnInit {
     }
 
     ngOnInit() {
-        //this.id=this.route.snapshot.paramMap.get("id");
         this.routeSub = this.route.paramMap.subscribe(params =>{
             const slug = params.get("slug");
             this.caricaCategoria(slug);

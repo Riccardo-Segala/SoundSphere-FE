@@ -1,23 +1,58 @@
-<section id="inserimento-recensione">
-    <form #form="ngForm">
-        <input type="text" name="titolo" [(ngModel)]="nuovaRecensione.titolo" required>
-        <input type="number" min="1" max="5" name="stelle" [(ngModel)]="nuovaRecensione.numStelle" required>
-        <br>
-        <input type="text" name="descrizione" [(ngModel)]="nuovaRecensione.descrizione" required>
-        <br>
-        <button type="submit" (click)="inserisciRecensione()" [disabled]="form.invalid">Aggiungi</button>
-    </form>
-</section><br>
-<section id="lista-recensioni">
-    <ul *ngFor="let r of recensioni">
-        <li>
-            <div>
-                {{r.nomeUtente}} {{r.cognomeUtente}} {{r.data}}
-                <br>
-                <h3>{{r.titolo}}</h3><br>
-                <h4>{{r.descrizione}}</h4>
+<div class="reviews-container">
+
+    <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+        <div class="summary-details">
+            <h3 class="fs-4">Valutazione Media Clienti: {{ stelleMedie | number:'1.1-1' }}</h3>
+        </div>
+    </div>
+
+    <section id="inserimento-recensione" class="review-form mb-5">
+        <h4 class="fs-5">Lascia la tua recensione</h4>
+        <form #form="ngForm" (ngSubmit)="inserisciRecensione()">
+
+            <div class="mb-3 star-input">
+                <label class="form-label">La tua valutazione</label>
+                <div class="star-rating interactive">
+                    <ng-container *ngFor="let i of [5,4,3,2,1]">
+                        <input type="radio" [id]="'star'+i" name="stelle" [(ngModel)]="nuovaRecensione.numStelle" [value]="i" required class="d-none">
+                        <label [for]="'star'+i">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        </label>
+                    </ng-container>
+                </div>
             </div>
-        </li>
-        <br>
-    </ul>
-</section>
+
+            <div class="mb-3">
+                <label for="titolo-recensione" class="form-label">Titolo della recensione</label>
+                <input id="titolo-recensione" type="text" name="titolo" [(ngModel)]="nuovaRecensione.titolo" required class="form-control" placeholder="Es: Ottimo prodotto!">
+            </div>
+
+            <div class="mb-3">
+                <label for="descrizione-recensione" class="form-label">La tua recensione</label>
+                <textarea id="descrizione-recensione" name="descrizione" [(ngModel)]="nuovaRecensione.descrizione" required rows="4" class="form-control" placeholder="Scrivi qui cosa ne pensi..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Invia Recensione</button>
+        </form>
+    </section>
+
+    <section id="lista-recensioni" class="reviews-list">
+        <div *ngFor="let r of recensioni" class="card mb-3">
+            <div class="card-header d-flex align-items-center gap-3">
+                <div class="user-avatar">{{ r.nomeUtente?.charAt(0) }}{{ r.cognomeUtente?.charAt(0) }}</div>
+                <div class="user-details">
+                    <span class="fw-bold">{{r.nomeUtente}} {{r.cognomeUtente}}</span>
+                </div>
+                <div class="star-rating ms-auto">
+                    <small class="text-muted">{{r.data | date:'dd/MM/yyyy'}}</small>
+                    <svg *ngFor="let i of [1,2,3,4,5]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" [class.filled]="i <= r.numStelle!"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{r.titolo}}</h5>
+                <p class="card-text">{{r.descrizione}}</p>
+            </div>
+        </div>
+    </section>
+</div>
+

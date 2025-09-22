@@ -1,42 +1,46 @@
 import {Component, OnInit} from "@angular/core";
-import {HttpClient, HttpContext} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {SessionService} from "../../services/session.service";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule} from "@angular/forms";
 import {CommonModule, NgForOf} from "@angular/common";
 import {
     CarrelloControllerService, CatalogProductDTO,
     ProdottoControllerService, ResponseCartDTO,
-    ResponseUserDTO,
-    UtenteControllerService, UpdateCartItemDTO
 } from "../../api-client";
-import {ResponseProductDTO} from "../../api-client";
-import {map, Observable} from "rxjs";
+import {map} from "rxjs";
 import {CarrelloModel} from "../../models/carrello.model";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {UtenteModel} from "../../models/utente.model";
+import {ProductCardComponent} from "../../shared/components/product-card/product-card.component";
+import {ProdottoModel} from "../../models/prodotto.model";
 
 @Component({
     selector: "app-catalogo",
     standalone: true,
     templateUrl: `catalogo-utente.component.html`,
-    styleUrl: `./catalogo-utente.component.scss`,
+    styleUrl: `catalogo-utente.component.scss`,
     imports: [
         FormsModule,
         NgForOf,
         RouterModule,
-        CommonModule
+        CommonModule,
+        ProductCardComponent
     ]
 })
 export class CatalogoUtenteComponent implements OnInit {
     cercaProd:string='';
-    prodotti:CatalogProductDTO[]=[];
+
+    prodotti:ProdottoModel[]=[];
     loggedUser:UtenteModel|null=null;
-    prodFiltrati:CatalogProductDTO[]=[];
+    prodFiltrati:ProdottoModel[]=[];
+
     carrello:CarrelloModel[]=[];
     errore:string="";
+    slug:string|null=null;
 
     constructor(private http:HttpClient,
+                private route:ActivatedRoute,
                 private router:Router,
                 private route:ActivatedRoute,
                 private session:SessionService,
@@ -46,17 +50,19 @@ export class CatalogoUtenteComponent implements OnInit {
 
     ngOnInit() {
         this.loggedUser=this.session.getUser();
-        const slug=this.route.snapshot.paramMap.get('slug');
-        if(slug){
-            this.prodottoService.getOnlineCatalogBySlug(slug).subscribe({
-                next:(prodotti) => {
-                    this.prodotti = prodotti;
-                    this.filtraProdotti();
-                },
-                error: (err) => {
-                    console.log(err);
-                }
-            });
+        this.slug=this.route.snapshot.paramMap.get('slug');
+        if(this.slug){
+            this.prodottoService.getOnlineCatalogBySlug(this.slug)
+                .pipe(map(dtos=>mapper.mapArray<CatalogProductDTO,ProdottoModel>(dtos,'CatalogProductDTO','ProdottoModel')))
+                .subscribe({
+                    next:(prodotti:ProdottoModel[]) => {
+                        this.prodotti = prodotti;
+                        this.filtraProdotti();
+                    },
+                    error: (err) => {
+                        console.log(err);
+                    }
+                });
         }
         if(this.loggedUser){
             this.carrelloService.getAllCartOfUser()
@@ -70,12 +76,10 @@ export class CatalogoUtenteComponent implements OnInit {
                     }
                 });
         }
-
     }
 
     filtraProdotti() {
         if(this.cercaProd==""){
-            //get prodotti by name/descrizione e filiale
             this.prodFiltrati=this.prodotti;
             return;
         }
@@ -127,4 +131,10 @@ export class CatalogoUtenteComponent implements OnInit {
         const cart=this.carrello.find(c=>c.prodotto.id==id)
         return !(cart && cart.wishlist);
     }
+
+    canRent(){
+        const ruoliUtente=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);
+        return ruoliUtente?.includes("ORGANIZZATORE_EVENTI");
+    }
+    protected readonly unescape = unescape;
 }

@@ -21,8 +21,20 @@
 }
 
 .btn-secondary {
-  background-color: #34495E;
-  border-color: #2C3E50;
+  background-color: #616161 !important;
+  border-color: #616161 !important;
+  transition: transform 0.1s
+}
+
+.btn-secondary:hover,{
+  background-color: #616161;
+  border-color: #616161;
+  transform: scale(1.05);
+}
+
+.btn-secondary:active {
+  background-color: #616161 !important;
+  transform: scale(0.98) !important;
 }
 
 .btn-secondary:hover {

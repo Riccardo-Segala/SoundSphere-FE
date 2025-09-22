@@ -1,5 +1,10 @@
-<section>
-    <div *ngFor="let c of categorieView">
-        <a [routerLink]="c.isLeaf?['/catalogo-utente',c.slug]:['/categorie',c.slug]">{{c.name}}</a><br>
+
+<section class="container mt-4">
+    <div class="row">
+        <div *ngFor="let c of categorieView" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <a [routerLink]="c.isLeaf ? ['/catalogo-utente', c.slug] : ['/categorie', c.slug]" class="text-decoration-none">
+                <app-category-card [category]="c"></app-category-card>
+            </a>
+        </div>
     </div>
 </section>

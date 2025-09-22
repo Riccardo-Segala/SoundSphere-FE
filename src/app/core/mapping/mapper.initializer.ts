@@ -16,6 +16,7 @@ import {permessoProfile} from "./profiles/permesso.profile";
 import {datiStaticiProfile} from "./profiles/dati-statici.profile";
 import {ordineProfile} from "./profiles/ordine.profile";
 import {noleggioProfile} from "./profiles/noleggio.profile";
+import {stockProfile} from "./profiles/stock.profile";
 
 function initializeMapper():Mapper{
     setupMapperMetadata();
@@ -39,6 +40,7 @@ function initializeMapper():Mapper{
     datiStaticiProfile(mapper);
     ordineProfile(mapper);
     noleggioProfile(mapper);
+    stockProfile(mapper);
 
     return mapper;
 }

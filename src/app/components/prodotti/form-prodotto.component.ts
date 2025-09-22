@@ -126,11 +126,11 @@ export class FormProdottoComponent implements OnInit {
             })
     }
     salva(){
-
         let api$:Observable<ProdottoModel>;
+        const prodotto={...this.prodotto,rentable:true};
         if(this.modifica){
             if(this.id){
-                api$=this.adminProdService.updateProduct(this.id,mapper.map(this.prodotto,'ProdottoModel','UpdateProductDTO'))
+                api$=this.adminProdService.updateProduct(this.id,mapper.map(prodotto,'ProdottoModel','UpdateProductDTO'))
                     .pipe(map(dto=>mapper.map<ResponseProductDTO,ProdottoModel>(dto,'ResponseProductDTO','ProdottoModel')));
             }
             else{

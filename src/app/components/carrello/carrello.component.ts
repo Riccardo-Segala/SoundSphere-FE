@@ -29,6 +29,8 @@ export class CarrelloComponent implements OnInit {
     loggedUser:UtenteModel={};
     carrello:CarrelloModel[]=[];
     quantita:number=1;
+    totalePrezzo:number=0;
+    totaleGiornaliero:number=0;
 
     constructor(
         private session:SessionService,
@@ -50,6 +52,7 @@ export class CarrelloComponent implements OnInit {
                         next:(carrello:CarrelloModel[])=>{
                             this.carrello=carrello;
                             this.calcolaStelleMedie();
+                            this.calcolaTotali();
                         },
                         error:(err)=>{
                             console.log("Errore ottenimento carrello: "+err)
@@ -63,6 +66,7 @@ export class CarrelloComponent implements OnInit {
                         next:(carrello:CarrelloModel[])=>{
                             this.carrello=carrello;
                             this.calcolaStelleMedie();
+
                         },
                         error:(err)=>{
                             console.log("Errore ottenimento carrello: "+err)
@@ -89,8 +93,12 @@ export class CarrelloComponent implements OnInit {
             }
         }
     }
-    checkout(){
-        this.router.navigate(["/checkout"]);
+    checkoutOrdine(){
+        this.router.navigate(["/checkout/ordine"]);
+    }
+
+    checkoutNoleggio(){
+        this.router.navigate(["checkout/noleggio"]);
     }
 
     rimuoviTutto(){
@@ -99,6 +107,7 @@ export class CarrelloComponent implements OnInit {
         this.carrelloService.removeItemsFromCart(items).subscribe({
             next:(res)=>{
                 console.log("Rimozione riuscita");
+                this.carrello=[];
             },
             error:(err)=>{
                 console.log("Errore rimozione prodotto: "+err);
@@ -120,6 +129,20 @@ export class CarrelloComponent implements OnInit {
         }
         else{
             console.log("Prodotto nel carrello non trovato");
+        }
+    }
+
+    canRent(){
+        const nomiRuoli=this.loggedUser.ruoli?.map(ruolo=>ruolo.nome);
+        return nomiRuoli?.includes("ORGANIZZATORE_EVENTI");
+    }
+
+    calcolaTotali(){
+        this.totalePrezzo=0;
+        this.totaleGiornaliero=0;
+        for(let c of this.carrello){
+            this.totalePrezzo+= c.prodotto.prezzo ? c.prodotto.prezzo : 0;
+            this.totaleGiornaliero+= c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero : 0;
         }
     }
 }
