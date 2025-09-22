@@ -12,8 +12,10 @@ export const ordineProfile=(mapper:Mapper)=>{
                 source.prodotto
                     ? mapper.map<ResponseProductDTO,ProdottoModel>(source.prodotto,'ResponseProductDTO','ProdottoModel')
                     : undefined
-        ))
+            )
+        )
     );
+
     createMap(mapper,'ResponseOrderDTO','OrdineModel',
         forMember(
             (destination:OrdineModel)=>destination.dettagli,
@@ -21,7 +23,7 @@ export const ordineProfile=(mapper:Mapper)=>{
                 source.dettagli
                     ? mapper.mapArray<ResponseOrderDetailsDTO,DettaglioOrdineModel>(source.dettagli,'ResponseOrderDetailsDTO','DettaglioOrdineModel')
                     : undefined
-            ))
+            )
+        )
     );
-
 }

@@ -1,4 +1,6 @@
-import {ResponseOrderDetailsDTO} from "../api-client";
+
+import {ResponseOrderDetailsDTO, ResponseOrderDTO} from "../api-client";
+import {DettaglioOrdineModel} from "./dettaglio-ordine.model";
 
 export interface OrdineModel{
     id?: string;
@@ -6,11 +8,11 @@ export interface OrdineModel{
     dataConsegna?: string;
     spedizioneGratuita?: boolean;
     totale?: number;
-    stato?: OrderModel.StatoEnum;
-    dettagli?: Array<ResponseOrderDetailsDTO>;
+    stato?: OrdineModel.StatoEnum;
+    dettagli?: DettaglioOrdineModel[];
 }
 
-export namespace OrderModel {
+export namespace OrdineModel {
     export const StatoEnum = {
         InElaborazione: 'IN_ELABORAZIONE',
         Spedito: 'SPEDITO',

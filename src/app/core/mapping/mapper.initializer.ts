@@ -14,6 +14,8 @@ import {filialeProfile} from "./profiles/filiale.profile";
 import {ruoloProfile} from "./profiles/ruolo.profile";
 import {permessoProfile} from "./profiles/permesso.profile";
 import {datiStaticiProfile} from "./profiles/dati-statici.profile";
+import {ordineProfile} from "./profiles/ordine.profile";
+import {noleggioProfile} from "./profiles/noleggio.profile";
 import {stockProfile} from "./profiles/stock.profile";
 
 function initializeMapper():Mapper{
@@ -36,6 +38,8 @@ function initializeMapper():Mapper{
     ruoloProfile(mapper);
     permessoProfile(mapper);
     datiStaticiProfile(mapper);
+    ordineProfile(mapper);
+    noleggioProfile(mapper);
     stockProfile(mapper);
 
     return mapper;

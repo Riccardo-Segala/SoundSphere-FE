@@ -30,9 +30,11 @@ import {ProdottoModel} from "../../models/prodotto.model";
 })
 export class CatalogoUtenteComponent implements OnInit {
     cercaProd:string='';
+
     prodotti:ProdottoModel[]=[];
     loggedUser:UtenteModel|null=null;
     prodFiltrati:ProdottoModel[]=[];
+
     carrello:CarrelloModel[]=[];
     errore:string="";
     slug:string|null=null;
@@ -40,6 +42,7 @@ export class CatalogoUtenteComponent implements OnInit {
     constructor(private http:HttpClient,
                 private route:ActivatedRoute,
                 private router:Router,
+                private route:ActivatedRoute,
                 private session:SessionService,
                 private prodottoService: ProdottoControllerService,
                 private carrelloService:CarrelloControllerService) {

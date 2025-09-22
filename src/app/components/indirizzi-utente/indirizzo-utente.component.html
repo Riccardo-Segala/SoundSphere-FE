@@ -1,26 +1,32 @@
-<!--<section id="inserimento-recensione">
-    <div [formGroup]="addressForm">
-        <h4>Indirizzo di residenza</h4>
-        <input formControlName="nazione" placeholder="Nazione">
-        <input formControlName="provincia" placeholder="Provincia">
-        <input formControlName="citta" placeholder="Città">
-        <input formControlName="cap" placeholder="CAP">
-        <input formControlName="via" placeholder="Via/Piazza">
-        <input formControlName="civico" placeholder="Civico">
-    </div>
-</section><br>-->
-<section id="lista-recensioni">
-    <h2>Nuovo Indirizzo</h2>
+<div class="container  p-4 bg-black bg-opacity-10 rounded-2">
+    <h3 class="mt-2">Nuovo Indirizzo</h3>
     <app-form-indirizzi [modifica]="modifica" (salvaIndirizzo)="salva($event)"></app-form-indirizzi>
-    <h2>I tuoi indirizzi</h2>
-    <ul *ngFor="let i of indirizzi">
-        <ng-container>
-            <span>{{i.via}} {{i.civico}},
-            {{i.citta}} {{i.cap}}, {{i.provincia}}, {{i.nazione}}</span>
-            <button type="button" (click)="indirizzoInModifica(i.id)">Modifica</button>
-            <button type="button" (click)="eliminaIndirizzo(i.id)">Elimina</button>
-            <app-form-indirizzi [modifica]="modifica"  *ngIf="i.id===idModifica" [indirizzo]="i" (salvaIndirizzo)="salva($event)"></app-form-indirizzi>
-        </ng-container>
-        <br>
-    </ul>
-</section>
+    <hr>
+    <h3 class="mt-4">I tuoi indirizzi</h3>
+    <div class="list-group">
+        <div class="list-group-item flex-column align-items-start mb-2 border-secondary bg-dark bg-opacity-10" *ngFor="let i of indirizzi">
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-1 fw-bold">{{i.via}} {{i.civico}}, {{i.citta}} {{i.cap}}, {{i.provincia}}, {{i.nazione}}</h6>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-primary" (click)="impostaPredefinito(i.id)" [disabled]="i.main">
+                        <i class="bi bi-check"></i>
+                        Imposta Come Predefinito
+                    </button>
+                    <button type="button" class="btn btn-outline-primary btn-md" (click)="indirizzoInModifica(i.id)">
+                        <i class="bi bi-pencil"></i>
+                        Modifica
+                    </button>
+                    <button class="btn btn-outline-danger btn-md" type="button" (click)="eliminaIndirizzo(i.id)">
+                        <i class="bi bi-trash"></i>
+                        Elimina
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="i.id===idModifica" class="m-2 pt-3 border-top border-secondary">
+                <app-form-indirizzi [modifica]="modifica"   [indirizzo]="i" (salvaIndirizzo)="salva($event)"></app-form-indirizzi>
+            </div>
+        </div>
+    </div>
+</div>

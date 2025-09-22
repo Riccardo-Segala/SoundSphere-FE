@@ -35,6 +35,7 @@ export class IndirizzoutenteComponent implements OnInit {
         const user=this.session.getUser();
         if(user)
         {
+            this.modifica=true;
             this.loggedUser=user as UtenteModel;
             this.caricaListaIndirizzi();
         }
@@ -73,16 +74,22 @@ export class IndirizzoutenteComponent implements OnInit {
     }
 
     eliminaIndirizzo(id:string|undefined){
-        if(id){
-            this.indirizzoService.deleteUserAddress(id).subscribe({
-                next:(res)=>{
-                    console.log("Eliminazione effettuata con successo");
-                    this.caricaListaIndirizzi();
-                },
-                error:(err)=>{
-                    console.log("Errore eliminazione indirizzo");
-                }
-            })
+        const conferma=window.confirm("Sei sicuro di volerlo eliminare?");
+        if(conferma){
+            if(id){
+                this.indirizzoService.deleteUserAddress(id).subscribe({
+                    next:(res)=>{
+                        console.log("Eliminazione effettuata con successo");
+                        this.caricaListaIndirizzi();
+                    },
+                    error:(err)=>{
+                        console.log("Errore eliminazione indirizzo");
+                    }
+                })
+            }
+            else{
+                alert("Non è stato possibile eliminare l'indirizzo");
+            }
         }
     }
 
@@ -108,5 +115,23 @@ export class IndirizzoutenteComponent implements OnInit {
                     console.log("Errore ottenimento indirizzi: "+err);
                 }
             });
+    }
+
+    impostaPredefinito(id:string|undefined){
+        if(id){
+            const aggiornaIndirizzo:IndirizzoUtenteModel|undefined=this.indirizzi.find(indirizzo=>indirizzo.id===id);
+            if(aggiornaIndirizzo){
+                aggiornaIndirizzo.main = true;
+                this.indirizzoService.updateUserAddress(id,mapper.map(aggiornaIndirizzo,'IndirizzoUtenteModel','UpdateUserAddressDTO'))
+                    .subscribe({
+                        next:()=>{
+                            this.caricaListaIndirizzi();
+                        },
+                        error:(err)=>{
+                            console.log("Errore aggiornamento indirizzo: ",JSON.stringify(err));
+                        }
+                    });
+            }
+        }
     }
 }

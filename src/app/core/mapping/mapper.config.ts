@@ -1,6 +1,12 @@
 import { pojos,PojosMetadataMap } from '@automapper/pojos';
 import {VantaggioModel} from "../../models/vantaggio.model";
-import {CreateUserDTO, UpdateUserAddressDTO, UpdateUserDTO} from "../../api-client";
+import {
+    CreateUserDTO,
+    ResponseOrderDetailsDTO,
+    ResponseOrderDTO, ResponseProductDTO,
+    UpdateUserAddressDTO,
+    UpdateUserDTO
+} from "../../api-client";
 
 export function setupMapperMetadata():void{
     PojosMetadataMap.create('ResponseProductDTO',{
@@ -456,6 +462,62 @@ export function setupMapperMetadata():void{
         nome:String,
         valore:Number
     });
+    PojosMetadataMap.create('ResponseOrderDetailsDTO',{
+        ordineId:String,
+        prodotto:'ResponseProductDTO',
+        quantita:Number
+    });
+    PojosMetadataMap.create('DettaglioOrdineModel',{
+        ordineId:String,
+        prodotto:'ProdottoModel',
+        quantita:Number
+    });
+    PojosMetadataMap.create('ResponseOrderDTO',{
+        id: String,
+        dataAcquisto: String,
+        dataConsegna: String,
+        spedizioneGratuita: Boolean,
+        totale: Number,
+        stato: String,
+        dettagli: ['ResponseOrderDetailsDTO']
+    });
+    PojosMetadataMap.create('OrdineModel',{
+        id: String,
+        dataAcquisto: String,
+        dataConsegna: String,
+        spedizioneGratuita: Boolean,
+        totale: Number,
+        stato: String,
+        dettagli: ['DettaglioOrdineModel']
+    });
+    PojosMetadataMap.create('ResponseRentalDetailsDTO',{
+        noleggioId: String,
+        prodotto: 'ResponseProductDTO',
+        quantita: Number
+    });
+    PojosMetadataMap.create('DettaglioNoleggioModel',{
+        noleggioId: String,
+        prodotto: 'ProdottoModel',
+        quantita: Number
+    });
+    PojosMetadataMap.create('ResponseRentalDTO',{
+        id:String,
+        dataInizio:String,
+        dataScadenza:String,
+        dataRestituzione:String,
+        dataPagamento:String,
+        totale:Number,
+        dettagli:['ResponseRentalDetailsDTO']
+    });
+    PojosMetadataMap.create('NoleggioModel',{
+        id:String,
+        dataInizio:String,
+        dataScadenza:String,
+        dataRestituzione:String,
+        dataPagamento:String,
+        totale:Number,
+        dettagli:['DettaglioNoleggioModel']
+    });
     PojosMetadataMap.create('ResponseStockDTO',{
         filialeId:String,
         filialeNome:String,
@@ -488,5 +550,4 @@ export function setupMapperMetadata():void{
         quantita:Number,
         quantitaPerNoleggio:Number
     })
-
 }

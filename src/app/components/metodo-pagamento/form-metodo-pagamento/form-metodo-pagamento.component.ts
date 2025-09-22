@@ -24,6 +24,7 @@ export class FormMetodoPagamentoComponent implements OnInit{
     paypal:boolean=false;
     nome:string='';
     cognome:string='';
+    meseAnno:string="";
 
     constructor(
         private router:Router,
@@ -34,6 +35,14 @@ export class FormMetodoPagamentoComponent implements OnInit{
 
     ngOnInit() {
         this.metodo=this.azzeraMetodo();
+        this.ottieniMeseAnno();
+    }
+
+    ottieniMeseAnno(){
+        const oggi:Date=new Date();
+        const mese:string=(oggi.getMonth()+1).toString().padStart(2,'0');
+        const anno:string=oggi.getFullYear().toString();
+        this.meseAnno=anno+"-"+mese;
     }
     salva(){
         this.metodo.nomeSuCarta=this.cognome+" "+this.nome;
@@ -43,6 +52,9 @@ export class FormMetodoPagamentoComponent implements OnInit{
             next:(res:MetodoPagamentoModel)=>{
                 this.paypal=false;
                 this.metodo=this.azzeraMetodo();
+                this.nome="";
+                this.cognome="";
+                this.ottieniMeseAnno();
                 this.salvaMetodo.emit();
             },
             error:(err)=>{
@@ -61,5 +73,22 @@ export class FormMetodoPagamentoComponent implements OnInit{
             tipoPagamento: 'CARTA_DI_CREDITO',
             main: false
         }
+    }
+
+    dataCambiata(nuovoMeseAnno:string){
+        if(!nuovoMeseAnno){
+            this.metodo.dataScadenza;
+        }
+
+        const [anno,mese]=nuovoMeseAnno.split('-').map(Number);
+        const dataSelezionata=new Date(anno,mese-1,1);
+        dataSelezionata.setMonth(dataSelezionata.getMonth()+1);
+
+        const nuovoAnno=dataSelezionata.getFullYear().toString();
+        const nuovoMese=(dataSelezionata.getMonth()+1).toString().padStart(2,'0');
+        const nuovoGiorno='01';
+        this.metodo.dataScadenza=`${nuovoAnno}-${nuovoMese}-${nuovoGiorno}`;
+
+        console.log(this.metodo.dataScadenza);
     }
 }
