@@ -1,22 +1,32 @@
-<section>
+<div class="container">
     <form #form="ngForm" (ngSubmit)="salva()">
-        <div>
-            <label>
-                Nome:
-            </label>
-            <input type="text" name="nome" [(ngModel)]="datoStatico.nome" required>
+        <div class="row justify-content-center align-items-end">
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-8">
+                <div class="mb-3">
+                    <label class="form-label">Nome:</label>
+                    <input class="form-control" type="text" name="nome" [(ngModel)]="datoStatico.nome" required>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-8">
+                <div class="mb-3">
+                    <label class="form-label">Valore:</label>
+                    <input class="form-control" type="number" name="valore" [(ngModel)]="datoStatico.valore" required min="0">
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-lg-8 col-md-8 justify-content-start">
+                <div  class="d-flex justify-content-evenly p-3 mb-1">
+                    <button class="btn btn-primary w-100 mt-auto" type="submit" [disabled]="form.invalid">
+                        {{ modifica ? 'Salva' : 'Inserisci' }}
+                    </button>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-lg-8 col-md-8 justify-content-start">
+                <div  class="d-flex justify-content-evenly p-3 mb-1">
+                    <button class="btn btn-danger w-100 mt-auto btn-hover-zoom" type="button" *ngIf="modifica" (click)="elimina(datoStatico.id)">
+                        Elimina
+                    </button>
+                </div>
+            </div>
         </div>
-        <div>
-            <label>
-                Valore:
-            </label>
-            <input type="number" name="valore" [(ngModel)]="datoStatico.valore" required min="0">
-        </div>
-        <button type="submit" [disabled]="form.invalid">
-            {{ modifica ? 'Salva' : 'Inserisci' }}
-        </button>
-        <button type="button" *ngIf="modifica" (click)="elimina(datoStatico.id)">
-            Elimina
-        </button>
     </form>
-</section>
+</div>

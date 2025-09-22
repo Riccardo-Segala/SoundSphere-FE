@@ -57,7 +57,7 @@
   color:#fff !important;
 }
 
-.btn-outline-danger:active{
+.btn-outline-danger:active, .btn-danger:active{
   transform: scale(0.98) !important;
   background-color: #b02a37 !important; /* Un rosso leggermente più scuro */
   border-color: #a52834 !important;
