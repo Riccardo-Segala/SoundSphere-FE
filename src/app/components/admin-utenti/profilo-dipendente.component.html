@@ -1,79 +1,118 @@
-<section>
+<div class="container py-2">
     <form #form="ngForm" (ngSubmit)="salvaDipendente()">
-
-        <div>
-            <label>Nome: </label>
-            <input name="nome" type="text" [(ngModel)]="dipendente.nome" required>
-        </div>
-        <br>
-        <div>
-            <label>Cognome: </label>
-            <input name="cognome" type="text" [(ngModel)]="dipendente.cognome" required>
-        </div>
-        <br>
-        <div>
-            <label>Email: </label>
-            <input name="email" type="email" [(ngModel)]="dipendente.email" required>
-        </div>
-        <br>
-        <div>
-            <label>Password: </label>
-            <input name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" [attr.required]="!modifica">
-        </div>
-        <br>
-
-        <div>
-            <label>Data Di Nascita: </label>
-            <input type="date" name="data-nascita" [(ngModel)]="dipendente.dataDiNascita" required>
-        </div>
-        <br>
-        <div>
-            <label>Immagine Profilo: </label>
-            <img src="http://localhost:8080{{previewUrl}}" alt="Foto Profilo">
-            <input name="path" type="file" (change)="fileSelezionato($event)">
-        </div>
-        <br>
-        <div>
-            <label>Sesso: </label>
-            <div>
-                <label><input name="sesso" type="radio" value="MASCHIO" [(ngModel)]="dipendente.sesso">Maschio</label>
-                <label><input name="sesso" type="radio" value="FEMMINA" [(ngModel)]="dipendente.sesso">Femmina</label>
-                <label><input name="sesso" type="radio" value="NON_SPECIFICATO" [(ngModel)]="dipendente.sesso"> Non Specificato</label>
+        <div class="bg-black bg-opacity-10 shadow-sm m-2 p-4 rounded-5">
+            <div class="row justify-content-center">
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 d-flex p-2 align-items-center justify-content-center">
+                    <div class="profile-pic-container" (click)="fileInput.click()">
+                        <img src="http://localhost:8080{{previewUrl}}">
+                        <div class="overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-camera">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle r="4" cx="12" cy="13"></circle>
+                            </svg>
+                        </div>
+                        <input type="file" #fileInput (change)="fileSelezionato($event)" accept="image/*">
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 p-2 align-items-center justify-content-center px-4">
+                    <div class="mb-3">
+                        <label class="form-label">Nome:</label>
+                        <input class="form-control" name="nome" type="text" [(ngModel)]="dipendente.nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cognome:</label>
+                        <input class="form-control" name="cognome" type="text" [(ngModel)]="dipendente.cognome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email:</label>
+                        <input class="form-control" name="email" type="email" [(ngModel)]="dipendente.email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password:</label>
+                        <input class="form-control" name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" [attr.required]="!modifica">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Data di Nascita:</label>
+                        <input class="form-control" type="date" name="data-nascita" [(ngModel)]="dipendente.dataDiNascita" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Sesso:</label>
+                        <div class="d-flex flex-wrap">
+                            <div class="form-check form-check-inline">
+                                <input id="maschio" class="form-check-input" name="sesso" type="radio" value="MASCHIO" [(ngModel)]="dipendente.sesso">
+                                <label for="maschio" class="form-check-label">Maschio</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input id="femmina" class="form-check-input" name="sesso" type="radio" value="FEMMINA" [(ngModel)]="dipendente.sesso">
+                                <label for="femmina" class="form-check-label">Femmina</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input id="altro" class="form-check-input" name="sesso" type="radio" value="NON_SPECIFICATO" [(ngModel)]="dipendente.sesso">
+                                <label for="altro" class="form-check-label">Altro</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 p-2 align-items-center justify-content-center px-4">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Data Assunzione:
+                        </label>
+                        <input class="form-control" name="data-assunzione" type="date" [(ngModel)]="dipendente.dataAssunzione" required>
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 p-2 align-items-center justify-content-center px-4">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Data Scadenza del Contratto:
+                        </label>
+                        <input class="form-control" name="scadenza" type="date" [(ngModel)]="dipendente.scadenzaContratto">
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 p-2 align-items-center justify-content-center px-4">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Stipendio:
+                        </label>
+                        <input class="form-control" type="number" name="stipendio" [(ngModel)]="dipendente.stipendio">
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 p-2 align-items-center justify-content-center px-4">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Filiale:
+                        </label>
+                        <select class="form-select" name="filiale" [(ngModel)]="dipendente.filialeId" required>
+                            <option [ngValue]="undefined" disabled >-- Seleziona la filiale --</option>
+                            <option *ngFor="let f of filiali" [ngValue]="f.id">{{f.nome}} - {{f.citta}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 p-2 align-items-center justify-content-start px-4">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <div class="mb-3">
+                                <input id="admin" class="form-check-input" type="checkbox" name="ruolo" [checked]="ruoloSelezionato()" (change)="ruoloCambiato($event)">
+                                <label class="form-check-label mx-1" for="admin"><strong>Rendi admin</strong></label>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="d-flex gap-2 justify-content-evenly">
+                    <button class="btn btn-primary w-25 mt-3" type="submit" [disabled]="form.invalid || ruoliSelezionati.length===0">
+                        {{modifica ? 'Salva' : 'Aggiungi'}}
+                    </button>
+                    <button class="btn btn-primary w-25 mt-3" type="button" (click)="annulla()">
+                        Annulla
+                    </button>
+                </div>
             </div>
         </div>
-        <br>
-        <div>
-            <label>Stipendio: </label>
-            <input type="number" name="stipendio" [(ngModel)]="dipendente.stipendio">
-        </div>
-        <br>
-        <div>
-            <label>Data scadenza contratto: </label>
-            <input name="scadenza" type="date" [(ngModel)]="dipendente.scadenzaContratto">
-        </div>
-        <div>
-            <label>dataAssunzione: </label>
-            <input name="data-assunzione" type="date" [(ngModel)]="dipendente.dataAssunzione" required>
-        </div>
-        <div>
-            <label>Filiale: </label>
-            <select name="filiale" [(ngModel)]="dipendente.filialeId" required>
-                <option [ngValue]="undefined" disabled >-- Seleziona la filiale --</option>
-                <option *ngFor="let f of filiali" [ngValue]="f.id">{{f.nome}} - {{f.citta}}</option>
-            </select>
-        </div>
-
-        <div>
-            <label>
-                <input type="checkbox" name="ruolo" [checked]="ruoloSelezionato()" (change)="ruoloCambiato($event)">
-                Rendi Admin
-            </label>
-        </div>
-
-        <button type="submit" [disabled]="form.invalid || ruoliSelezionati.length===0">
-            {{modifica ? 'Salva' : 'Aggiungi'}}
-        </button>
     </form>
-
-    <button type="button" (click)="annulla()">Annulla</button>
-</section>
+</div>
