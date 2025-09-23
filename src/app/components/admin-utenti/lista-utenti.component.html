@@ -35,7 +35,7 @@
             </div>
 
             <div class="col-8 py-1 px-3 border-end border-start border-2 scrollable-column">
-                <div class="row text-secondary fw-bold small p-2 d-none d-md-flex">
+                <div class="row text-black fw-bold small p-2 d-none d-md-flex">
                     <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6">
                         Nominativo
                     </div>
@@ -88,16 +88,20 @@
                             <div class="accordion-collapse collapse" [attr.id]="'collapse'+u.id"
                                  data-bs-parent="#accordionUtenti" (show.bs.collapse)="toggleDocumenti(u.id)">
                                 <div class="accordion-body">
-                                    <div  *ngIf="u.id===idModifica">
-                                        ----- LISTA DOCUMENTI -----
-                                        <button type="button" *ngIf="!isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'"
-                                                (click)="daPromuovere(u.id) ? rimuoviDaPromuovere(u.id) : addPromossi(u.id)">
-                                            {{daPromuovere(u.id) ? 'Rimuovi da "In Promozione"' : 'Aggiungi a "In Promozione"'}}
-                                        </button>
-                                        <button type="button" *ngIf="isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'"
-                                                (click)="daDegradare(u.id) ? rimuoviDaDegradare(u.id) : addDegrada(u.id) ">
-                                            {{daDegradare(u.id) ? 'Rimuovi da "Da Degradare"' : 'Aggiungi a "Da Degradare"'}}
-                                        </button>
+                                    <div *ngIf="u.id===idModifica">
+                                        <div>
+                                            <button class="btn btn-info my-1 w-auto btn-sm btn-hover-zoom" type="button" *ngIf="!isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'"
+                                                    (click)="daPromuovere(u.id) ? rimuoviDaPromuovere(u.id) : addPromossi(u.id)">
+                                                {{daPromuovere(u.id) ? 'Rimuovi da "In Promozione"' : 'Aggiungi a "In Promozione"'}}
+                                            </button>
+                                            <button class="btn btn-info my-1 w-auto btn-sm btn-hover-zoom" type="button" *ngIf="isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'"
+                                                    (click)="daDegradare(u.id) ? rimuoviDaDegradare(u.id) : addDegrada(u.id) ">
+                                                {{daDegradare(u.id) ? 'Rimuovi da "Da Degradare"' : 'Aggiungi a "Da Degradare"'}}
+                                            </button>
+                                        </div>
+                                        <div class="my-1">
+                                            ----- LISTA DOCUMENTI -----
+                                        </div>
                                     </div>
                                 </div>
                             </div>

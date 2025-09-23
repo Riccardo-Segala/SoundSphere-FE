@@ -187,7 +187,7 @@ export class FormProdottoComponent implements OnInit {
             if(this.selectedCategoria!==id){
                 this.selectedCategoria=id;
             }else{
-                this.selectedCategoria=undefined;
+                return;
             }
         }
     }

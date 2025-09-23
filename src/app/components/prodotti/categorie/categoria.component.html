@@ -1,6 +1,24 @@
-<div>
-    <div *ngFor="let c of categorieFiglie">
-        <button type="button" style="background-color: beige" (click)="c.isLeaf ? aggiungi(c.id) : seleziona(c.id)" [disabled]="isSelected(c.id)">{{c.name}}</button>
-        <app-categorie-prodotto *ngIf="c.id===selectedCategoria" [categorieProdotto]="categorieProdotto" [categoriaInput]="c" (categoriaSelezionata)="aggiungi($event)"></app-categorie-prodotto>
+<div class="container">
+    <div class="d-flex flex-row flex-wrap">
+        <div class="ps-3" *ngFor="let c of categorieFiglie">
+            <div class="d-flex align-items-center my-1">
+                <i *ngIf="!c.isLeaf" class="bi me-2" [ngClass]="c.id===selectedCategoria ? 'bi-chevron-down' : 'bi-chevron-right'"
+                   (click)="seleziona(c.id)">
+                </i>
+
+                <button type="button" class="btn btn-sm text-start flex-grow-1"
+                        [ngClass]="isSelected(c.id) ? 'btn-secondary' : 'btn-outline-primary btn-hover-zoom'"
+                        [disabled]="isSelected(c.id)"
+                        (click)="c.isLeaf ? aggiungi(c.id) : seleziona(c.id)">
+                    {{c.name}}
+                </button>
+
+            </div>
+            <app-categorie-prodotto *ngIf="c.id===selectedCategoria"
+                                          [categorieProdotto]="categorieProdotto"
+                                          [categoriaInput]="c"
+                                          (categoriaSelezionata)="aggiungi($event)">
+            </app-categorie-prodotto>
+        </div>
     </div>
 </div>
