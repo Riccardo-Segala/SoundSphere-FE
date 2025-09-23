@@ -1,0 +1,25 @@
+.scrollable-column{
+  height: 100%;
+  overflow-y: auto; //mostra barra di scorrimento solo se necessario
+  overflow-x:hidden;
+}
+
+/*  servirebbe per nascondere la scrollbar interna
+.scrollable-column::-webkit-scrollbar{
+  display:none;
+}*/
+
+.row.m-2{
+  flex-grow: 1; /* la riga si espande per riempire tutto lo spazio verticale */
+  overflow: hidden;
+}
+
+.bg-black.bg-opacity-10{
+  height: calc(100vh - 100px); //calcola altezza basandosi sulla finestra 100vh
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-button:after{
+  display:none;
+}

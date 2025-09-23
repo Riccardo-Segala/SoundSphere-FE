@@ -1,29 +1,124 @@
-<section>
-    <div style="float:left">
-        <button type="button" (click)="naviga(undefined,'UTENTE')">Crea Utente</button>
-        <button type="button" (click)="naviga(undefined,'DIPENDENTE')">Crea Dipendente</button>
-        <button type="button" [disabled]="idUtentiDaPromuovere.length==0" (click)="promuovi()">Promuovi Utenti: {{idUtentiDaPromuovere.length}}</button>
-        <button type="button" [disabled]="idUtentiDaDegradare.length==0" (click)="degrada()">Degrada Utenti: {{idUtentiDaDegradare.length}}</button>
-        <div *ngFor="let u of utentiFiltrati" (click)="toggleDocumenti(u.id)">
-            <span>{{u.nome}} {{u.cognome}}, {{u.dataDiNascita}}, {{u.email}}, {{u.tipologia}}</span>
-            <button type="button" (click)="naviga(u.id,u.tipologia)">Modifica</button>
-            <button type="button" (click)="elimina(u.id)">Elimina</button>
-            <div *ngIf="u.id===idModifica">
-                ----- LISTA DOCUMENTI -----
-                <button type="button" *ngIf="!isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'" (click)="addPromossi(u.id)">
-                    {{daPromuovere(u.id) ? 'Rimuovi da "In Promozione"' : 'Aggiungi a "In Promozione"'}}
-                </button>
-                <button type="button" *ngIf="isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'" (click)="addDegrada(u.id)">
-                    {{daDegradare(u.id) ? 'Rimuovi da "Da Degradare"' : 'Aggiungi a "Da Degradare"'}}
-                </button>
+<div class="container py-2">
+    <div class="bg-black bg-opacity-10 shadow-sm rounded-5">
+        <div class="row p-3">
+            <div class="col-12 d-flex justify-content-center gap-3">
+                <button class="btn btn-primary w-25" type="button" (click)="naviga(undefined,'UTENTE')">Inserisci Utente</button>
+                <button class="btn btn-primary w-25" type="button" (click)="naviga(undefined,'DIPENDENTE')">Inserisci Dipendente</button>
+            </div>
+        </div>
+        <div class="row m-2">
+            <div class="col-2 py-1 px-3">
+                <div class="form-check mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="tipologia" value="TUTTI" [(ngModel)]="tipologia" checked (change)="filtraUtenti()">
+                        Tutti
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="tipologia" value="DIPENDENTE" [(ngModel)]="tipologia" (change)="filtraUtenti()">
+                        Dipendenti
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="tipologia" value="UTENTE" [(ngModel)]="tipologia" (change)="filtraUtenti()">
+                        Utenti
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="tipologia" value="ORGANIZZATORE" [(ngModel)]="tipologia" (change)="filtraUtenti()">
+                        Organizzatore Di Eventi
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-8 py-1 px-3 border-end border-start border-2 scrollable-column">
+                <div class="row text-secondary fw-bold small p-2 d-none d-md-flex">
+                    <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6">
+                        Nominativo
+                    </div>
+                    <div class="col-xxl-5 col-xl-6 col-lg-6 col-md-6">
+                        Tipologia
+                    </div>
+                    <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="accordion" id="accordionUtenti">
+                        <div class="accordion-item" *ngFor="let u of utentiFiltrati">
+                            <h2 class="accordion-header">
+                                <button type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+u.id" class="accordion-button collapsed">
+                                    <div class="row w-100 align-items-center">
+                                        <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6">
+                                            <h6 class="mb-1 fw-bold">
+                                                {{u.nome}} {{u.cognome}}
+                                            </h6>
+                                            <small class="text-muted d-block mb-1">
+                                                {{u.email}}
+                                            </small>
+                                            <small class="text-muted d-block mb-1">
+                                                {{u.dataDiNascita}}
+                                            </small>
+                                        </div>
+                                        <div class="col-xxl-5 col-xl-6 col-lg-6 col-md-6">
+                                            <h6 class="fw-bold mb-1">
+                                                {{isOrganizzatore(u.id) ? 'ORGANIZZATORE' :u.tipologia}}
+                                                <span class="badge bg-opacity-100 fw-light" *ngIf="isInPromozione(u.id).find" [ngClass]="isInPromozione(u.id).class">In Promozione</span>
+                                                <span class="badge bg-opacity-100 fw-light" *ngIf="isInDegradazione(u.id).find" [ngClass]="isInDegradazione(u.id).class">In Degradazione</span>
+                                            </h6>
+                                        </div>
+                                        <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-outline-primary w-50 btn-hover-zoom text-center" type="button" (click)="naviga(u.id,u.tipologia); $event.stopPropagation()">
+                                                    <i class="bi bi-pencil"></i>
+                                                    Modifica
+                                                </button>
+                                                <button class="btn btn-outline-danger w-50 btn-hover-zoom text-center" type="button" (click)="elimina(u.id); $event.stopPropagation()">
+                                                    <i class="bi bi-trash"></i>
+                                                    Elimina
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div class="accordion-collapse collapse" [attr.id]="'collapse'+u.id"
+                                 data-bs-parent="#accordionUtenti" (show.bs.collapse)="toggleDocumenti(u.id)">
+                                <div class="accordion-body">
+                                    <div  *ngIf="u.id===idModifica">
+                                        ----- LISTA DOCUMENTI -----
+                                        <button type="button" *ngIf="!isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'"
+                                                (click)="daPromuovere(u.id) ? rimuoviDaPromuovere(u.id) : addPromossi(u.id)">
+                                            {{daPromuovere(u.id) ? 'Rimuovi da "In Promozione"' : 'Aggiungi a "In Promozione"'}}
+                                        </button>
+                                        <button type="button" *ngIf="isOrganizzatore(u.id) && u.tipologia!=='DIPENDENTE'"
+                                                (click)="daDegradare(u.id) ? rimuoviDaDegradare(u.id) : addDegrada(u.id) ">
+                                            {{daDegradare(u.id) ? 'Rimuovi da "Da Degradare"' : 'Aggiungi a "Da Degradare"'}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-2 py-1 px-3">
+                <button class="btn btn-primary w-100 mt-3" type="button" [disabled]="idUtentiDaPromuovere.length==0" (click)="promuovi()">Promuovi Utenti: {{idUtentiDaPromuovere.length}}</button>
+                <button class="btn btn-primary w-100 mt-3" type="button" [disabled]="idUtentiDaDegradare.length==0" (click)="degrada()">Degrada Utenti: {{idUtentiDaDegradare.length}}</button>
             </div>
         </div>
     </div>
-    <div style="float:right">
-        <label><input type="radio" name="tipologia" value="TUTTI" [(ngModel)]="tipologia" checked (change)="filtraUtenti()">Tutti</label>
-        <br>
-        <label><input type="radio" name="tipologia" value="DIPENDENTE" [(ngModel)]="tipologia" (change)="filtraUtenti()">Dipendenti</label>
-        <br>
-        <label><input type="radio" name="tipologia" value="UTENTE" [(ngModel)]="tipologia" (change)="filtraUtenti()">Utenti</label>
+
+
+    <div style="float:left">
+        <div *ngFor="let u of utentiFiltrati">
+            <div>
+
+            </div>
+        </div>
     </div>
-</section>
+</div>
