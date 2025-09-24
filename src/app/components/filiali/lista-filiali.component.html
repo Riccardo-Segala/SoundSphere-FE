@@ -1,8 +1,33 @@
-<section>
-    <button type="button" (click)="naviga(undefined)">Inserisci filiale</button>
-    <div *ngFor="let f of filiali">
-        <span>{{f.nome}} {{f.email}} {{f.citta}} </span>
-        <button type="button" (click)="naviga(f.id)">Modifica</button>
-        <button type="button" (click)="elimina(f.id)">Elimina</button>
+<div class="container bg-black bg-opacity-10 shadow-sm rounded-5 py-2 mt-2">
+    <div class="row justify-content-center">
+        <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8">
+            <button type="button" class="btn btn-primary w-100 m-3" (click)="naviga(undefined)">
+                Inserisci filiale
+            </button>
+        </div>
     </div>
-</section>
+    <div class="row justify-content-center">
+        <div *ngFor="let f of filiali" class="list-group m-2 px-4">
+            <div class="list-group-item flex-column align-items-start mb-1 border-secondary">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1 fw-bold">{{f.nome}} - {{f.citta}}</h6>
+                        <small class="text-muted d-block mb-1">
+                            {{f.email}}
+                        </small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-hover-zoom" type="button" (click)="naviga(f.id)">
+                            <i class="bi bi-pencil"></i>
+                            Modifica
+                        </button>
+                        <button class="btn btn-outline-danger btn-hover-zoom" type="button" (click)="elimina(f.id)">
+                            <i class="bi bi-trash"></i>
+                            Elimina
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

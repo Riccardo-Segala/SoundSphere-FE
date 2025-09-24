@@ -1,63 +1,67 @@
-<section>
-    <!-- nome?: string;
-    telefono?: string;
-    email?: string;
-    via?: string;
-    citta?: string;
-    cap?: string;
-    provincia?: string;
-    nazione?: string;
-    -->
-    <form #form="ngForm" (ngSubmit)="salva()">
-        <div>
-            <label>Nome:</label>
-            <input type="text" name="nome" [(ngModel)]="filiale.nome" required>
+<div class="container py-2">
+    <form #form="ngForm" (ngSubmit)="salva()" class="bg-black bg-opacity-10 rounded-5 p-4 shadow-sm">
+        <h3>Nuova Filiale</h3>
+        <div class="row justify-content-justify-evenly">
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Nome:</label>
+                    <input class="form-control" type="text" name="nome" [(ngModel)]="filiale.nome" required>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Telefono:</label>
+                    <input class="form-control" type="tel" name="telefono" [(ngModel)]="filiale.telefono" pattern="^(?:\+39|0039)?[ ]?(\d{3})[ ]?(\d{6,7})$" required>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Email:</label>
+                    <input class="form-control" type="email" name="email" [(ngModel)]="filiale.email" required>
+                </div>
+            </div>
         </div>
-        <br>
-        <div>
-            <label>Telefono:</label>
-            <input type="tel" name="telefono" [(ngModel)]="filiale.telefono" pattern="^(?:\+39|0039)?[ ]?(\d{3})[ ]?(\d{6,7})$" required>
+        <hr>
+        <div class="row justify-content-left">
+            <h3 class="mb-3">Indirizzo</h3>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Nazione:</label>
+                    <input class="form-control" type="text" name="nazione" [(ngModel)]="filiale.nazione" required>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Provincia:</label>
+                    <input class="form-control" type="text" name="provincia" [(ngModel)]="filiale.provincia" required>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Città:</label>
+                    <input class="form-control" type="text" name="citta" [(ngModel)]="filiale.citta" required >
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">CAP:</label>
+                    <input class="form-control" type="text" name="cap" [(ngModel)]="filiale.cap" required>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Via:</label>
+                    <input class="form-control" type="text" name="via" [(ngModel)]="filiale.via" required>
+                </div>
+            </div>
         </div>
-        <br>
-        <div>
-            <label>Email:</label>
-            <input type="email" name="email" [(ngModel)]="filiale.email" required>
+        <div class="d-flex justify-content-evenly p-3">
+            <button  class="btn btn-primary w-25 mt-2" type="submit" [disabled]="form.invalid">
+                {{modifica ? 'Salva':'Aggiungi' }}
+            </button>
+            <button class="btn btn-primary w-25 mt-2" type="button" (click)="annulla()">
+                Annulla
+            </button>
         </div>
-        <br>
-        <div>
-            <label>Indirizzo</label>
-            <br>
-            <div>
-                <label>Nazione:</label>
-                <input type="text" name="nazione" [(ngModel)]="filiale.nazione" required>
-            </div>
-            <br>
-            <div>
-                <label>Provincia:</label>
-                <input type="text" name="provincia" [(ngModel)]="filiale.provincia" required>
-            </div>
-            <br>
-            <div>
-                <label>Città:</label>
-                <input type="text" name="citta" [(ngModel)]="filiale.citta" required >
-            </div>
-            <br>
-            <div>
-                <label>CAP:</label>
-                <input type="text" name="cap" [(ngModel)]="filiale.cap" required>
-            </div>
-            <br>
-            <div>
-                <label>Via:</label>
-                <input type="text" name="via" [(ngModel)]="filiale.via" required>
-            </div>
-            <br>
-        </div>
-        <br>
-        <button type="submit" [disabled]="form.invalid">
-            {{modifica ? 'Salva':'Aggiungi' }}
-        </button>
-        <button type="button" (click)="annulla()">Annulla</button>
     </form>
-
-</section>
+</div>

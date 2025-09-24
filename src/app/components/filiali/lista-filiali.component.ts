@@ -58,16 +58,23 @@ export class ListaFilialiComponent implements OnInit {
         }
     }
     elimina(id:string|undefined){
-        if(id){
-            this.adminFilialeService.deleteBranch(id).subscribe({
-                next:(res) => {
-                    console.log("Cancellazione avvenuta con successo");
-                    this.caricaFiliali();
-                },
-                error:(err)=>{
-                    console.log("Errore eliminazione filiale: "+err);
-                }
-            })
+        const conferma=window.confirm("Sicuro di volerla eliminare?");
+        if(conferma){
+            if(id){
+                this.adminFilialeService.deleteBranch(id).subscribe({
+                    next:(res) => {
+                        console.log("Cancellazione avvenuta con successo");
+                        this.caricaFiliali();
+                    },
+                    error:(err)=>{
+                        console.log("Errore eliminazione filiale: "+err);
+                    }
+                })
+            }
+            else{
+                alert("Filiale non trovata");
+            }
         }
+
     }
 }

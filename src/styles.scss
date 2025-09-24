@@ -61,6 +61,40 @@
   cursor: not-allowed;
 }
 
+
 p {
 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.btn-outline-primary:active{
+  transform: scale(0.98) !important;
+
+  background-color: #0b5ed7 !important;
+  border-color:#0a58ca !important;
+  color:#fff !important;
+}
+
+.btn-outline-danger:active, .btn-danger:active{
+  transform: scale(0.98) !important;
+  background-color: #b02a37 !important; /* Un rosso leggermente più scuro */
+  border-color: #a52834 !important;
+  color: #fff !important;
+}
+.btn-hover-zoom{
+  transition: transform 0.2s ease-in-out;
+}
+.btn-hover-zoom:hover{
+  transform: scale(1.05);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Per Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+
 }

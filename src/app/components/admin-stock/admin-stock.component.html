@@ -1,35 +1,78 @@
-<section>
-    <div>
-        <div>
-            <select [(ngModel)]="filialeSelezionata" (change)="filtra()">
-                <option [ngValue]="null">Tutte</option>
-                <option *ngFor="let f of filiali" [ngValue]="f">{{f.nome}} - {{f.citta}}</option>
-            </select>
-        </div>
-        <div>
-            <label><input type="checkbox" [(ngModel)]="checked" (change)="filtra()">Mostra Solo Modificati</label>
-        </div>
-        <div>
-            <input type="text" [(ngModel)]="stringaFiltro" (keyup)="filtra()">
-        </div>
+<div class="container py-2">
+    <div class="bg-black bg-opacity-10 shadow-sm p-2 rounded-5">
 
-    </div>
-    <div>
-        <div *ngFor="let s of stocksFiltrati">
-            <span>{{s.filialeNome}} - {{s.prodotto.marca}} {{s.prodotto.nome}}</span><br>
-            <div>
-                <label>Quantità per Ordini:</label><br>
-                <button type="button" (click)="decrementa(s.prodotto.id,s.filialeId)" [disabled]="s.quantita===0">-</button>
-                <input type="number" min="0" [(ngModel)]="s.quantita">
-                <button type="button" (click)="incrementa(s.prodotto.id,s.filialeId)">+</button>
+        <div class="row m-2 justify-content-center">
+            <div class="col-xxl-3 col-xl-3 col-lg-8 col-md-12 p-3 border-end border-2">
+                <div class="mb-3">
+                    <label class="form-label">Ricerca Nome/Marca:</label>
+                    <input class="form-control" type="text" [(ngModel)]="stringaFiltro" (keyup)="filtra()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Filiale:</label>
+                    <select class="form-select" [(ngModel)]="filialeSelezionata" (change)="filtra()">
+                        <option [ngValue]="null">Tutte</option>
+                        <option *ngFor="let f of filiali" [ngValue]="f">{{f.nome}} - {{f.citta}}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="checked" (change)="filtra()">
+                            Mostra Solo Modificati
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div *ngIf="s.filialeNome==='OnlineStore'">
-                <label>Quantità per Noleggi:</label><br>
-                <button type="button" (click)="decrementaNoleggio(s.prodotto.id,s.filialeId)" [disabled]="s.quantitaPerNoleggio===0">-</button>
-                <input type="number" min="0" [(ngModel)]="s.quantitaPerNoleggio">
-                <button type="button" (click)="incrementaNoleggio(s.prodotto.id,s.filialeId)">+</button>
+
+            <div class="col-xxl-9 col-xl-9 col-lg-12 col-md-12 scrollable-column custom-scrollbar">
+                <div class="list-group m-2">
+                    <div class="list-group-item border-secondary p-3 mb-2" *ngFor="let s of stocksFiltrati">
+                        <div class="d-flex w-100 align-items-center">
+                            <div class="row w-100">
+                                <div class="col-xxl-3">
+                                    <div>
+                                        <h6 class="mb-1 fw-bold">{{s.prodotto.marca}}</h6>
+                                        <h6 class="mb-1 fw-light">{{s.prodotto.nome}}</h6>
+                                        <small>{{s.filialeNome}}</small>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3">
+                                    <label class="form-label">Quantità per Ordini:</label>
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary" type="button" (click)="decrementa(s.prodotto.id,s.filialeId)" [disabled]="s.quantita===0">
+                                            <i class="bi bi-dash-lg"></i>
+                                        </button>
+                                        <input class="form-control text-center" type="number" min="0" [(ngModel)]="s.quantita">
+                                        <button class="btn btn-outline-secondary" type="button" (click)="incrementa(s.prodotto.id,s.filialeId)">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3">
+                                    <div *ngIf="s.filialeNome==='OnlineStore'">
+                                        <label class="form-label">Quantità per Noleggi:</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-outline-secondary" (click)="decrementaNoleggio(s.prodotto.id,s.filialeId)" [disabled]="s.quantitaPerNoleggio===0">
+                                                <i class="bi bi-dash-lg"></i>
+                                            </button>
+                                            <input class="form-control text-center" type="number" min="0" [(ngModel)]="s.quantitaPerNoleggio">
+                                            <button class="btn btn-outline-secondary" type="button" (click)="incrementaNoleggio(s.prodotto.id,s.filialeId)">
+                                                <i class="bi bi-plus-lg"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-xxl-3">
+                                    <button class="btn btn-primary w-100 mt-4" type="button" (click)="salva(s.prodotto.id,s.filialeId)" [disabled]="s.quantita===s.quantitaAggiornata && s.quantitaPerNoleggio===s.quantitaNoleggioAggiornata">
+                                        Salva
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="button" (click)="salva(s.prodotto.id,s.filialeId)" [disabled]="s.quantita===s.quantitaAggiornata && s.quantitaPerNoleggio===s.quantitaNoleggioAggiornata">Salva</button>
         </div>
     </div>
-</section>
+</div>

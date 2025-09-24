@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {CategoriaModel} from "../../../models/categoria.model";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CategoriaControllerService, ResponseCategoryNavigationDTO} from "../../../api-client";
 import {mapper} from "../../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
@@ -10,7 +10,8 @@ import {map} from "rxjs";
     standalone:true,
     imports: [
         NgForOf,
-        NgIf
+        NgIf,
+        NgClass
     ],
     templateUrl:'categoria.component.html',
     styleUrls:['categoria.component.scss']
@@ -47,7 +48,7 @@ export class CategoriaComponent implements OnInit{
             if(this.selectedCategoria!==id){
                 this.selectedCategoria=id;
             }else{
-                this.selectedCategoria=undefined;
+                return;
             }
         }
     }
@@ -62,6 +63,4 @@ export class CategoriaComponent implements OnInit{
         }
         return false;
     }
-
-
 }

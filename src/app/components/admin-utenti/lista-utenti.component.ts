@@ -5,7 +5,7 @@ import {SessionService} from "../../services/session.service";
 import {AdminUtenteControllerService, ResponseUserDTO, UserIdListDTO} from "../../api-client";
 import {map} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -14,7 +14,8 @@ import {FormsModule} from "@angular/forms";
     imports: [
         NgForOf,
         NgIf,
-        FormsModule
+        FormsModule,
+        NgClass
     ],
     templateUrl:'lista-utenti.component.html',
     styleUrls:['lista-utenti.component.scss']
@@ -61,11 +62,12 @@ export class ListaUtentiComponent implements OnInit {
     filtraUtenti(){
         this.utentiFiltrati=this.utenti;
         if(this.tipologia!=="TUTTI"){
-            for(let u of this.utentiFiltrati){
-                console.log(u.tipologia==this.tipologia);
+            if(this.tipologia==="ORGANIZZATORE"){
+                this.utentiFiltrati=this.utenti.filter(utente=>this.isOrganizzatore(utente.id));
             }
-            const uf=this.utenti.filter(utente=>utente.tipologia==this.tipologia);
-            this.utentiFiltrati=this.utenti.filter(utente=>utente.tipologia==this.tipologia);
+            else{
+                this.utentiFiltrati=this.utenti.filter(utente=>utente.tipologia===this.tipologia && !this.isOrganizzatore(utente.id));
+            }
         }
     }
 
@@ -143,7 +145,7 @@ export class ListaUtentiComponent implements OnInit {
                 this.idModifica=id;
             }
             else if(id===this.idModifica){
-                this.idModifica=null;
+                return;
             }
         }
     }
@@ -157,8 +159,36 @@ export class ListaUtentiComponent implements OnInit {
                     return ruoli.some(ruolo=>ruolo.nome==="ORGANIZZATORE_EVENTI");
                 }
             }
-
         }
         return false;
+    }
+
+    isInPromozione(id:string|undefined):{find:boolean,class:string}{
+        if(id){
+            if(this.idUtentiDaPromuovere.find(idProm=>idProm===id)){
+                return {find:true,class:'text-bg-primary'};
+            }
+        }
+        return {find:false,class:'text-bg-light'};
+    }
+
+    isInDegradazione(id:string|undefined):{find:boolean,class:string}{
+        if(id){
+            if(this.idUtentiDaDegradare.find(idDeg=>idDeg===id)){
+                return {find:true,class:'text-bg-danger'};
+            }
+        }
+        return {find:false,class:'text-bg-light'};
+    }
+
+    rimuoviDaPromuovere(id:string|undefined){
+        if(id){
+            this.idUtentiDaPromuovere=this.idUtentiDaPromuovere.filter(idProm=>idProm!==id);
+        }
+    }
+    rimuoviDaDegradare(id:string|undefined){
+        if(id){
+            this.idUtentiDaDegradare=this.idUtentiDaDegradare.filter(idDeg=>idDeg!==id);
+        }
     }
 }

@@ -1,5 +1,59 @@
-<section>
-    <div>
+<div class="container py-2">
+    <div class="bg-black bg-opacity-10 shadow-sm rounded-5 p-2">
+        <div class="row m-2 justify-content-center">
+            <div class="col-xxl-3 col-xl-3 col-lg-8 col-md-12 p-2 border-end border-2">
+                <div class="mb-3">
+                    <label class="form-label">Ricerca Nome/Marca:</label>
+                    <input class="form-control" type="text" [(ngModel)]="stringaFiltro" (keyup)="filtra()">
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="checked" (change)="filtra()">
+                            Mostra Solo Modificati
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-9 col-xl-9 col-lg-12 col-md-12 scrollable-column custom-scrollbar">
+                <div class="list-group m-2">
+                    <div class="list-group-item border-secondary p-3 mb-2" *ngFor="let s of stockFiltrati">
+                        <div class="d-flex w-100 align-items-center justify-content-center">
+                            <div class="row w-100 align-items-center justify-content-center">
+                                <div class="col-4">
+                                    <div>
+                                        <h6 class="mb-1 fw-bold">{{s.prodotto.marca}}</h6>
+                                        <h6 class="mb-1 fw-light">{{s.prodotto.nome}}</h6>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label">Quantità in Stock:</label>
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary" type="button" (click)="decrementa(s.prodotto.id)"
+                                                [disabled]="s.prodotto.quantitaDisponibile===0">
+                                            <i class="bi bi-dash-lg"></i>
+                                        </button>
+                                        <input class="form-control text-center" name="quantita" type="number" min="0" [(ngModel)]="s.quantita">
+                                        <button class="btn btn-outline-secondary" type="button" (click)="incrementa(s.prodotto.id)">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <button class="btn btn-primary w-75" type="button" (click)="salva(s.prodotto.id)"
+                                            [disabled]="s.quantita===s.quantitaAggiornata">
+                                        Salva
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!--
         <div>
             <label><input type="checkbox" [(ngModel)]="checked" (change)="filtra()">Mostra solo modificati</label>
         </div>
@@ -7,16 +61,16 @@
             <input type="text" [(ngModel)]="stringaFiltro" (keyup)="filtra()">
         </div>
     </div>
-    <div *ngFor="let s of stockFiltrati">
+    <div>
         <div>
-            <span>{{s.prodotto.marca}} {{s.prodotto.nome}}</span>
+            <span> </span>
             <br>
             <button type="button" (click)="decrementa(s.prodotto.id)" [disabled]="s.prodotto.quantitaDisponibile===0">-</button>
             <input type="number" name="quantita" [(ngModel)]="s.quantita" min="0">
             <button type="button" (click)="incrementa(s.prodotto.id)">+</button>
         </div>
         <div>
-            <button type="button" (click)="salva(s.prodotto.id)" [disabled]="s.quantita===s.quantitaAggiornata">Salva</button>
-        </div>
+
+        </div>-->
     </div>
-</section>
+</div>

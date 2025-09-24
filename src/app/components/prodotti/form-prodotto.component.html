@@ -1,49 +1,90 @@
-<section>
-    <form #form="ngForm" (ngSubmit)="salva()">
-        <div>
-            <label>Nome: </label>
-            <input type="text" name="nome" [(ngModel)]="prodotto.nome" required>
-        </div>
-        <br>
-        <div>
-            <label>Marca: </label>
-            <input type="text" name="marca" [(ngModel)]="prodotto.marca" required>
-        </div>
-        <br>
-        <div>
-            <label>Descrizione: </label>
-            <input type="text" name="descrizione" [(ngModel)]="prodotto.descrizione" required>
-        </div>
-        <br>
-        <div>
-            <label>Immagine: </label>
-            <img src="http://localhost:8080{{previewUrl}}" alt="{{prodotto.nome}}">
-            <input type="file" #fileInput (change)="fileSelezionato($event)" accept="image/*">
-        </div>
-        <br>
-        <div>
-            <label>Prezzo (in €): </label>
-            <input type="text" inputmode="decimal" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{1,2})?$" required>
-        </div>
-        <br>
-        <div>
-            <label>Costo Giornaliero di noleggio (in €): </label>
-            <input type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{1,2})?$">
-        </div>
-        <br>
+<div class="container py-2">
+    <div class="bg-black bg-opacity-10 shadow-sm py-5 m-2 rounded-5">
+        <form #form="ngForm" (ngSubmit)="salva()">
+            <div class="row justify-content-center">
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 d-flex p-2 align-items-center justify-content-center">
+                    <div class="profile-pic-container" (click)="fileInput.click()">
+                        <img src="http://localhost:8080{{previewUrl}}">
+                        <div class="overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-camera">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle r="4" cx="12" cy="13"></circle>
+                            </svg>
+                        </div>
+                        <input type="file" #fileInput (change)="fileSelezionato($event)" accept="image/*">
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 py-2 px-5 align-items-center justify-content-center">
+                    <div class="mb-3">
+                        <label class="form-label">Nome: </label>
+                        <input class="form-control" type="text" name="nome" [(ngModel)]="prodotto.nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Marca: </label>
+                        <input class="form-control" type="text" name="marca" [(ngModel)]="prodotto.marca" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Descrizione: </label>
+                        <input class="form-control" type="text" name="descrizione" [(ngModel)]="prodotto.descrizione" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Prezzo (in €): </label>
+                        <input class="form-control" type="text" inputmode="decimal" name="prezzo" [(ngModel)]="prodotto.prezzo" pattern="^\d+(\.\d{1,2})?$" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Costo Giornaliero di noleggio (in €): </label>
+                        <input class="form-control" type="text" inputmode="decimal" name="costo-noleggio" [(ngModel)]="prodotto.costoGiornaliero" pattern="^\d+(\.\d{1,2})?$">
+                    </div>
+                </div>
+            </div>
 
-        <div style="float:right">
-            <div *ngFor="let c of prodotto.categorie">
-                <span (click)="rimuoviCategoria(c.id)">{{c.name}}</span>
+            <div class="row justify-content-center m-2">
+                <h5 class="m">Seleziona Categorie:</h5>
+                <div class="row justify-content-center">
+                    <div class="col-xxl-9 col-xl-9 col-lg-12 col-md-12">
+                        <div class="accordion" id="accordionCategorie">
+                            <div class="accordion-item"  *ngFor="let c of macroCategorie">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+c.id">
+                                        {{c.name}}
+                                    </button>
+                                </h2>
+                                <div [attr.id]="'collapse'+c.id" class="accordion-collapse collapse" data-bs-parent="#accordionCategorie"
+                                     (show.bs.collapse)="selezionaCategoria(c.id)">
+                                    <div class="accordion-body d-flex flex-wrap gap-2">
+                                        <app-categorie-prodotto *ngIf="c.id===selectedCategoria" [categorieProdotto]="prodotto.categorie"
+                                                                [categoriaInput]="c" (categoriaSelezionata)="aggiungi($event)">
+                                        </app-categorie-prodotto>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-xl-3 col lg-md-12 col-md-12">
+                        <div class="d-flex flex-wrap gap-1 m-2">
+                            <div class="mb-1" *ngFor="let c of prodotto.categorie">
+                                <span class="badge text-bg-primary bg-opacity-100 badge-hover-zoom" (click)="rimuoviCategoria(c.id)">
+                                {{c.name}}
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div *ngFor="let c of macroCategorie">
-                <button style="background-color:red" type="button" (click)="selezionaCategoria(c.id)">{{c.name}}</button>
-                <app-categorie-prodotto *ngIf="c.id===selectedCategoria" [categorieProdotto]="prodotto.categorie" [categoriaInput]="c" (categoriaSelezionata)="aggiungi($event)"></app-categorie-prodotto>
+            <div class="row justify-content-center">
+                <div class="d-flex gap-2 justify-content-evenly">
+                    <button class="btn btn-primary mt-3 w-25" type="submit" [disabled]="form.invalid || prodotto.categorie?.length===0">
+                        {{modifica ? 'Salva':'Aggiungi' }}
+                    </button>
+                    <button class="btn btn-primary mt-3 w-25" type="button" (click)="annulla()">
+                        Annulla
+                    </button>
+                </div>
             </div>
-        </div>
-        <button type="submit" [disabled]="form.invalid || prodotto.categorie?.length===0">
-            {{modifica ? 'Salva':'Aggiungi' }}
-        </button>
-    </form>
-    <button type="button" (click)="annulla()">Annulla</button>
-</section>
+        </form>
+    </div>
+</div>
