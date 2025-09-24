@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {CommonModule, NgForOf} from '@angular/common';
 import {
+
     CarrelloControllerService, DatiStaticiControllerService, DeleteCartDTO,
     DeliveryLimitDataDTO, ProdottoControllerService, ResponseCartDTO, UpdateCartItemDTO,
     UtenteControllerService
@@ -113,12 +114,27 @@ export class CarrelloComponent implements OnInit {
             }
         }
     }
+
+    calcolaSpedizione(){
+        if(this.totalePrezzo<=this.sogliaSpedizioneGratis){
+            return this.costoSpedizione;
+        }
+        return 0;
+    }
     checkoutOrdine(){
-        this.router.navigate(["/checkout/ordine"]);
+        this.router.navigate(["/checkout/ordine"], {
+            queryParams: {
+                costoSpedizione: this.calcolaSpedizione(),
+            }
+        });
     }
 
     checkoutNoleggio(){
-        this.router.navigate(["checkout/noleggio"]);
+        this.router.navigate(["checkout/noleggio"], {
+            queryParams: {
+                costoSpedizione: this.costoSpedizione,
+            }
+        });
     }
 
     rimuoviTutto(){
@@ -179,7 +195,7 @@ export class CarrelloComponent implements OnInit {
         }
     }
 
-    updateCart(item:CarrelloModel){
+     updateCart(item:CarrelloModel){
         const cartItem:UpdateCartItemDTO={
             prodottoId:item.prodotto.id,
             quantita:item.quantita,

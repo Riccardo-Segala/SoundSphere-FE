@@ -1,5 +1,5 @@
 <div class="container my-5">
-    <h1>Il tuo carrello acquisti</h1>
+    <h1>Il tuo carrello</h1>
 
     <div class="row">
 
@@ -27,7 +27,7 @@
                     <div class="quantity-selector">
                         <div class="quantity-controls">
                             <button type="button" (click)="decrementaQuantita(c)" [disabled]="c.quantita <= 1" class="quantity-btn">-</button>
-                            <input id="quantita-carrello" type="number" min="1" name="quantita-carrello" [(ngModel)]="c.quantita" class="quantity-input">
+                            <input id="quantita-carrello" type="number" min="1" name="quantita-carrello" [(ngModel)]="c.quantita" (blur)="updateCart(c)" class="quantity-input">
                             <button type="button" (click)="incrementaQuantita(c)" class="quantity-btn">+</button>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="text-end">
                     <div class="text-muted">Costi di spedizione</div>
-                    {{ (totalePrezzo < sogliaSpedizioneGratis ? totalePrezzo : 0) | currency:'EUR' }}
+                    {{ calcolaSpedizione() | currency:'EUR' }}
                 </div>
             </div>
 
@@ -54,8 +54,11 @@
                 <div class="card-body p-4">
                     <h3 class="card-title">Totale {{ totalePrezzo | currency:'EUR' }}</h3>
                     <p class="text-muted mb-4">I prezzi includono l'IVA locale</p>
-                    <button class="btn btn-primary w-100 py-2 rounded-pill" (click)="checkoutOrdine()">
-                        ALLA CASSA &rarr;
+                    <button [disabled]="!carrello || carrello.length === 0" class="btn btn-primary w-100 py-2 rounded-pill" (click)="checkoutOrdine()">
+                        PROCEDI ALL'ACQUISTO &rarr;
+                    </button>
+                    <button [disabled]="!carrello || carrello.length === 0" class="btn btn-secondary w-100 rounded-pill mt-2" (click)="checkoutNoleggio()">
+                        PROCEDI AL NOLEGGIO &rarr;
                     </button>
                 </div>
             </div>
@@ -64,7 +67,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div><strong>🚚 Consegna standard</strong></div>
-                        <div><strong>gratis</strong></div>
+                        <div><strong *ngIf="calcolaSpedizione()==0">gratis</strong></div>
                     </div>
                 </div>
             </div>
