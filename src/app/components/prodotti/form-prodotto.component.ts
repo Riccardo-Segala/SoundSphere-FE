@@ -71,6 +71,9 @@ export class FormProdottoComponent implements OnInit {
                             if(!this.prodotto.categorie){
                                 this.prodotto.categorie=[];
                             }
+                            if(this.prodotto.pathImmagine){
+                                this.previewUrl=this.prodotto.pathImmagine;
+                            }
                             this.caricaCategorie();
                         },
                         error:(err)=>{

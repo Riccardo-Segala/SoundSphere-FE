@@ -69,3 +69,14 @@
 .btn-hover-zoom:hover{
   transform: scale(1.05);
 }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Per Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
