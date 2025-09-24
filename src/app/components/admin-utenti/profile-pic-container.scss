@@ -35,32 +35,3 @@
 .profile-pic-container:hover .overlay{
   opacity: 1;
 }
-
-.badge-hover-zoom:hover{
-  transform: scale(1.05);
-  cursor:pointer;
-  background-color: #0a58ca;
-  color:#fff;
-}
-
-.badge-hover-zoom{
-  transition: transform 0.2s ease-in-out;
-}
-
-.badge-hover-zoom:active{
-  transform: scale(0.98) !important;
-  background-color:#0a58ca !important; /* Un rosso leggermente più scuro */
-  border-color: #0a58ca !important;
-  color: #fff !important;
-}
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Per Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}

@@ -25,7 +25,7 @@ import {RuoloModel} from "../../models/ruolo.model";
         NgForOf
     ],
     templateUrl:'profilo-dipendente.component.html',
-    styleUrls:['profilo-dipendente.component.scss']
+    styleUrls:['profilo-dipendente.component.scss','profile-pic-container.scss']
 })
 export class ProfiloDipendenteComponent implements OnInit {
     loggedUser:UtenteModel={};

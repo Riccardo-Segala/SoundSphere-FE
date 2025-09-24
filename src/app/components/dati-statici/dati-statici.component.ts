@@ -46,5 +46,7 @@ export class DatiStaticiComponent implements OnInit{
             })
     }
 
-
+    annulla(){
+        this.router.navigate(['/admin-page']);
+    }
 }

@@ -48,16 +48,23 @@ export class FormDatiStaticiComponent{
         }
     }
     elimina(id:string|undefined){
-        if(id){
-            this.dsService.deleteData(id).subscribe({
-                next:()=>{
-                    console.log("Eliminazione completata");
-                    this.datoCambiato.emit();
-                },
-                error:(err)=>{
-                    console.log("Errore eliminazione dato: ",JSON.stringify(err));
-                }
-            })
+        const conferma=window.confirm("Sei sicuro di volerlo eliminare?");
+        if(conferma){
+            if(id){
+                this.dsService.deleteData(id).subscribe({
+                    next:()=>{
+                        console.log("Eliminazione completata");
+                        this.datoCambiato.emit();
+                    },
+                    error:(err)=>{
+                        console.log("Errore eliminazione dato: ",JSON.stringify(err));
+                    }
+                })
+            }
+            else{
+                alert("Dato non trovato");
+            }
         }
+
     }
 }

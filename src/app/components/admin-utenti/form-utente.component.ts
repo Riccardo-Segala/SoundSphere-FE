@@ -28,7 +28,7 @@ import {RuoloModel} from "../../models/ruolo.model";
         NgForOf
     ],
     templateUrl:'form-utente.component.html',
-    styleUrls:['form-utente.component.scss']
+    styleUrls:['form-utente.component.scss','profile-pic-container.scss']
 })
 export class FormUtenteComponent implements OnInit{
     loggedUser:UtenteModel|null=null;
