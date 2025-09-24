@@ -1,0 +1,22 @@
+.scrollable-column{
+  height: 100%;
+  overflow-y: auto; //mostra barra di scorrimento solo se necessario
+  overflow-x:hidden;
+}
+
+//  servirebbe per nascondere la scrollbar interna
+.scrollable-column::-webkit-scrollbar{
+  display:none;
+}
+
+//si applica a componenti che contengono contemporaneamente classe row e m-2
+.row.m-2{
+  flex-grow: 1; /* si applica solo a figli diretti di contenitore flex (come row), la riga si espande per riempire tutto lo spazio verticale */
+  overflow: hidden; //nasconde contenuto in eccesso rispetto alla grandezza del contenitore
+}
+
+.bg-black.bg-opacity-10{
+  height: calc(100vh - 100px); //calcola altezza basandosi sulla finestra (100% viewport height)
+  display: flex;
+  flex-direction: column;
+}
