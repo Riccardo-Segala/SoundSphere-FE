@@ -41,6 +41,7 @@ function initializeMapper():Mapper{
     ordineProfile(mapper);
     noleggioProfile(mapper);
     stockProfile(mapper);
+    datiStaticiProfile(mapper);
 
     return mapper;
 }

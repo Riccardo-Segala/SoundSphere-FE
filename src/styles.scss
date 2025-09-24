@@ -1,5 +1,17 @@
 .btn {
   border-radius: 20px;
+  border-color: #000;
+  transition: transform 0.1s
+}
+
+.btn:hover,{
+  border-color: #000;
+  transform: scale(1.05);
+}
+
+.btn:active {
+  border-color: #000;
+  transform: scale(0.98) !important;
 }
 
 .btn-primary {
@@ -47,4 +59,8 @@
   background-color: #383838FF;
   border-color: #383838FF;
   cursor: not-allowed;
+}
+
+p {
+font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
