@@ -43,6 +43,7 @@ export class ListaOrdiniComponent implements OnInit{
     ngOnInit() {
         this.loggedUser=this.session.getUser();
         if(this.loggedUser){
+            console.log(this.loggedUser.punti + " "+this.loggedUser.vantaggio?.nome)
             this.ordineService.getMyOrders()
                 .pipe(map(dtos=>mapper.mapArray<ResponseOrderDTO,OrdineModel>(dtos,'ResponseOrderDTO','OrdineModel')))
                 .subscribe({

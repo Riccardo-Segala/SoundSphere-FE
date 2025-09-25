@@ -15,7 +15,7 @@ import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {CategoriaModel} from "../../models/categoria.model";
 import {CategoriaComponent} from "./categorie/categoria.component";
-import {UploadImageRequest} from "../../api-client/model/uploadImageRequest";
+// import {UploadImageRequest} from "../../api-client/model/uploadImageRequest";
 
 
 @Component({

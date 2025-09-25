@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ResponseUserDTO} from "../api-client";
 import {UtenteModel} from "../models/utente.model";
+import {VantaggioModel} from "../models/vantaggio.model";
 
 @Injectable({providedIn: 'root'})
 export class SessionService {
@@ -45,15 +46,20 @@ export class SessionService {
     clearLoggedUser():void{
         localStorage.removeItem('utente');
         localStorage.removeItem('token');
+        this.userSubject.next(null);
     }
 
-    setPoints(points:number){
+    setPoints(points:number,vantaggio:VantaggioModel|undefined){
         const raw=localStorage.getItem('utente');
         if(raw){
             const user:UtenteModel=JSON.parse(raw) as UtenteModel;
-            if(user && user.punti){
+            if(user && user.punti!==undefined){
                 user.punti=points;
+                if(user.vantaggio && vantaggio){
+                    user.vantaggio=vantaggio;
+                }
                 localStorage.setItem('utente',JSON.stringify(user));
+                this.userSubject.next((user));
             }
         }
     }

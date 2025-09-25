@@ -16,9 +16,10 @@
                         </select>
                     </div>
 
-                    <div *ngIf="metodiPagamento.length > 0">
+                    <div>
                         <label for="metodoPagamento" class="form-label">Seleziona un metodo di pagamento</label>
                         <select id="metodoPagamento" class="form-select" [(ngModel)]="metodoCorrente">
+                            <option class="form-select" disabled>Non hai ancora registrato metodi di pagamento</option>
                             <option *ngFor="let m of metodiPagamento" [ngValue]="m.id">
                                 {{m.numero}} - {{m.tipoPagamento}}
                             </option>
@@ -109,7 +110,7 @@
                     </div>
 
                     <div class="d-grid mt-4">
-                        <button type="button" class="btn btn-dark rounded-pill py-2" (click)="paga()" [disabled]="inizioNoleggio > fineNoleggio">
+                        <button type="button" class="btn btn-dark rounded-pill py-2" (click)="paga()" [disabled]="inizioNoleggio > fineNoleggio || metodiPagamento.length===0 || indirizzi.length===0">
                             {{ router.url.includes('/checkout/noleggio') ? 'CONFERMA NOLEGGIO' : 'CONFERMA ACQUISTO' }}
                         </button>
                     </div>
