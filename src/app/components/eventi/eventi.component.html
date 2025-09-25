@@ -1,0 +1,27 @@
+<div #carouselEvents *ngIf="eventi.length>0" class="carousel slide carousel-fade" id="carouselEvents" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button *ngFor="let e of eventi; let i=index" type="button" data-bs-target="#carouselEvents"
+                [attr.data-bs-slide-to]="i" [class.active]="i===0" [attr.aria-label]="'Slide'+i"></button>
+    </div>
+    <div class="carousel-inner">
+        <div *ngFor="let e of eventi; let i=index" class="carousel-item carousel-img" [class.active]="i===0">
+            <img [ngSrc]="'http://localhost:3000'+e.path"
+                 [fill]="true"
+                 priority="{{i===0}}"
+                 class="d-block" [alt]="e.testo">
+
+            <div class="carousel-caption d-none d-md-block bg-opacity-25">
+                <h5>{{e.testo}}</h5>
+                <p>{{e.nome}} - {{e.data}}</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselEvents" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselEvents" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
