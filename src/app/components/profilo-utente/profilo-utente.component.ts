@@ -23,7 +23,7 @@ import {FormIndirizziUtenteComponent} from "../indirizzi-utente/form-indirizzi-u
 @Component({
     selector: 'app-profilo',
     standalone:true,
-    imports: [CommonModule, FormsModule, IndirizzoutenteComponent, ReactiveFormsModule, ListaMetodoPagamentoComponent, FormIndirizziUtenteComponent, NgOptimizedImage],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, FormIndirizziUtenteComponent],
     templateUrl:'./profilo-utente.component.html',
     styleUrls:['./profilo-utente.component.scss']
 })

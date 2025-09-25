@@ -6,7 +6,7 @@ import {
     CheckoutInputDTO, CheckoutInputRentalDTO, CheckoutOutputDTO, CheckoutOutputRentalDTO,
     IndirizzoUtenteControllerService,
     MetodoPagamentoControllerService, NoleggioControllerService,
-    OrdineControllerService,
+    OrdineControllerService, ResponseBenefitDTO,
     ResponseCartDTO,
     ResponsePaymentMethodDTO,
     ResponseUserAddressDTO
@@ -19,6 +19,7 @@ import {forkJoin, map, Observable, take} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {VantaggioModel} from "../../models/vantaggio.model";
 
 @Component({
     selector: "app-checkout",
@@ -150,9 +151,17 @@ export class CheckoutComponent implements OnInit {
                 console.log("Ordine: ");
                 console.log("Checkout riuscito!!!!");
 
+                let punti:number=0;
                 if('puntiTotaliUtente' in res && res.puntiTotaliUtente){
-                    this.session.setPoints(res.puntiTotaliUtente);
+                    punti=res.puntiTotaliUtente;
                 }
+                let vantaggio:VantaggioModel|undefined=this.loggedUser?.vantaggio;
+                if('vantaggio' in res){
+                    vantaggio= res.vantaggio
+                        ? mapper.map<ResponseBenefitDTO,VantaggioModel>(res.vantaggio,'ResponseBenefitDTO','VantaggioModel')
+                        : undefined;
+                }
+                this.session.setPoints(punti,vantaggio);
 
                 this.router.navigate(['/ordini']);
             },
