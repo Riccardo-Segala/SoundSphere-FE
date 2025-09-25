@@ -12,6 +12,7 @@ import {CategoriaModel} from "../../models/categoria.model";
 import {map, Subscription} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {CategoryCardComponent} from "../../shared/components/category-card/category-card.component";
+import {EventiComponent} from "../eventi/eventi.component";
 
 @Component({
     selector: "app-categorie",
@@ -20,7 +21,8 @@ import {CategoryCardComponent} from "../../shared/components/category-card/categ
     imports: [
         RouterLink,
         NgForOf,
-        CategoryCardComponent
+        CategoryCardComponent,
+        EventiComponent
     ],
     styleUrl: "./categorie.component.scss"
 })

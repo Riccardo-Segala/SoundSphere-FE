@@ -15,7 +15,6 @@ import {ProdottoModel} from "../../models/prodotto.model";
 import {map} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {CarrelloModel} from "../../models/carrello.model";
-import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
 import {DatiSpedizioneModel} from "../../models/dati-spedizione.model";
 
 @Component({
