@@ -1,51 +1,95 @@
+<header>
+    <h1 style="display: flex;justify-content: center">
+        <a routerLink="/" class="text-decoration-none text-dark title">SoundSphere</a>
+    </h1>
+    <div *ngIf="router.url!=='/login'" class="bg-black bg-opacity-25 border rounded-top-5 px-3 py-1">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <a class="btn btn-primary" *ngIf="loggedUser && isAdmin() && router.url!=='/admin-page'" routerLink="/admin-page">Admin</a>
+                    <a class="btn btn-primary" *ngIf="loggedUser && isEmployee() && router.url!=='/stock'" routerLink="/stock">Gestisci Stock Filiale</a>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="m-2 d-flex align-items-center" *ngIf="!loggedUser&&router.url!=='/login'">
+                        <a class="btn btn-primary" routerLink="/login">Login</a>
+                    </div>
+                    <div *ngIf="loggedUser as user"
+                         class="d-flex align-items-center">
+                        <div *ngIf="user.punti!==undefined && user.vantaggio" class="dropdown" style="width: auto;">
 
-
-    <header>
-        <h1 style="display: flex;justify-content: center">
-            <a routerLink="/" class="text-decoration-none text-dark title">SoundSphere</a>
-        </h1>
-        <nav class="navbar navbar-expand-sm bg-black bg-opacity-10 border rounded-5 shadow-sm">
-            <div class="container-fluid">
-                <div class="collapse-navbar-collapse" id="navbar">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item" *ngFor="let c of categorieMacro">
-                            <a class="nav-link" [routerLink]="['categorie',c.slug]">{{c.name}}</a>
-                        </li>
-                    </ul>
+                            <button class="nav-user-dropdown dropdown-toggle interactive-transparent progress-dropdown"
+                                    data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside"
+                                    aria-expanded="false">
+                                <div class="text-center small">
+                                    <span style="font-style:italic">
+                                        <strong>{{user.vantaggio.nome}}</strong>
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2 benefit-numbers">{{user.vantaggio.punteggioMinimo}}</span>
+                                    <div class="progress flex-grow-1" style="height: 5px">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                             [style.width.%]="calcolaProgresso(user)"
+                                             [attr.aria-valuenow]="user.punti-user.vantaggio.punteggioMinimo"
+                                             [attr.aria-valuemin]="user.vantaggio.punteggioMinimo"
+                                             [attr.aria-valuemax]="user.vantaggio.punteggioMassimo">
+                                        </div>
+                                    </div>
+                                    <span class="ms-2 benefit-numbers">{{user.vantaggio.punteggioMassimo}}</span>
+                                </div>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li class="dropdown-item focus-drop-item"><h6 class="fw-light text-black">Punti: {{user.punti}}</h6></li>
+                                <li class="dropdown-item focus-drop-item"><h6 class="fw-light text-black">Sconto: {{user.vantaggio.sconto}}%</h6></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown" style="height: auto;">
+                            <button class="nav-user-dropdown dropdown-toggle interactive-transparent fw-bold p-2" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                {{ loggedUser?.nome?.toUpperCase() }} {{loggedUser?.cognome?.toUpperCase()}}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" routerLink="/modifica-profilo">Modifica Profilo</a></li>
+                                <li><a class="dropdown-item" routerLink="/indirizzi-utente">Gestisci Indirizzi</a></li>
+                                <li><a class="dropdown-item" href="/metodi-pagamento">Gestisci Metodi di Pagamento</a></li>
+                                <li><a class="dropdown-item" href="/ordini">Visualizza Ordini</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+                            </ul>
+                        </div>
+                        <button class="button-cart ms-2" type="button" (click)="carrello('carrello')">
+                            <i class="bi bi-cart-fill"></i>
+                        </button>
+                        <button class="button-wishlist ms-2" type="button" (click)="carrello('wishlist')">
+                            <i class="bi bi-heart-fill"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- controllo se utente loggato per pulsante logout o login -->
-            <br>
-            <button *ngIf="loggedUser && isAdmin()" style="float:left" (click)="adminPage()">Admin</button>
-            <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('carrello')">Carrello</button>
-            <br>
-            <button *ngIf="loggedUser" type="button" style="float:right" (click)="carrello('wishlist')">Wishlist</button>
-            <br>
-            <a class="btn btn-primary" *ngIf="!loggedUser&&router.url!=='/login'" routerLink="/login">Login</a>
-            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown"  *ngIf="loggedUser&&router.url!=='/login' && router.url!=='/registrazione'">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <button class="nav-user-dropdown dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            BENVENUTO {{ loggedUser?.nome?.toUpperCase() }} {{loggedUser?.cognome?.toUpperCase()}}
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" routerLink="/modifica-profilo">Modifica Profilo</a></li>
-                            <li><a class="dropdown-item" routerLink="/indirizzi-utente">Gestisci Indirizzi</a></li>
-                            <li><a class="dropdown-item" href="/metodi-pagamento">Gestisci Metodi di Pagamento</a></li>
-                            <li><a class="dropdown-item" href="/ordini">Visualizza Ordini</a></li>
-                            <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
-                        </ul>
+    <nav class="navbar navbar-expand-sm navbar-light bg-black bg-opacity-10 shadow-sm rounded-bottom-5">
+        <div class="container-fluid">
+            <button class="navbar-toggler w-100" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCategories" aria-controls="navbarCategories" aria-expanded="false" aria-label="Toggle navigation">
+                <span>CATEGORIE</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCategories">
+                <ul class="navbar-nav w-100 justify-content-around">
+                    <li class="nav-item" *ngFor="let c of categorieMacro">
+                        <a class="nav-link" [routerLink]="['categorie',c.slug]">{{c.name}}</a>
                     </li>
                 </ul>
             </div>
-        </nav>
-    </header>
-    <main class="clearfix">
-        <router-outlet></router-outlet>
-    </main>
+        </div>
+    </nav>
+</header>
+<main class="clearfix">
+    <router-outlet></router-outlet>
+</main>
 
-    <footer>
+<footer>
 
-    </footer>
+</footer>
 

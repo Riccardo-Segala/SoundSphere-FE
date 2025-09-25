@@ -3,5 +3,5 @@ export interface VantaggioModel{
     nome:string;
     sconto:number;
     punteggioMinimo:number;
-    punteggioMassimmo:number;
+    punteggioMassimo:number;
 }
