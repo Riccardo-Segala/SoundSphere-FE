@@ -1,7 +1,7 @@
 <a class="card h-100 shadow-sm text-decoration-none" [routerLink]="[detailPath, product.id]"
    [state]="{forWishlist:wishlistAvailable, forCart:cartAvailable}">
 
-    <span class="badge-sconto">-{{discountedPrice}}%</span>
+    <span *ngIf="discountedPrice!=0" class="badge-sconto">-{{discountedPrice}}%</span>
 
     <img [src]="'http://localhost:8080' + product.pathImmagine" class="card-img-top" [alt]="product.nome">
 
