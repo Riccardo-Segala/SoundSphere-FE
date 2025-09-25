@@ -97,11 +97,11 @@ export class ListaOrdiniComponent implements OnInit{
                 return 'badge-status-ritardo';
             }
             const settimana:Date=new Date();
-            settimana.setDate((oggi.getDate()-7))
-            if(dataScad.getTime()>settimana.getTime()){
-                return 'badge-status-in-tempo';
+            settimana.setDate((oggi.getDate()+7))
+            if(dataScad.getTime()<settimana.getTime()){
+                return 'badge-status-manca-una-settimana-a-scadenza';
             }
-            return 'badge-status-manca-una-settimana-a-scadenza';
+            return 'badge-status-in-tempo';
         }else{
             return 'badge-status-secondary';
         }

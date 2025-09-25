@@ -1,9 +1,9 @@
-<section>
+<div class="container py-2">
     <div class="mb-4">
         <h2>I tuoi ordini</h2>
         <hr>
     </div>
-    <div class="row text-secondary fw-bold small p-2 d-none d-md-flex">
+    <div class="row fw-bold small m-2 px-2 d-none d-md-flex">
         <div class="col-3">ID Ordine</div>
         <div class="col-3">Data Acquisto</div>
         <div class="col-3">Totale</div>
@@ -12,7 +12,7 @@
     <div class="accordion" id="accordionOrdini">
         <div class="accordion-item" *ngFor="let o of ordini">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+o.id">
+                <button class="accordion-button collapsed pe-1" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+o.id">
                     <div class="row w-100 align-items-center">
                         <div class="col-3"><strong>{{o.id}}</strong></div>
                         <div class="col-3">{{o.dataAcquisto}}</div>
@@ -41,24 +41,23 @@
             </div>
         </div>
     </div>
-</section>
-<br>
-<section>
-    <div class="mb-4">
+
+    <div class="my-4">
         <h2>I tuoi noleggi</h2>
         <hr>
     </div>
-    <div class="row text-secondary fw-bold small p-2 d-none d-md-flex">
+    <div class="row fw-bold small m-2 px-2 d-none d-md-flex">
         <div class="col">ID Noleggio</div>
         <div class="col">Data Inizio</div>
         <div class="col">Data Scadenza</div>
         <div class="col">Data Restituzione</div>
         <div class="col">Totale</div>
     </div>
+
     <div class="accordion" id="accordionNoleggi">
         <div class="accordion-item" *ngFor="let n of noleggi">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+n.id">
+                <button class="accordion-button collapsed pe-1" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+n.id">
                     <div class="row w-100 align-items-center">
                         <div class="col"><strong>{{n.id}}</strong></div>
                         <div class="col">{{n.dataInizio}}</div>
@@ -80,22 +79,16 @@
                                 <span class="fw-bold">{{d.quantita}}x</span> {{d.prodotto?.marca}} {{d.prodotto?.nome}}
                             </div>
                             <div class="text-end">
-                                <span class="text-muted small">
-                                    {{prezzoDettaglio(d.prodotto?.costoGiornaliero).toFixed(2)}}€/gg
-                                    <br>
-                                    <strong class="ms-3">{{prezzoTotaleDettaglio(d.prodotto?.costoGiornaliero,d.quantita,'noleggio').toFixed(2)}}€</strong>
-                                </span>
+                        <span class="text-muted small">
+                            {{prezzoDettaglio(d.prodotto?.costoGiornaliero).toFixed(2)}}€/gg
+                            <br>
+                            <strong class="ms-3">{{prezzoTotaleDettaglio(d.prodotto?.costoGiornaliero,d.quantita,'noleggio').toFixed(2)}}€</strong>
+                        </span>
                             </div>
                         </li>
                     </ul>
-
-                    <!--<div>
-                        <div *ngIf="d.prodotto">
-                            {{d.quantita}}x {{d.prodotto?.marca}} {{d.prodotto?.nome}}
-                        </div>
-                    </div>-->
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>

@@ -20,8 +20,8 @@ import {map} from "rxjs";
   selector: 'app-root',
   standalone:true,
   imports: [CommonModule,RouterOutlet, RouterLink,FormsModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    templateUrl: 'app.component.html',
+    styleUrl: 'app.component.scss'
 })
 export class AppComponent implements OnInit{
     loggedUser:UtenteModel|null=null;
@@ -74,4 +74,28 @@ export class AppComponent implements OnInit{
         return false;
 
     }
+
+    isEmployee():boolean{
+        if(this.loggedUser && this.loggedUser.ruoli){
+            return this.loggedUser.ruoli.some(ruolo=>ruolo.nome==="DIPENDENTE");
+        }
+        return false;
+    }
+
+    calcolaProgresso(user:UtenteModel){
+        if (user.punti !== undefined &&
+            user.vantaggio &&
+            user.vantaggio.punteggioMinimo !== undefined &&  // Controllo esplicito
+            user.vantaggio.punteggioMassimo !== undefined) { // Controllo esplicito
+
+            const puntiInVantaggio = user.punti - user.vantaggio.punteggioMinimo; // 98 - 0 = 98
+            const range = user.vantaggio.punteggioMassimo - user.vantaggio.punteggioMinimo; // 100 - 0 = 100
+            if (range <= 0) {
+                return 1;
+            }
+            return (puntiInVantaggio / range) * 100; // (98 / 100) * 100 = 98
+        }
+        return 0;
+    }
+
 }

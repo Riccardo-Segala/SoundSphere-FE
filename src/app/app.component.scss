@@ -18,6 +18,20 @@ nav li{
   transform: scale(1.05);
 }
 
+.benefit-border{
+  border-left:1px solid rgba(105,105,105,0.25);
+  margin-left: 1rem;
+  //padding-left: 1rem;
+
+  color:black;
+  padding: 12px 12px;
+  border-radius: 8px;
+}
+
+.benefit-numbers{
+  font-size:0.7em;
+  font-weight: 400;
+}
 /* rimuove frecca del dropdown */
 .dropdown-toggle::after {
   display:none;
@@ -25,15 +39,18 @@ nav li{
 
 /* Stile pulsante dropdown del profilo */
 .nav-user-dropdown{
+  min-height: 50px;
+  align-items: center;
+
   border:none;
   background-color: transparent;
 
   border-left:1px solid rgba(105,105,105,0.25);
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   //padding-left: 1rem;
 
   color:black;
-  padding: 12px 12px;
+  //padding: 12px 12px;
   border-radius: 8px;
   transition: background-color 0.2s ease-in-out;
 }
@@ -47,4 +64,71 @@ nav li{
 .nav-user-dropdown:focus, .nav-user-dropdown.show{
   background-color: rgba(255,255,255,0.15);
   box-shadow: none; // rimuove l'ombra di default inserita da bootstrap sui bottoni
+}
+
+.interactive-transparent{
+  transition: background-color 0.2s ease-in-out;
+}
+
+.interactive-transparent:hover{
+  background-color: rgba(0,0,0,0.08);
+}
+.interactive-transparent:active{
+  background-color: rgba(0,0,0,0.12);
+}
+
+.button-wishlist,.button-cart{
+  display:inline-block;
+  padding:0.5rem 0.75rem;
+  cursor: pointer;
+  border:1px solid;
+  border-radius:1rem;
+  line-height: 1;
+
+  transition:background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.button-cart{
+  color: #0dcaf0; /* Colore dell'icona (ciano) */
+  border-color: #0dcaf0;
+  background-color: transparent;
+}
+.button-wishlist{
+  color:#D63384;
+  border-color: #d63384;
+  background-color: transparent;
+}
+
+.button-cart:hover,.button-cart:active{
+  color: #fff; /* L'icona diventa bianca */
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+}
+
+.button-wishlist:hover,.button-wishlist:active{
+  color: #fff; /* L'icona diventa bianca */
+  background-color: #D63384;
+  border-color: #D63384;
+}
+
+.button-cart:focus{
+  outline: none;
+  box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.5); /* Alone semi-trasparente ciano */
+}
+.button-wishlist:focus{
+  outline: none; /* Rimuoviamo l'outline di default */
+  box-shadow: 0 0 0 0.25rem rgba(214, 51, 132, 0.5); /* Alone semi-trasparente rosa */
+}
+
+.progress-dropdown{
+  min-width: 150px;
+}
+
+.focus-drop-item{
+  background-color: transparent;
+}
+
+.border-text{
+  color:white;
+  -webkit-text-stroke: 1px black;
 }
