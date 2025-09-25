@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SessionService} from "../../services/session.service";
 import {
     CarrelloControllerService,
@@ -17,7 +17,7 @@ import {IndirizzoUtenteModel} from "../../models/indirizzo-utente.model";
 import {CarrelloModel} from "../../models/carrello.model";
 import {forkJoin, map, Observable, take} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
-import {NgForOf, NgIf} from "@angular/common";
+import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -26,7 +26,8 @@ import {FormsModule} from "@angular/forms";
     imports: [
         NgForOf,
         NgIf,
-        FormsModule
+        FormsModule,
+        CurrencyPipe
     ],
     templateUrl: "./checkout.component.html",
     styleUrls: ["./checkout.component.scss"]
@@ -36,6 +37,7 @@ export class CheckoutComponent implements OnInit {
     metodiPagamento:MetodoPagamentoModel[]=[];
     indirizzi:IndirizzoUtenteModel[]=[];
     carrello:CarrelloModel[]=[];
+    costoSpedizione:number=0;
     totalePrezzo:string="0";
     totaleGiornaliero:string="0";
     indirizzoCorrente:string|undefined="";
@@ -46,6 +48,7 @@ export class CheckoutComponent implements OnInit {
 
     constructor(
         public router: Router,
+        private route:ActivatedRoute,
         private session: SessionService,
         private mdService:MetodoPagamentoControllerService,
         private indirizzoService:IndirizzoUtenteControllerService,
@@ -58,6 +61,9 @@ export class CheckoutComponent implements OnInit {
     ngOnInit() {
         this.loggedUser = this.session.getUser();
         if(this.loggedUser){
+            this.route.queryParams.subscribe(params => {
+                this.costoSpedizione = +params['costoSpedizione'] || 0;
+            });
 
             //preparo gli observable
             const getCarrello$=this.carrelloService.getAllCartOfUser()
@@ -158,14 +164,16 @@ export class CheckoutComponent implements OnInit {
 
         if(!(dataInizio>dataFine)){
             const giorniNoleggio=Math.round(msDifferenza/msGiorno);
-            let totale=0;
-            let totaleNoleggi=0;
+            let totale=this.costoSpedizione;
+            let totaleNoleggi=this.costoSpedizione;
             for(let c of this.carrello){
-                totale += c.prodotto.prezzo ? c.prodotto.prezzo : 0;
-                totaleNoleggi += c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero*(giorniNoleggio+1) : 0;
+                totale += c.prodotto.prezzo ? c.prodotto.prezzo*c.quantita : 0;
+                totaleNoleggi += c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero*c.quantita*(giorniNoleggio+1) : 0;
             }
             this.totalePrezzo=String(totale.toFixed(2));
             this.totaleGiornaliero=String(totaleNoleggi.toFixed(2));
         }
     }
+
+    protected readonly Number = Number;
 }

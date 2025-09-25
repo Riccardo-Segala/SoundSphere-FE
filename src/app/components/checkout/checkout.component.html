@@ -1,3 +1,4 @@
+<!--
 <section>
     <div id="selezione" style="float:left">
         <div *ngIf="metodiPagamento.length>0">
@@ -37,4 +38,109 @@
         <br>
         <button type="button" (click)="paga()" [disabled]="inizioNoleggio>fineNoleggio">Conferma Ordine</button>
     </div>
-</section>
+</section>-->
+
+<div class="container my-5">
+    <h1>Checkout</h1>
+    <div class="row g-5">
+
+        <div class="col-lg-7">
+
+            <h3 class="mb-4">Dettagli di Spedizione e Pagamento</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label for="indirizzoSpedizione" class="form-label">Seleziona un indirizzo di spedizione</label>
+                        <select id="indirizzoSpedizione" class="form-select" [(ngModel)]="indirizzoCorrente">
+                            <option *ngFor="let i of indirizzi" [ngValue]="i.id">
+                                {{i.via}} {{i.civico}}, {{i.citta}} ({{i.cap}}), {{i.provincia}}, {{i.nazione}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="metodiPagamento.length > 0">
+                        <label for="metodoPagamento" class="form-label">Seleziona un metodo di pagamento</label>
+                        <select id="metodoPagamento" class="form-select" [(ngModel)]="metodoCorrente">
+                            <option *ngFor="let m of metodiPagamento" [ngValue]="m.id">
+                                {{m.numero}} - {{m.tipoPagamento}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="router.url.includes('/checkout/noleggio')" class="mt-4">
+                <h3 class="mb-4">Periodo di Noleggio</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="inizioNoleggio" class="form-label">Selezione Data Di Inizio Noleggio</label>
+                                <input type="date" id="inizioNoleggio" class="form-control" [(ngModel)]="inizioNoleggio" [min]="oggi" (change)="calcolaTotali()">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fineNoleggio" class="form-label">Selezione Data Di Fine Noleggio</label>
+                                <input type="date" id="fineNoleggio" class="form-control" [(ngModel)]="fineNoleggio" [min]="inizioNoleggio" (change)="calcolaTotali()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0" style="background-color: #f8f9fa;">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">Riepilogo Ordine</h3>
+
+                    <ul class="list-group list-group-flush mb-3">
+                        <li *ngFor="let c of carrello" class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                            <div>
+                                <span>{{c.quantita}}x {{c.prodotto.marca}} {{c.prodotto.nome}} -
+                                    {{ (router.url.includes('/checkout/noleggio') ? c.prodotto.costoGiornaliero : c.prodotto.prezzo) | currency:'EUR' }}
+                                    {{ router.url.includes('/checkout/noleggio') ? '/gg cad.' : 'cad.' }}
+                                </span>
+                            </div>
+
+                            <div class="fw-bold text-nowrap">
+                                <span *ngIf="router.url.includes('/checkout/ordine')">
+                                    {{ (c.prodotto?.prezzo || 0) * c.quantita | currency:'EUR' }}
+                                </span>
+
+                                <span *ngIf="router.url.includes('/checkout/noleggio')">
+                                    {{ (c.prodotto?.costoGiornaliero || 0) * c.quantita | currency:'EUR' }}
+                                </span>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                            <span>Spedizione</span>
+
+                            <div class="fw-bold text-nowrap">
+                                <span *ngIf="costoSpedizione==0">gratis</span>
+                                <span *ngIf="costoSpedizione>0">{{ costoSpedizione | currency:'EUR' }}</span>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between fw-bold h4">
+                        <span>Totale</span>
+                        <div>
+                            <span *ngIf="router.url.startsWith('/checkout/ordine')">{{ totalePrezzo | currency:'EUR' }}</span>
+                            <span *ngIf="router.url.startsWith('/checkout/noleggio')">{{ totaleGiornaliero | currency:'EUR' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="button" class="btn btn-dark rounded-pill py-2" (click)="paga()" [disabled]="inizioNoleggio > fineNoleggio">
+                            {{ router.url.includes('/checkout/noleggio') ? 'CONFERMA NOLEGGIO' : 'CONFERMA ACQUISTO' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

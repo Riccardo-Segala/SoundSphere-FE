@@ -1,5 +1,17 @@
 .btn {
   border-radius: 20px;
+  border-color: #000;
+  transition: transform 0.1s
+}
+
+.btn:hover,{
+  border-color: #000;
+  transform: scale(1.05);
+}
+
+.btn:active {
+  border-color: #000;
+  transform: scale(0.98) !important;
 }
 
 .btn-primary {
@@ -49,6 +61,11 @@
   cursor: not-allowed;
 }
 
+
+p {
+font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 .btn-outline-primary:active{
   transform: scale(0.98) !important;
 
@@ -79,4 +96,5 @@ input[type=number]::-webkit-outer-spin-button {
 /* Per Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+
 }

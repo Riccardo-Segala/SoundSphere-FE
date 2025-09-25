@@ -549,5 +549,13 @@ export function setupMapperMetadata():void{
         prodottoId:String,
         quantita:Number,
         quantitaPerNoleggio:Number
-    })
+    });
+    PojosMetadataMap.create('DeliveryLimitDataDTO',{
+        sogliaSpedizioneGratuita:Number,
+        costoSpedizione:Number
+    });
+    PojosMetadataMap.create('DatiSpedizioneModel',{
+        sogliaSpedizioneGratuita:Number,
+        costoSpedizione:Number
+    });
 }

@@ -106,9 +106,7 @@ export class DettaglioProdottoComponent implements OnInit {
             };
             this.cartService.updateItemInCart(cartItem).subscribe({
                 next:(response)=>{
-                    if(response){
-                        this.location.back();
-                    }
+
                 },
                 error:()=>{
                     this.errore="Errore nell'inserimento del prodotto nel carrello";

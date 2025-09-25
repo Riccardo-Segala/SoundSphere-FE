@@ -1,8 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 import {CommonModule, NgForOf} from '@angular/common';
 import {
-    CarrelloControllerService, DeleteCartDTO, ProdottoControllerService, ResponseCartDTO,
-    ResponseUserDTO,
+
+    CarrelloControllerService, DatiStaticiControllerService, DeleteCartDTO,
+    DeliveryLimitDataDTO, ProdottoControllerService, ResponseCartDTO, UpdateCartItemDTO,
     UtenteControllerService
 } from "../../api-client";
 import {SessionService} from "../../services/session.service";
@@ -14,6 +15,8 @@ import {ProdottoModel} from "../../models/prodotto.model";
 import {map} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {CarrelloModel} from "../../models/carrello.model";
+import {UpdateCartDTO} from "../../api-client/model/updateCartDTO";
+import {DatiSpedizioneModel} from "../../models/dati-spedizione.model";
 
 @Component({
     selector: 'app-carrello',
@@ -28,9 +31,10 @@ import {CarrelloModel} from "../../models/carrello.model";
 export class CarrelloComponent implements OnInit {
     loggedUser:UtenteModel={};
     carrello:CarrelloModel[]=[];
-    quantita:number=1;
     totalePrezzo:number=0;
     totaleGiornaliero:number=0;
+    costoSpedizione:number=0;
+    sogliaSpedizioneGratis:number=0;
 
     constructor(
         private session:SessionService,
@@ -39,7 +43,8 @@ export class CarrelloComponent implements OnInit {
         private http:HttpClient,
         private userService:UtenteControllerService,
         private carrelloService:CarrelloControllerService,
-        private prodottoService:ProdottoControllerService
+        private prodottoService:ProdottoControllerService,
+        private datiStaticiService: DatiStaticiControllerService
     ){}
 
     ngOnInit() {
@@ -77,6 +82,22 @@ export class CarrelloComponent implements OnInit {
         else{
             this.router.navigate(['/']);
         }
+        this.caricaDatiSpedizione()
+    }
+
+    caricaDatiSpedizione(): void {
+        this.datiStaticiService.getDeliveryDataAndLimits()
+            .pipe(map(dto=>mapper.map<DeliveryLimitDataDTO,DatiSpedizioneModel>(dto,'DeliveryLimitDataDTO','DatiSpedizioneModel')))
+            .subscribe({
+                next:(dati:DatiSpedizioneModel)=>{
+                    this.costoSpedizione=dati.costoSpedizione ? dati.costoSpedizione : 0;
+                    this.sogliaSpedizioneGratis=dati.sogliaSpedizioneGratuita ? dati.sogliaSpedizioneGratuita : 0;
+                    console.log("Dati spedizione caricati: ",JSON.stringify(dati));
+                },
+                error:(err)=>{
+                    console.log("Errore ottenimento dati spedizione: "+err);
+                }
+        });
     }
 
     calcolaStelleMedie(){
@@ -93,12 +114,27 @@ export class CarrelloComponent implements OnInit {
             }
         }
     }
+
+    calcolaSpedizione(){
+        if(this.totalePrezzo<=this.sogliaSpedizioneGratis){
+            return this.costoSpedizione;
+        }
+        return 0;
+    }
     checkoutOrdine(){
-        this.router.navigate(["/checkout/ordine"]);
+        this.router.navigate(["/checkout/ordine"], {
+            queryParams: {
+                costoSpedizione: this.calcolaSpedizione(),
+            }
+        });
     }
 
     checkoutNoleggio(){
-        this.router.navigate(["checkout/noleggio"]);
+        this.router.navigate(["checkout/noleggio"], {
+            queryParams: {
+                costoSpedizione: this.costoSpedizione,
+            }
+        });
     }
 
     rimuoviTutto(){
@@ -121,6 +157,7 @@ export class CarrelloComponent implements OnInit {
                     console.log("Prodotto rimosso");
                     this.carrello.find(item=>item.prodotto.id==id);
                     this.carrello=this.carrello.filter(c=>c.prodotto.id!==id);
+                    this.calcolaTotali();
                 },
                 error:(err)=>{
                     console.log("Rimozione non riuscita");
@@ -141,8 +178,47 @@ export class CarrelloComponent implements OnInit {
         this.totalePrezzo=0;
         this.totaleGiornaliero=0;
         for(let c of this.carrello){
-            this.totalePrezzo+= c.prodotto.prezzo ? c.prodotto.prezzo : 0;
+            this.totalePrezzo+= c.prodotto.prezzo ? c.prodotto.prezzo*c.quantita : 0;
             this.totaleGiornaliero+= c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero : 0;
+        }
+    }
+
+    incrementaQuantita(item:CarrelloModel){
+        item.quantita+=1;
+        this.updateCart(item);
+
+    }
+    decrementaQuantita(item:CarrelloModel){
+        if (item.quantita > 1) {
+            item.quantita -= 1;
+            this.updateCart(item);
+        }
+    }
+
+     updateCart(item:CarrelloModel){
+        const cartItem:UpdateCartItemDTO={
+            prodottoId:item.prodotto.id,
+            quantita:item.quantita,
+            wishlist:false
+        };
+        if(item.prodotto.id){
+            this.carrelloService.updateItemInCart(cartItem)
+                .subscribe({
+                next:(res)=>{
+                    const index = this.carrello.findIndex(
+                        cartElement => cartElement.prodotto.id === item.prodotto.id
+                    );
+
+                    if (index !== -1) {
+                        this.carrello[index] = item;
+                        console.log("Variabile 'carrello' locale aggiornata");
+                    }
+                    this.calcolaTotali();
+                },
+                error:(err)=>{
+                    console.log("Errore aggiornamento carrello: "+err);
+                }
+            })
         }
     }
 }

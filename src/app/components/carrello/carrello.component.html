@@ -1,40 +1,77 @@
-<section>
-    <div *ngFor="let c of carrello">
-        <label>Nome:</label>
-        <textarea readonly>{{c.prodotto?.nome}}</textarea>
-        <br>
+<div class="container my-5">
+    <h1>Il tuo carrello</h1>
 
-        <label>Marca:</label>
-        <textarea readonly>{{c.prodotto?.marca}}</textarea>
-        <br>
+    <div class="row">
 
-        <label>Valutazione:</label>
-        <textarea readonly>{{c.prodotto.stelleMedie}}</textarea>
-        <br>
+        <div class="col-lg-8">
 
-        <label>Prezzo:</label>
-        <textarea readonly>{{c.prodotto?.prezzo}}€</textarea>
-        <br>
+            <div *ngFor="let c of carrello" class="d-flex align-items-start py-4 border-bottom cart-card">
 
-        <div *ngIf="canRent()">
-            <label>Costo Giornaliero:</label>
-            <textarea readonly>{{c.prodotto.costoGiornaliero}}€/gg</textarea>
+                <img src="http://localhost:8080{{c.prodotto.pathImmagine}}" alt="{{ c.prodotto?.nome }}" class="me-3" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                <div class="flex-grow-1">
+                    <h5 class="mb-1">
+                        <strong class="me-2">{{ c.prodotto?.marca }}</strong>{{ c.prodotto?.nome }}
+                    </h5>
+                    <div class="mt-5">
+                        <button class="btn align-items-center" (click)="rimuovi(c.prodotto.id)">
+                            🗑️ Rimuovi
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <div class="text-nowrap">
+                        <h5 class="mb-5">{{ c.prodotto?.prezzo | currency:'EUR' }}</h5>
+                    </div>
+
+                    <div class="quantity-selector">
+                        <div class="quantity-controls">
+                            <button type="button" (click)="decrementaQuantita(c)" [disabled]="c.quantita <= 1" class="quantity-btn">-</button>
+                            <input id="quantita-carrello" type="number" min="1" name="quantita-carrello" [(ngModel)]="c.quantita" (blur)="updateCart(c)" class="quantity-input">
+                            <button type="button" (click)="incrementaQuantita(c)" class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="d-flex align-items-center p-3 mt-4 border rounded">
+                <span class="fs-2 me-3">🚚</span>
+                <div class="flex-grow-1">
+                    <div class="text-muted">Paese di spedizione:</div>
+                    <strong>Italy</strong>
+                </div>
+                <div class="text-end">
+                    <div class="text-muted">Costi di spedizione</div>
+                    {{ calcolaSpedizione() | currency:'EUR' }}
+                </div>
+            </div>
+
         </div>
-        <br>
 
-        <label *ngIf="!c.wishlist">Quantità:</label>
-        <input *ngIf="!c.wishlist" readonly type="number" min="1" [(ngModel)]="c.quantita">
-        <br>
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0" style="background-color: #f8f9fa;">
+                <div class="card-body p-4">
+                    <h3 class="card-title">Totale {{ totalePrezzo | currency:'EUR' }}</h3>
+                    <p class="text-muted mb-4">I prezzi includono l'IVA locale</p>
+                    <button [disabled]="!carrello || carrello.length === 0" class="btn btn-primary w-100 py-2 rounded-pill" (click)="checkoutOrdine()">
+                        PROCEDI ALL'ACQUISTO &rarr;
+                    </button>
+                    <button [disabled]="!carrello || carrello.length === 0" class="btn btn-secondary w-100 rounded-pill mt-2" (click)="checkoutNoleggio()">
+                        PROCEDI AL NOLEGGIO &rarr;
+                    </button>
+                </div>
+            </div>
 
-        <button type="button" (click)="rimuovi(c.prodotto.id)"><span>trash</span></button>
-        <br><br>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div><strong>🚚 Consegna standard</strong></div>
+                        <div><strong *ngIf="calcolaSpedizione()==0">gratis</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div style="float:right">
-        <span>Totale: {{totalePrezzo}}€</span>
-        <span>TotaleGiornaliero: {{totaleGiornaliero}}€/gg</span>
-    </div>
-
-    <button type="button" (click)="checkoutOrdine()">Vai a checkout ordine</button>
-    <button type="button" (click)="checkoutNoleggio()">Vai a checkout noleggio</button>
-    <button type="button" (click)="rimuoviTutto()"><span>Rimuovi tutto</span></button>
-</section>
+</div>
