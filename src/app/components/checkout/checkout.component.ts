@@ -40,6 +40,8 @@ export class CheckoutComponent implements OnInit {
     costoSpedizione:number=0;
     totalePrezzo:string="0";
     totaleGiornaliero:string="0";
+    totaleScontato:string="";
+    totaleGiornalieroScontato:string="0";
     indirizzoCorrente:string|undefined="";
     metodoCorrente:string|undefined="";
     inizioNoleggio:string="";
@@ -115,7 +117,7 @@ export class CheckoutComponent implements OnInit {
     paga(){
         let api$:Observable<CheckoutOutputDTO|CheckoutOutputRentalDTO>
         let dto:CheckoutInputDTO|CheckoutInputRentalDTO;
-        if(this.router.url==="/checkout/ordine"){
+        if(this.router.url.includes("/checkout/ordine")){
             dto={
                 metodoPagamentoId:this.metodoCorrente,
                 indirizzoSpedizioneId:this.indirizzoCorrente
@@ -147,7 +149,12 @@ export class CheckoutComponent implements OnInit {
 
                 console.log("Ordine: ");
                 console.log("Checkout riuscito!!!!");
-                this.router.navigate(['/']);
+
+                if('puntiTotaliUtente' in res && res.puntiTotaliUtente){
+                    this.session.setPoints(res.puntiTotaliUtente);
+                }
+
+                this.router.navigate(['/ordini']);
             },
             error:(err)=>{
                 console.log("Errore checkout: ",JSON.stringify(err));
@@ -164,15 +171,31 @@ export class CheckoutComponent implements OnInit {
 
         if(!(dataInizio>dataFine)){
             const giorniNoleggio=Math.round(msDifferenza/msGiorno);
-            let totale=this.costoSpedizione;
-            let totaleNoleggi=this.costoSpedizione;
+            let totale=0;
+            let totaleNoleggi=0;
+            let sconto=0;
+            if(this.loggedUser?.vantaggio?.sconto){
+                sconto=this.loggedUser.vantaggio.sconto;
+            }
+
             for(let c of this.carrello){
                 totale += c.prodotto.prezzo ? c.prodotto.prezzo*c.quantita : 0;
                 totaleNoleggi += c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero*c.quantita*(giorniNoleggio+1) : 0;
             }
-            this.totalePrezzo=String(totale.toFixed(2));
-            this.totaleGiornaliero=String(totaleNoleggi.toFixed(2));
+            this.totalePrezzo=String((totale+this.costoSpedizione).toFixed(2));
+            this.totaleGiornaliero=String((totaleNoleggi+this.costoSpedizione).toFixed(2));
+            this.totaleScontato=String(((totale*(100-sconto)/100)+this.costoSpedizione).toFixed(2));
+            this.totaleGiornalieroScontato=String(((totaleNoleggi*(100-sconto)/100)+this.costoSpedizione).toFixed(2));
         }
+    }
+
+    isDiscounted():boolean{
+        if(this.loggedUser?.vantaggio?.sconto){
+            if(this.loggedUser.vantaggio.sconto>0){
+                return true;
+            }
+        }
+        return false;
     }
 
     protected readonly Number = Number;

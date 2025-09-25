@@ -114,28 +114,59 @@ export class CatalogoUtenteComponent implements OnInit {
         }
     }
     disponibileCarrello(id:string|undefined):boolean{
-        const prod=this.prodFiltrati.find(i=>i.id==id);
-        if(prod){
-            if(!(prod.quantitaDisponibile && prod.quantitaDisponibile>0)){
-                return false;
-            }
-        }
-        else{
+        if (!id) {
             return false;
         }
 
-        const cart=this.carrello.find(c=>c.prodotto.id==id)
-        return !(cart && !cart.wishlist && cart.quantita > 0);
+        // 2. Controlla se il prodotto esiste e ha scorte disponibili
+        const prodotto = this.prodFiltrati.find(p => p.id === id);
+
+        if (!prodotto || ! prodotto.quantitaDisponibile || !(prodotto.quantitaDisponibile > 0)) {
+            // Se il prodotto non esiste o la quantità è 0 (o null/undefined),
+            // non è disponibile per l'aggiunta.
+            return false;
+        }
+
+        // 3. Controlla se un articolo identico è GIA' nel carrello
+        // Usiamo .some() perché è più efficiente: si ferma appena trova una corrispondenza.
+        const giaNelCarrello = this.carrello.some(item =>
+            item.prodotto.id === id &&
+            !item.wishlist &&        // Non è nella wishlist
+            item.quantita > 0        // E la sua quantità è maggiore di zero
+        );
+
+        // Se è già nel carrello, non può essere aggiunto di nuovo.
+        if (giaNelCarrello) {
+            return false;
+        }
+
+        // Se tutti i controlli sono stati superati, il prodotto è disponibile!
+        return true;
 
     }
     disponibileWishlist(id:string|undefined):boolean{
-        const cart=this.carrello.find(c=>c.prodotto.id==id)
-        return !(cart && cart.wishlist);
+        // 1. Se l'ID non è valido, non può essere aggiunto.
+        if (!id) {
+            return false;
+        }
+
+        // 2. Controlla se un articolo con lo stesso ID è GIA' presente come "wishlist".
+        //    Usiamo .some() per efficienza.
+        const giaNellaWishlist = this.carrello.some(item =>
+            item.prodotto.id === id && item.wishlist
+        );
+
+        // 3. Il prodotto è "disponibile" per la wishlist se NON è già presente.
+        //    Quindi, restituiamo il valore negato del nostro controllo.
+        return !giaNellaWishlist;
     }
 
-    canRent(){
-        const ruoliUtente=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);
-        return ruoliUtente?.includes("ORGANIZZATORE_EVENTI");
+    livelloVantaggio():number {
+        if(this.loggedUser && this.loggedUser.vantaggio && this.loggedUser.vantaggio.sconto){
+            return this.loggedUser.vantaggio.sconto;
+        }
+        return 0;
     }
+
     protected readonly unescape = unescape;
 }

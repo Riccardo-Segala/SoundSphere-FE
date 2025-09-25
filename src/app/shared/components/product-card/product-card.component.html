@@ -1,4 +1,7 @@
-<a class="card h-100 shadow-sm text-decoration-none" [routerLink]="[detailPath, product.id]">
+<a class="card h-100 shadow-sm text-decoration-none" [routerLink]="[detailPath, product.id]"
+   [state]="{forWishlist:wishlistAvailable, forCart:cartAvailable}">
+
+    <span class="badge-sconto">-{{discountedPrice}}%</span>
 
     <img [src]="'http://localhost:8080' + product.pathImmagine" class="card-img-top" [alt]="product.nome">
 
@@ -6,9 +9,9 @@
         <h5 class="card-title">{{ product.nome }}</h5>
         <h6 class="card-subtitle mb-2 text-muted">{{ product.marca }}</h6>
 
-
     </div>
-    <div class="card-footer">
-        <p class="card-text card-price">€ {{ product.prezzo }}</p>
+    <div class="card-footer d-flex">
+        <p class="card-text card-price" [class]="discountedPrice>0 ? 'discounted-price':''">€ {{ product.prezzo }}</p>
+        <p class="ms-2 card-text card-price prezzo-scontato" *ngIf="discountedPrice>0">€ {{prezzoScontato()}}</p>
     </div>
 </a>

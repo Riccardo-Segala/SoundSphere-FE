@@ -83,27 +83,49 @@ export class ListaOrdiniComponent implements OnInit{
     }
 
     getBadgeNoleggioClass(dataScadenza:string|undefined,dataRestituzione:string|undefined):string{
-        const oggi:Date=new Date();
-        if(dataScadenza){
-            const dataScad:Date=new Date(dataScadenza);
-            if(dataRestituzione){
-                const dataRest:Date=new Date(dataRestituzione);
-                if(dataRest.getTime()>dataScad.getTime()){
-                    return 'badge-status-consegnato-in-ritardo';
-                }
-                return 'badge-status-consegnato-in-tempo'
-            }
-            if(dataScad.getTime()<oggi.getTime()){
-                return 'badge-status-ritardo';
-            }
-            const settimana:Date=new Date();
-            settimana.setDate((oggi.getDate()+7))
-            if(dataScad.getTime()<settimana.getTime()){
-                return 'badge-status-manca-una-settimana-a-scadenza';
-            }
-            return 'badge-status-in-tempo';
-        }else{
+        if (!dataScadenza) {
             return 'badge-status-secondary';
+        }
+
+        // Normalizza le date per confrontare solo i giorni, ignorando l'orario.
+        const oggi = new Date();
+        oggi.setHours(0, 0, 0, 0);
+
+        const dataScad = new Date(dataScadenza);
+        dataScad.setHours(0, 0, 0, 0);
+
+        // 2. Logica per i noleggi già restituiti
+        if (dataRestituzione) {
+            const dataRest = new Date(dataRestituzione);
+            dataRest.setHours(0, 0, 0, 0);
+
+            // Confronta la data di restituzione con quella di scadenza.
+            return dataRest.getTime() > dataScad.getTime()
+                ? 'badge-status-consegnato-in-ritardo'
+                : 'badge-status-consegnato-in-tempo';
+        }
+
+        // 3. Logica per i noleggi non ancora restituiti
+        if (dataScad.getTime() < oggi.getTime()) {
+            // È in ritardo. Controlliamo da quanto tempo.
+            const settimanaFa = new Date();
+            settimanaFa.setHours(0, 0, 0, 0);
+            settimanaFa.setDate(oggi.getDate() - 7);
+
+            // Se la scadenza è precedente a una settimana fa, è "molto in ritardo".
+            return dataScad.getTime() < settimanaFa.getTime()
+                ? 'badge-status-secondary' // Come da tua richiesta per ritardi > 7gg
+                : 'badge-status-ritardo';
+        } else {
+            // Non è in ritardo, la scadenza è oggi o nel futuro.
+            const traUnaSettimana = new Date();
+            traUnaSettimana.setHours(0, 0, 0, 0);
+            traUnaSettimana.setDate(oggi.getDate() + 7);
+
+            // Se la scadenza è entro i prossimi 7 giorni.
+            return dataScad.getTime() < traUnaSettimana.getTime()
+                ? 'badge-status-manca-una-settimana-a-scadenza'
+                : 'badge-status-in-tempo'; // Default per scadenze future oltre la settimana
         }
     }
 

@@ -18,6 +18,9 @@
                             [product]="prodotto"
                             [isCartAvailable]="disponibileCarrello(prodotto.id)"
                             [isWishlistAvailable]="disponibileWishlist(prodotto.id)"
+                            [discountedPrice]="livelloVantaggio()"
+                            [wishlistAvailable]="disponibileWishlist(prodotto.id)"
+                            [cartAvailable]="disponibileCarrello(prodotto.id)"
                             (addToCartClick)="aggiungiCarrello($event, false)"
                             (addToWishlistClick)="aggiungiCarrello($event, true)">
                     </app-product-card>
