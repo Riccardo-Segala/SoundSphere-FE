@@ -42,16 +42,6 @@
   font-size: 15px;
 }
 
-.discounted-price{
-  text-decoration: line-through;
-  color: #999;
-}
-
-.prezzo-scontato{
-  color:#27ae60;
-  font-weight: bold;
-}
-
 .badge-sconto{
   position: absolute;
   top:10px;
@@ -68,5 +58,13 @@
   z-index: 10;
 }
 
+.discounted-price{
+  text-decoration: line-through;
+  color: #999;
+}
 
+.prezzo-scontato{
+  color:#27ae60;
+  font-weight: bold;
+}
 

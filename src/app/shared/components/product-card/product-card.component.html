@@ -11,6 +11,7 @@
 
     </div>
     <div class="card-footer d-flex">
-        <p class="card-text card-price" [ngClass]="discount()">€ {{ product.prezzo }}</p> <p class="ms-2 card-text card-price prezzo-scontato" *ngIf="discountedPrice>0">€ {{prezzoScontato()}}</p>
+        <p class="card-text card-price" [class]="discountedPrice>0 ? 'discounted-price':''">€ {{ product.prezzo }}</p>
+        <p class="ms-2 card-text card-price prezzo-scontato" *ngIf="discountedPrice>0">€ {{prezzoScontato()}}</p>
     </div>
 </a>

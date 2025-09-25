@@ -9,8 +9,15 @@
         <h1 class="product-title">{{ prodotto.nome }}</h1>
         <h3 class="product-brand">{{ prodotto.marca }}</h3>
 
-        <div class="product-price">
-            <span>{{ prodotto.prezzo | currency:'EUR':'symbol':'1.2-2' }}</span>
+        <div class="product-price align-items-end">
+            <div class="d-flex price">
+                <span [class]="loggedUser?.vantaggio?.sconto ? 'discounted-price':''">{{ prodotto.prezzo | currency:'EUR':'symbol':'1.2-2' }}</span>
+                <p class=" ms-3 card-text card-price prezzo-scontato" *ngIf="this.loggedUser?.vantaggio?.sconto">{{ prezzoScontato()|currency:'EUR':'symbol':'1.2-2'}}</p>
+            </div>
+            <div class="d-flex price" *ngIf="canRent()">
+                <span [class]="loggedUser?.vantaggio?.sconto ? 'discounted-price':''">{{ prodotto.costoGiornaliero | currency:'EUR':'symbol':'1.2-2' }}</span>
+                <p class=" ms-3 card-text card-price prezzo-scontato" *ngIf="this.loggedUser?.vantaggio?.sconto">{{ prezzoScontatoGiornaliero()|currency:'EUR':'symbol':'1.2-2'}}/gg</p>
+            </div>
         </div>
 
         <div class="quantity-selector">
@@ -26,13 +33,6 @@
             <button type="button" name="addToCart" (click)="addToCart()" class="btn btn-primary">Aggiungi al Carrello</button>
             <button type="button" name="addToWishlist" (click)="addToWishlist()" class="btn btn-secondary">Aggiungi alla Wishlist</button>
         </div>
-
-        <div *ngIf="canRent()" class="rental-info">
-            <label>Costo Giornaliero:</label>
-            <span>{{ prodotto.costoGiornaliero | currency:'EUR' }}</span>
-        </div>
-
-        <span class="error-message">{{errore}}</span>
 
         <button type="button" (click)="annulla()" class="btn-link">Torna al Catalogo</button>
     </div>

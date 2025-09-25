@@ -34,6 +34,8 @@ export class CarrelloComponent implements OnInit {
     totaleGiornaliero:number=0;
     costoSpedizione:number=0;
     sogliaSpedizioneGratis:number=0;
+    totaleScontato:number=0;
+    totaleGiornalieroScontato:number=0;
 
     constructor(
         private session:SessionService,
@@ -176,16 +178,22 @@ export class CarrelloComponent implements OnInit {
     calcolaTotali(){
         this.totalePrezzo=0;
         this.totaleGiornaliero=0;
+        let sconto=0;
+        if(this.loggedUser.vantaggio?.sconto){
+            sconto=this.loggedUser.vantaggio.sconto;
+        }
         for(let c of this.carrello){
             this.totalePrezzo+= c.prodotto.prezzo ? c.prodotto.prezzo*c.quantita : 0;
             this.totaleGiornaliero+= c.prodotto.costoGiornaliero ? c.prodotto.costoGiornaliero : 0;
         }
+
+        this.totaleScontato=this.totalePrezzo*(100-sconto)/100;
+        this.totaleGiornalieroScontato=this.totaleGiornaliero*(100-sconto)/100;
     }
 
     incrementaQuantita(item:CarrelloModel){
         item.quantita+=1;
         this.updateCart(item);
-
     }
     decrementaQuantita(item:CarrelloModel){
         if (item.quantita > 1) {
@@ -219,5 +227,22 @@ export class CarrelloComponent implements OnInit {
                 }
             })
         }
+    }
+
+    isDiscounted(){
+        if(this.loggedUser?.vantaggio?.sconto){
+            if(this.loggedUser.vantaggio.sconto>0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isAdmin():boolean{
+        if(this.loggedUser && this.loggedUser.ruoli){
+            const ruoliNome=this.loggedUser.ruoli.map(ruolo=>ruolo.nome);
+            return ruoliNome.includes("ADMIN");
+        }
+        return false;
     }
 }

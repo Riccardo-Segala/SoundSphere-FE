@@ -27,7 +27,6 @@ import {mapper} from "../../core/mapping/mapper.initializer";
 export class DettaglioProdottoComponent implements OnInit {
     prodotto:ProdottoModel={};
     quantita:number=1;
-    errore:string="";
     stelleMedie:number|undefined=undefined;
     loggedUser:UtenteModel|null=null;
 
@@ -68,11 +67,10 @@ export class DettaglioProdottoComponent implements OnInit {
     addToWishlist(){
         const prodId=this.route.snapshot.paramMap.get("id");
         if(!prodId){
-            this.errore="Nessun prodotto è attualmente selezionato (manca id)";
+
             return;
         }
         else {
-            this.errore="";
             const cartItem:UpdateCartItemDTO={
                 prodottoId:prodId,
                 quantita:this.quantita,
@@ -85,7 +83,7 @@ export class DettaglioProdottoComponent implements OnInit {
                     }
                 },
                 error:()=>{
-                    this.errore="Errore nell'inserimento del prodotto nel carrello";
+                   console.log("Errore nell'inserimento del prodotto nel carrello");
                 }
             })
         }
@@ -94,11 +92,10 @@ export class DettaglioProdottoComponent implements OnInit {
     addToCart(){
         const prodId=this.route.snapshot.paramMap.get("id");
         if(!prodId){
-            this.errore="Nessun prodotto è attualmente selezionato (manca id)";
             return;
         }
         else {
-            this.errore="";
+
             const cartItem:UpdateCartItemDTO={
                 prodottoId:prodId,
                 quantita:this.quantita,
@@ -109,7 +106,7 @@ export class DettaglioProdottoComponent implements OnInit {
 
                 },
                 error:()=>{
-                    this.errore="Errore nell'inserimento del prodotto nel carrello";
+                    console.log("Errore nell'inserimento del prodotto nel carrello");
                 }
             })
         }
@@ -127,5 +124,18 @@ export class DettaglioProdottoComponent implements OnInit {
     canRent(){
         const nomiRuoli=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);
         return nomiRuoli?.includes("ORGANIZZATORE_EVENTI");
+    }
+
+    prezzoScontato():number{
+        if(this.prodotto.prezzo && this.loggedUser?.vantaggio?.sconto){
+            return this.prodotto.prezzo*(100-this.loggedUser.vantaggio.sconto)/100
+        }
+        return 0;
+    }
+    prezzoScontatoGiornaliero(){
+        if(this.prodotto.costoGiornaliero && this.loggedUser?.vantaggio?.sconto){
+            return this.prodotto.costoGiornaliero*(100-this.loggedUser.vantaggio.sconto)/100
+        }
+        return 0;
     }
 }

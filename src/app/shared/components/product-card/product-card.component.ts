@@ -36,13 +36,6 @@ export class ProductCardComponent {
         this.addToWishlistClick.emit(this.product.id);
     }
 
-    discount(){
-        if(this.discountedPrice>0){
-            return 'discounted-price';
-        }
-        return "";
-    }
-
     prezzoScontato():number{
         if(this.product.prezzo && this.discountedPrice){
             return this.product.prezzo*(100-this.discountedPrice)/100

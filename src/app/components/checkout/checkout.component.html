@@ -120,6 +120,13 @@
                                 <span *ngIf="costoSpedizione>0">{{ costoSpedizione | currency:'EUR' }}</span>
                             </div>
                         </li>
+                        <li *ngIf="isDiscounted()" class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                            <span>Sconto</span>
+
+                            <div class="fw-bold text-nowrap">
+                                <span>{{ loggedUser?.vantaggio?.sconto}}%</span>
+                            </div>
+                        </li>
 
                     </ul>
 
@@ -128,8 +135,18 @@
                     <div class="d-flex justify-content-between fw-bold h4">
                         <span>Totale</span>
                         <div>
-                            <span *ngIf="router.url.startsWith('/checkout/ordine')">{{ totalePrezzo | currency:'EUR' }}</span>
-                            <span *ngIf="router.url.startsWith('/checkout/noleggio')">{{ totaleGiornaliero | currency:'EUR' }}</span>
+                            <span *ngIf="loggedUser?.vantaggio?.sconto && router.url.startsWith('/checkout/ordine')">
+                                {{ totaleScontato | currency:'EUR' }}
+                            </span>
+                            <span *ngIf="router.url.startsWith('/checkout/ordine')" [class]="loggedUser?.vantaggio?.sconto?'discounted-price small pb-1':''">
+                                {{ totalePrezzo | currency:'EUR' }}
+                            </span>
+                            <span *ngIf="loggedUser?.vantaggio?.sconto && router.url.startsWith('/checkout/noleggio')">
+                                {{ totaleGiornalieroScontato | currency:'EUR' }}
+                            </span>
+                            <span *ngIf="router.url.startsWith('/checkout/noleggio')" [class]="loggedUser?.vantaggio?.sconto?'discounted-price small pb-1':''">
+                                {{ totaleGiornaliero | currency:'EUR' }}
+                            </span>
                         </div>
                     </div>
 
