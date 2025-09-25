@@ -13,6 +13,7 @@
                             [product]="prodotto"
                             [isCartAvailable]="disponibileCarrello(prodotto.id)"
                             [isWishlistAvailable]="disponibileWishlist(prodotto.id)"
+                            [discountedPrice]="livelloVantaggio()"
                             (addToCartClick)="aggiungiCarrello($event, false)"
                             (addToWishlistClick)="aggiungiCarrello($event, true)">
                     </app-product-card>

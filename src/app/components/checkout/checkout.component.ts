@@ -115,7 +115,7 @@ export class CheckoutComponent implements OnInit {
     paga(){
         let api$:Observable<CheckoutOutputDTO|CheckoutOutputRentalDTO>
         let dto:CheckoutInputDTO|CheckoutInputRentalDTO;
-        if(this.router.url==="/checkout/ordine"){
+        if(this.router.url.includes("/checkout/ordine")){
             dto={
                 metodoPagamentoId:this.metodoCorrente,
                 indirizzoSpedizioneId:this.indirizzoCorrente
@@ -147,7 +147,12 @@ export class CheckoutComponent implements OnInit {
 
                 console.log("Ordine: ");
                 console.log("Checkout riuscito!!!!");
-                this.router.navigate(['/']);
+
+                if('puntiTotaliUtente' in res && res.puntiTotaliUtente){
+                    this.session.setPoints(res.puntiTotaliUtente);
+                }
+
+                this.router.navigate(['/ordini']);
             },
             error:(err)=>{
                 console.log("Errore checkout: ",JSON.stringify(err));

@@ -46,4 +46,15 @@ export class SessionService {
         localStorage.removeItem('utente');
         localStorage.removeItem('token');
     }
+
+    setPoints(points:number){
+        const raw=localStorage.getItem('utente');
+        if(raw){
+            const user:UtenteModel=JSON.parse(raw) as UtenteModel;
+            if(user && user.punti){
+                user.punti=points;
+                localStorage.setItem('utente',JSON.stringify(user));
+            }
+        }
+    }
 }

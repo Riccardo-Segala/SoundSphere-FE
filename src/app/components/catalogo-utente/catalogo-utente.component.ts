@@ -135,5 +135,13 @@ export class CatalogoUtenteComponent implements OnInit {
         const ruoliUtente=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);
         return ruoliUtente?.includes("ORGANIZZATORE_EVENTI");
     }
+
+    livelloVantaggio():number {
+        if(this.loggedUser && this.loggedUser.vantaggio && this.loggedUser.vantaggio.sconto){
+            return this.loggedUser.vantaggio.sconto;
+        }
+        return 0;
+    }
+
     protected readonly unescape = unescape;
 }
