@@ -45,6 +45,7 @@ export class SessionService {
     clearLoggedUser():void{
         localStorage.removeItem('utente');
         localStorage.removeItem('token');
+        this.userSubject.next(null);
     }
 
     setPoints(points:number){
@@ -54,6 +55,7 @@ export class SessionService {
             if(user && user.punti){
                 user.punti=points;
                 localStorage.setItem('utente',JSON.stringify(user));
+                this.userSubject.next((user));
             }
         }
     }
