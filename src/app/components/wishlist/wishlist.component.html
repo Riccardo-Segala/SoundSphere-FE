@@ -1,0 +1,28 @@
+<div class="container my-5">
+    <h1>La tua Wishlist</h1>
+
+    <div class="row">
+
+            <div *ngFor="let c of wishlist" class="d-flex align-items-stretch py-4 border-bottom cart-card">
+
+                <img src="http://localhost:8080{{c.prodotto.pathImmagine}}" alt="{{ c.prodotto?.nome }}" class="me-3" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                <div class="flex-grow-1">
+                    <h5 class="mb-1">
+                        <strong class="me-2">{{ c.prodotto?.marca }}</strong>{{ c.prodotto?.nome }}
+                    </h5>
+                    <div class="mt-5">
+                        <button class="btn align-items-center" (click)="rimuovi(c.prodotto.id)">
+                            🗑️ Rimuovi
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-end">
+                    <button class="btn btn-primary align-items-center" (click)="moveToCart(c)">
+                         sposta nel carrello
+                    </button>
+                </div>
+
+            </div>
+        </div>
+</div>

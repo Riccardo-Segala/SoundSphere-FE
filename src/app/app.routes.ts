@@ -21,6 +21,7 @@ import {ListaMetodoPagamentoComponent} from "./components/metodo-pagamento/lista
 import {ListaOrdiniComponent} from "./components/ordini/lista-ordini.component";
 import {StockComponent} from "./components/stock/stock.component";
 import {AdminStockComponent} from "./components/admin-stock/admin-stock.component";
+import {WishlistComponent} from "./components/wishlist/wishlist.component";
 
 
 export const routes: Routes = [
@@ -34,7 +35,7 @@ export const routes: Routes = [
   {path:'catalogo-utente/:slug',component:CatalogoUtenteComponent},
   {path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },
   {path: 'carrello',component:CarrelloComponent},
-  {path:'wishlist',component:CarrelloComponent},
+  {path:'wishlist',component:WishlistComponent},
   {path:'categorie',component:CategorieComponent},
   {path:'categorie/:slug',component:CategorieComponent},
   {path:'checkout/ordine',component:CheckoutComponent},
