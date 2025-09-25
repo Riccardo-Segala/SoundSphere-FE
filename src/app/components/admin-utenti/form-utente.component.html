@@ -64,7 +64,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Punti:</label>
-                        <input class="form-control" type="number" name="punti" min="0" [(ngModel)]="utente.punti">
+                        <input class="form-control" type="number" name="punti" min="0" [(ngModel)]="utente.punti" [disabled]="!modifica">
                     </div>
                     <div class="mb-3">
                         <label class="form-label mb-3">Ruoli:</label>
