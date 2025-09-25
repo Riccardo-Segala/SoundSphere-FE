@@ -27,8 +27,12 @@ import {mapper} from "../../core/mapping/mapper.initializer";
 export class DettaglioProdottoComponent implements OnInit {
     prodotto:ProdottoModel={};
     quantita:number=1;
+    quantitaCarrello:number=0;
     stelleMedie:number|undefined=undefined;
     loggedUser:UtenteModel|null=null;
+
+    wishlistAvailable:boolean=true;
+    cartAvailable:boolean=true;
 
     constructor(private route:ActivatedRoute,
                 private session: SessionService,
@@ -37,6 +41,13 @@ export class DettaglioProdottoComponent implements OnInit {
                 private cartService:CarrelloControllerService,
                 private userService:UtenteControllerService,
                 private location:Location) {
+        const navigation=this.router.getCurrentNavigation();
+        if(navigation?.extras.state)
+        {
+            this.wishlistAvailable=navigation.extras.state['forWishlist'] ?? false;
+            this.cartAvailable=navigation.extras.state['forCart'] ?? false;
+        }
+
     }
 
     ngOnInit() {
@@ -77,10 +88,9 @@ export class DettaglioProdottoComponent implements OnInit {
                 wishlist:true
             };
             this.cartService.updateItemInCart(cartItem).subscribe({
-                next:(response)=>{
-                    if(response){
-                        //this.location.back();
-                    }
+                next:()=>{
+                    this.wishlistAvailable=false;
+                    this.cartAvailable=true;
                 },
                 error:()=>{
                    console.log("Errore nell'inserimento del prodotto nel carrello");
@@ -95,15 +105,16 @@ export class DettaglioProdottoComponent implements OnInit {
             return;
         }
         else {
-
             const cartItem:UpdateCartItemDTO={
                 prodottoId:prodId,
                 quantita:this.quantita,
                 wishlist:false
             };
             this.cartService.updateItemInCart(cartItem).subscribe({
-                next:(response)=>{
-
+                next:()=>{
+                    this.cartAvailable=false;
+                    this.quantitaCarrello=this.quantita;
+                    this.wishlistAvailable=true;
                 },
                 error:()=>{
                     console.log("Errore nell'inserimento del prodotto nel carrello");
@@ -117,9 +128,11 @@ export class DettaglioProdottoComponent implements OnInit {
 
     incrementaQuantita(){
         this.quantita+=1;
+        this.cartAvailable = this.quantita !== this.quantitaCarrello;
     }
     decrementaQuantita(){
         this.quantita-=1;
+        this.cartAvailable = this.quantita !== this.quantitaCarrello;
     }
     canRent(){
         const nomiRuoli=this.loggedUser?.ruoli?.map(ruolo=>ruolo.nome);

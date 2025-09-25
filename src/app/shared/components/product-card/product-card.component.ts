@@ -19,6 +19,8 @@ export class ProductCardComponent {
     @Input() isWishlistAvailable: boolean = false;
     @Input() detailPath: string = '/dettaglio-prodotto';
     @Input() discountedPrice:number=0;
+    @Input() wishlistAvailable:boolean=true;
+    @Input() cartAvailable:boolean=true;
 
     @Output() addToCartClick = new EventEmitter<string>();
     @Output() addToWishlistClick = new EventEmitter<string>();

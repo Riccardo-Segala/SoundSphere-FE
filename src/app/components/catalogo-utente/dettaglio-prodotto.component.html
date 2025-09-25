@@ -24,14 +24,14 @@
             <label for="quantita-carrello">Quantità:</label>
             <div class="quantity-controls">
                 <button type="button" (click)="decrementaQuantita()" [disabled]="quantita <= 1" class="quantity-btn">-</button>
-                <input id="quantita-carrello" type="number" min="1" name="quantita-carrello" [(ngModel)]="quantita" class="quantity-input">
+                <input id="quantita-carrello" [disabled]="!cartAvailable" type="number" min="1" name="quantita-carrello" [(ngModel)]="quantita" class="quantity-input">
                 <button type="button" (click)="incrementaQuantita()" class="quantity-btn">+</button>
             </div>
         </div>
 
         <div class="action-buttons">
-            <button type="button" name="addToCart" (click)="addToCart()" class="btn btn-primary">Aggiungi al Carrello</button>
-            <button type="button" name="addToWishlist" (click)="addToWishlist()" class="btn btn-secondary">Aggiungi alla Wishlist</button>
+            <button type="button" name="addToCart" (click)="addToCart()" [disabled]="!cartAvailable" class="btn btn-primary">Aggiungi al Carrello</button>
+            <button type="button" name="addToWishlist" (click)="addToWishlist()" [disabled]="!wishlistAvailable" class="btn btn-secondary">Aggiungi alla Wishlist</button>
         </div>
 
         <button type="button" (click)="annulla()" class="btn-link">Torna al Catalogo</button>
