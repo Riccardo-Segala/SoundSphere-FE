@@ -42,53 +42,56 @@
         </div>
     </div>
 
-    <div class="my-4">
-        <h2>I tuoi noleggi</h2>
-        <hr>
-    </div>
-    <div class="row fw-bold small m-2 px-2 d-none d-md-flex">
-        <div class="col">ID Noleggio</div>
-        <div class="col">Data Inizio</div>
-        <div class="col">Data Scadenza</div>
-        <div class="col">Data Restituzione</div>
-        <div class="col">Totale</div>
-    </div>
+    <div *ngIf="noleggi && noleggi.length > 0">
+        <div class="my-4">
+            <h2>I tuoi noleggi</h2>
+            <hr>
+        </div>
+        <div class="row fw-bold small m-2 px-2 d-none d-md-flex">
+            <div class="col">ID Noleggio</div>
+            <div class="col">Data Inizio</div>
+            <div class="col">Data Scadenza</div>
+            <div class="col">Data Restituzione</div>
+            <div class="col">Totale</div>
+        </div>
 
-    <div class="accordion" id="accordionNoleggi">
-        <div class="accordion-item" *ngFor="let n of noleggi">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed pe-1" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+n.id">
-                    <div class="row w-100 align-items-center">
-                        <div class="col"><strong>{{n.id}}</strong></div>
-                        <div class="col">{{n.dataInizio}}</div>
-                        <div class="col">{{n.dataScadenza}}</div>
-                        <div class="col">
+        <div class="accordion" id="accordionNoleggi">
+            <div class="accordion-item" *ngFor="let n of noleggi">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed pe-1" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+n.id">
+                        <div class="row w-100 align-items-center">
+                            <div class="col"><strong>{{n.id}}</strong></div>
+                            <div class="col">{{n.dataInizio}}</div>
+                            <div class="col">{{n.dataScadenza}}</div>
+                            <div class="col">
                             <span class="badge" [ngClass]="getBadgeNoleggioClass(n.dataScadenza,n.dataRestituzione)">
                                 {{n.dataRestituzione ? n.dataRestituzione : 'DA RESTITUIRE'}}
                             </span>
-                        </div>
-                        <div class="col">{{n.totale?.toFixed(2)}}€</div>
-                    </div>
-                </button>
-            </h2>
-            <div [attr.id]="'collapse'+n.id" class="accordion-collapse collapse" data-bs-parent="#accordionNoleggi">
-                <div class="acciordion-body">
-                    <ul class="list-unstyled">
-                        <li *ngFor="let d of n.dettagli" class="d-flex justify-content-between align-items-center border-bottom py-2">
-                            <div class="fw-bold" *ngIf="d && d.prodotto && d.prodotto.prezzo">
-                                <span class="fw-bold">{{d.quantita}}x</span> {{d.prodotto?.marca}} {{d.prodotto?.nome}}
                             </div>
-                            <div class="text-end">
+                            <div class="col">{{n.totale?.toFixed(2)}}€</div>
+                        </div>
+                    </button>
+                </h2>
+                <div [attr.id]="'collapse'+n.id" class="accordion-collapse collapse" data-bs-parent="#accordionNoleggi">
+                    <div class="acciordion-body">
+                        <ul class="list-unstyled">
+                            <li *ngFor="let d of n.dettagli" class="d-flex justify-content-between align-items-center border-bottom py-2">
+                                <div class="fw-bold" *ngIf="d && d.prodotto && d.prodotto.prezzo">
+                                    <span class="fw-bold">{{d.quantita}}x</span> {{d.prodotto?.marca}} {{d.prodotto?.nome}}
+                                </div>
+                                <div class="text-end">
                         <span class="text-muted small">
                             {{prezzoDettaglio(d.prodotto?.costoGiornaliero).toFixed(2)}}€/gg
                             <br>
                             <strong class="ms-3">{{prezzoTotaleDettaglio(d.prodotto?.costoGiornaliero,d.quantita,'noleggio').toFixed(2)}}€</strong>
                         </span>
-                            </div>
-                        </li>
-                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
