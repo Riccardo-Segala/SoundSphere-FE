@@ -13,6 +13,8 @@ import {map, Subscription} from "rxjs";
 import {mapper} from "../../core/mapping/mapper.initializer";
 import {CategoryCardComponent} from "../../shared/components/category-card/category-card.component";
 import {EventiComponent} from "../eventi/eventi.component";
+import {UtenteModel} from "../../models/utente.model";
+import {SessionService} from "../../services/session.service";
 
 @Component({
     selector: "app-categorie",
@@ -31,10 +33,12 @@ export class CategorieComponent implements OnInit {
     categoria:CategoriaModel|null=null;
     slug:string|null=null;
     private routeSub:Subscription=new Subscription();
+    loggedUser:UtenteModel|null=null;
 
     constructor(
         private httpClient:HttpClient,
         private router:Router,
+        private session:SessionService,
         private categorieService:CategoriaControllerService,
         private route:ActivatedRoute) {
     }
@@ -44,6 +48,14 @@ export class CategorieComponent implements OnInit {
             const slug = params.get("slug");
             this.caricaCategoria(slug);
         });
+
+        this.loggedUser=this.session.getUser();
+        if(this.loggedUser && this.loggedUser.ruoli){
+            const nomiRuoli=this.loggedUser.ruoli.map(ruolo=>ruolo.nome);
+            if(!(nomiRuoli.includes("UTENTE")||nomiRuoli.includes("ORGANIZZATORE_EVENTI")||nomiRuoli.includes("ADMIN"))){
+                this.router.navigate(['/stock']);
+            }
+        }
     }
 
     ngOnDestroy(){

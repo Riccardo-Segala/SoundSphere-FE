@@ -30,7 +30,7 @@
                         <input class="form-control" name="email" type="email" [(ngModel)]="dipendente.email" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Password:</label>
+                        <label class="form-label">Password: <span class="dettagli-pw">(Almeno un carattere minuscolo, uno maiuscolo, un numero ed un carattere speciale)</span></label>
                         <input class="form-control" name="password" type="password" [(ngModel)]="dipendente.password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" [attr.required]="!modifica">
                     </div>
                     <div class="mb-3">

@@ -144,11 +144,8 @@ export class CheckoutComponent implements OnInit {
                 if('noleggioId' in res){
                     id=res.noleggioId;
                 }
-                if(id){
-                    alert("Ordine confermato: "+id);
-                }
 
-                console.log("Ordine: ");
+                console.log("Ordine: ",id);
                 console.log("Checkout riuscito!!!!");
 
                 let punti:number=0;
