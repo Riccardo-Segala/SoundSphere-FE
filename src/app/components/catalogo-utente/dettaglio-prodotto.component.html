@@ -48,7 +48,7 @@
 
 <div *ngIf="prodotto && prodotto.id" class="reviews-section">
     @defer (on viewport){
-        <app-recensioni [prodottoId]="prodotto.id" [stelleMedie]="stelleMedie"/>
+        <app-recensioni [loggedUser]="loggedUser" [prodottoId]="prodotto.id" [stelleMedie]="stelleMedie"/>
     } @placeholder {
         <div>
             <p>Caricamento sezione recensioni</p>

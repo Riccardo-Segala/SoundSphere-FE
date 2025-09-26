@@ -5,6 +5,7 @@ import {mapper} from "../../core/mapping/mapper.initializer";
 import {map} from "rxjs";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import {UtenteModel} from "../../models/utente.model";
 
 @Component({
     selector:'app-recensioni',
@@ -19,6 +20,7 @@ import {CommonModule} from "@angular/common";
 export class RecensioniComponent implements OnInit {
     @Input({required:true}) prodottoId: string|undefined;
     @Input({required:true}) stelleMedie: number|undefined;
+    @Input({required:true}) loggedUser:UtenteModel|null=null;
     recensioni:RecensioneModel[]=[];
     nuovaRecensione:RecensioneModel={prodottoId:""};
 

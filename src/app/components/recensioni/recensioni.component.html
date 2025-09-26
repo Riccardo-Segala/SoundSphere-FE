@@ -6,7 +6,7 @@
         </div>
     </div>
 
-    <section id="inserimento-recensione" class="review-form mb-5">
+    <section *ngIf="loggedUser" id="inserimento-recensione" class="review-form mb-5">
         <h4 class="fs-5">Lascia la tua recensione</h4>
         <form #form="ngForm" (ngSubmit)="inserisciRecensione()">
 
