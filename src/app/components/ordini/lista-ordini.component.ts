@@ -95,18 +95,18 @@ export class ListaOrdiniComponent implements OnInit{
         const dataScad = new Date(dataScadenza);
         dataScad.setHours(0, 0, 0, 0);
 
-        // 2. Logica per i noleggi già restituiti
+        //Logica per i noleggi già restituiti
         if (dataRestituzione) {
             const dataRest = new Date(dataRestituzione);
             dataRest.setHours(0, 0, 0, 0);
 
-            // Confronta la data di restituzione con quella di scadenza.
+            // Confronta la data di restituzione con quella di scadenza
             return dataRest.getTime() > dataScad.getTime()
                 ? 'badge-status-consegnato-in-ritardo'
                 : 'badge-status-consegnato-in-tempo';
         }
 
-        // 3. Logica per i noleggi non ancora restituiti
+        //Logica per i noleggi non ancora restituiti
         if (dataScad.getTime() < oggi.getTime()) {
             // È in ritardo. Controlliamo da quanto tempo.
             const settimanaFa = new Date();

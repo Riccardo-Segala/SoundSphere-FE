@@ -3,9 +3,12 @@
         <form #form="ngForm" (ngSubmit)="salva()">
             <div class="row justify-content-center align-items-center">
                 <div class="col-xxl-6 col-xl-6 col-lg-12 col-md-12 d-flex align-items-center justify-content-center">
+                    <!-- quando clicchi sul div si scatena l'evento click sull'input -->
                     <div class="profile-pic-container" (click)="fileInput.click()">
                         <img src="http://localhost:8080{{previewUrl}}">
+                        <!-- imposta un velo nero quando ci si passa sopra -->
                         <div class="overlay">
+                            <!-- icona della fotocamera-->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                  class="feather feather-camera">
@@ -13,6 +16,9 @@
                                 <circle r="4" cx="12" cy="13"></circle>
                             </svg>
                         </div>
+                        <!-- è nascosto ma attivo, e gli viene associato il nome #fileInput per essere
+                         utilizzato da altri elementi dell'html. Chiama la funziona fileSelezionato()
+                         passandogli l'immagine in modo da salvarla a backend-->
                         <input type="file" #fileInput (change)="fileSelezionato($event)" accept="image/*">
                     </div>
                 </div>
@@ -79,6 +85,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
+                <!-- evenly crea stesso spazio tra bordo-elemento e elemento-elemento -->
                 <div class="d-flex gap-2 justify-content-evenly">
                     <button class="btn btn-primary w-25 mt-3" name="salvataggio" type="submit" [disabled]="form.invalid || ruoliSelezionati.length===0">
                         {{ modifica ? 'Salva' : 'Inserisci' }}

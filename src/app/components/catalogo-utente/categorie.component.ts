@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {
     CategoriaControllerService,
     ResponseCategoryDTO,
@@ -28,7 +28,7 @@ import {SessionService} from "../../services/session.service";
     ],
     styleUrl: "./categorie.component.scss"
 })
-export class CategorieComponent implements OnInit {
+export class CategorieComponent implements OnInit,OnDestroy {
     categorieView:CategoriaModel[]=[];
     categoria:CategoriaModel|null=null;
     slug:string|null=null;
@@ -44,6 +44,11 @@ export class CategorieComponent implements OnInit {
     }
 
     ngOnInit() {
+        /*
+        * routeSub fondamentale per permettere di aggiornare la pagina. Infatti,
+        * se non fosse un Subscription, chiamare la stesso componente non invocherebbe
+        * la ngOnInit, rimanendo fermo
+        * */
         this.routeSub = this.route.paramMap.subscribe(params =>{
             const slug = params.get("slug");
             this.caricaCategoria(slug);
@@ -52,6 +57,7 @@ export class CategorieComponent implements OnInit {
         this.loggedUser=this.session.getUser();
         if(this.loggedUser && this.loggedUser.ruoli){
             const nomiRuoli=this.loggedUser.ruoli.map(ruolo=>ruolo.nome);
+            //controllo se l'utente è solo dipendente, dato che non può accedere a questa pagina
             if(!(nomiRuoli.includes("UTENTE")||nomiRuoli.includes("ORGANIZZATORE_EVENTI")||nomiRuoli.includes("ADMIN"))){
                 this.router.navigate(['/stock']);
             }
@@ -80,6 +86,7 @@ export class CategorieComponent implements OnInit {
                         else{
                             this.categoria=categoria;
                             if(this.categoria.children) {
+                                //children è un Set(), quindi bisogna convertirlo in Array
                                 this.categorieView = Array.from(this.categoria.children);
                             }
                         }

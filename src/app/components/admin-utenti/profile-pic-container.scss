@@ -1,9 +1,9 @@
 .profile-pic-container{
-  position:relative;
+  position:relative; //crea un posizionamento iniziale da cui partirà il figlio .overlay
   width: 400px;
   height: 400px;
-  border-radius: 50%;
-  overflow: hidden;
+  border-radius: 50%; //angoli per il 50% del lato corto
+  overflow: hidden; //nasconde parte in eccesso dell'immagine
   cursor: pointer;
   border:3px solid #f0f0f0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -28,10 +28,10 @@
   align-items: center;
 
   color:white;
-  opacity: 0;
+  opacity: 0; //trasparente
   transition: opacity 0.3s ease;
 }
 
 .profile-pic-container:hover .overlay{
-  opacity: 1;
+  opacity: 1; //nessuna opacità
 }

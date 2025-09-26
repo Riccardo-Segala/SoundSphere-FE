@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
+//contrassegna la classe come un servizio e la rende disponibile a partire da root
 @Injectable({providedIn: 'root'})
 export class AuthService {
     private authUrl="http://localhost:8080/api/utente";

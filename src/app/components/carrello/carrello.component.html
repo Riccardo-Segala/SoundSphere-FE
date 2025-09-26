@@ -20,7 +20,9 @@
                 </div>
 
                 <div class="text-end">
+                    <!-- nowrap forze gli elementi a rimanere su una riga-->
                     <div class="text-nowrap" *ngIf="isDiscounted()">
+                        <!-- modifica mb per mantenere circa lo stesso layout sia con che senza costo giornaliero -->
                         <h5 [class]="isAdmin() ? 'mb-2' : 'mb-4'">{{ c.prodotto?.prezzo | currency:'EUR' }}</h5>
                         <h5 *ngIf="isAdmin()" class="mb-2 fw-light">{{ c.prodotto?.costoGiornaliero | currency:'EUR' }}/gg</h5>
                     </div>
@@ -59,6 +61,7 @@
                     </div>
 
                     <p class="text-muted mb-4">I prezzi includono l'IVA locale</p>
+                    <!-- rounded-pill trasforma i bordi del button in due semicerchi, applica border-radius: 50rem-->
                     <button [disabled]="!carrello || carrello.length === 0" class="btn btn-primary w-100 py-2 rounded-pill" (click)="checkoutOrdine()">
                         PROCEDI ALL'ACQUISTO &rarr;
                     </button>

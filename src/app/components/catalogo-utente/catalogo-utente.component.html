@@ -11,6 +11,8 @@
             </div>
         </div>
         <div class="row g-4">
+            <!-- ng-container permette di raggruppare degli elementi angular
+             senza però creare un vero e proprio elemento html come un div-->
             <ng-container *ngFor="let prodotto of prodFiltrati">
                 <div class="col-lg-auto d-flex">
                     <app-product-card

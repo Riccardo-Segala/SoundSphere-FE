@@ -50,6 +50,7 @@ export class FormMetodoPagamentoComponent implements OnInit{
             .pipe(map(dto=>mapper.map<ResponsePaymentMethodDTO,MetodoPagamentoModel>(dto,'ResponsePaymentMethodDTO','MetodoPagamentoModel')))
             .subscribe({
             next:(res:MetodoPagamentoModel)=>{
+                //azzero tutti i campi del metodo di pagamento
                 this.paypal=false;
                 this.metodo=this.azzeraMetodo();
                 this.nome="";
@@ -75,6 +76,7 @@ export class FormMetodoPagamentoComponent implements OnInit{
         }
     }
 
+    //per assicurarsi che sia il primo giorno del mese successivo
     dataCambiata(nuovoMeseAnno:string){
         if(!nuovoMeseAnno){
             this.metodo.dataScadenza;

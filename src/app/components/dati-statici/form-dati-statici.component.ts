@@ -41,8 +41,8 @@ export class FormDatiStaticiComponent{
                 .subscribe({
                     next:()=>{
                         if(!this.modifica)
-                            this.datoStatico={id:"",nome:"",valore:0};
-                        this.datoCambiato.emit();
+                            this.datoStatico={id:"",nome:"",valore:0}; //azzero il valore per pulire il form
+                        this.datoCambiato.emit(); //permette al componente padre di aggiornare la propria lista di dati
                     }
                 })
         }

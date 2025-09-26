@@ -13,6 +13,7 @@
             <div class="mb-3 star-input">
                 <label class="form-label">La tua valutazione</label>
                 <div class="star-rating interactive">
+                    <!-- le stelle vanno inserite al contrario rispetto a come le si immaginano, per poter applicare la grafica di colorazione -->
                     <ng-container *ngFor="let i of [5,4,3,2,1]">
                         <input type="radio" [id]="'star'+i" name="stelle" [(ngModel)]="nuovaRecensione.numStelle" [value]="i" required class="d-none">
                         <label [for]="'star'+i">

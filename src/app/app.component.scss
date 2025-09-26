@@ -1,26 +1,19 @@
-/*nav{
-  border:2px solid black;
-}
-nav ul{
-  list-style-type: none;
-  display:flex;
-  justify-content: space-around;
-  align-items: center;
-}*/
+
 nav li{
   margin: 0 10px;
 }
 .title{
-  transition: transform 0.2s
+  transition: transform 0.2s // in quanto tempo deve fare la trasformazione (es. ingrandimento)
 }
 
 .title:hover{
   transform: scale(1.05);
 }
 
+// crea un bordo arrotondato alla sinistra della sezione con la progressbar
 .benefit-border{
   border-left:1px solid rgba(105,105,105,0.25);
-  margin-left: 1rem;
+  margin-left: 1rem; // 1rem = 16 px
   //padding-left: 1rem;
 
   color:black;
@@ -40,7 +33,7 @@ nav li{
 /* Stile pulsante dropdown del profilo */
 .nav-user-dropdown{
   min-height: 50px;
-  align-items: center;
+  align-items: center; // sulla verticale
 
   border:none;
   background-color: transparent;
@@ -61,12 +54,15 @@ nav li{
 }
 
 /* Stile dropdown attivo */
+// :focus è per quando è stato cliccato finchè non si clicca altrove
+// .nav-user-dropdown.show si applica ai tag che contengono entrambe le classi
 .nav-user-dropdown:focus, .nav-user-dropdown.show{
   background-color: rgba(255,255,255,0.15);
   box-shadow: none; // rimuove l'ombra di default inserita da bootstrap sui bottoni
 }
 
 .interactive-transparent{
+  //ease-in-out dice come effettuare la transizione: lentamente inizio e fine, accelera nel momento centrale
   transition: background-color 0.2s ease-in-out;
 }
 
@@ -78,9 +74,9 @@ nav li{
 }
 
 .button-wishlist,.button-cart{
-  display:inline-block;
+  display:inline-block; // si comporta come un blocco, ma si posizionano su stessa riga
   padding:0.5rem 0.75rem;
-  cursor: pointer;
+  cursor: pointer; //manina
   border:1px solid;
   border-radius:1rem;
   line-height: 1;
@@ -112,7 +108,8 @@ nav li{
 }
 
 .button-cart:focus{
-  outline: none;
+  outline: none; // rimuove il contorno
+  // i 4 parametri: offset-x, offset-y, sfocatura, espansione
   box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.5); /* Alone semi-trasparente ciano */
 }
 .button-wishlist:focus{
@@ -130,5 +127,5 @@ nav li{
 
 .border-text{
   color:white;
-  -webkit-text-stroke: 1px black;
+  -webkit-text-stroke: 1px black; // crea un bordo al testo, per fare interno bianco esterno nero
 }

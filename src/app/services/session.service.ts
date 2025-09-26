@@ -5,6 +5,8 @@ import {ResponseUserDTO} from "../api-client";
 import {UtenteModel} from "../models/utente.model";
 import {VantaggioModel} from "../models/vantaggio.model";
 
+//classe di servizio che permette di salvare il token e l'utente nel localStorage
+//in modo da non dover sempre effettuare la chiamata http
 @Injectable({providedIn: 'root'})
 export class SessionService {
     //creo un oggetto BehaviorSubject il cui valore viene ottenuto leggendo il localStorage
@@ -46,9 +48,10 @@ export class SessionService {
     clearLoggedUser():void{
         localStorage.removeItem('utente');
         localStorage.removeItem('token');
-        this.userSubject.next(null);
+        this.userSubject.next(null); // aggiorna il valore di chi è sottoscritto all'userSubject
     }
 
+    //aggiorna punti ed eventualmente vantaggio in modo da aggiornare la progressbar
     setPoints(points:number,vantaggio:VantaggioModel|undefined){
         const raw=localStorage.getItem('utente');
         if(raw){

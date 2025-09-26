@@ -8,6 +8,11 @@ import {
     UpdateUserDTO
 } from "../../api-client";
 
+/*funzione che viene chiamata nell'initializer per settare,
+ all'avvio dell'applicazione, i metadati che devono essere usati dal mapper,
+ cioè permette al mapper di conoscere quali proprietà possiede un metadato
+ (ogni metadato è associato ad una classe/DTO).
+ Importante: il mapper mappa automaticamete le proprietà che hanno stesso nome*/
 export function setupMapperMetadata():void{
     PojosMetadataMap.create('ResponseProductDTO',{
         id: String,

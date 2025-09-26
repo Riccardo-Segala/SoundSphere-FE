@@ -3,7 +3,9 @@
         <a routerLink="/" class="text-decoration-none text-dark title">SoundSphere</a>
     </h1>
     <div *ngIf="router.url!=='/login'" class="bg-black bg-opacity-25 border rounded-top-5 px-3 py-1">
-        <div class="container-fluid">
+        <div class="container-fluid"> <!--occupa 100% larghezza e aggiunge padding orizzontale -->
+            <!-- d-flex (display:flex) permette di inserire componenti in orizzontale su una riga
+             justify-content-center inserisce gli item tutti il più al centro possibile nella riga-->
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <a class="btn btn-primary" *ngIf="loggedUser && isAdmin() && router.url!=='/admin-page'" routerLink="/admin-page">Admin</a>
@@ -13,17 +15,23 @@
                     <div class="m-2 d-flex align-items-center" *ngIf="!loggedUser&&router.url!=='/login'">
                         <a class="btn btn-primary" routerLink="/login">Login</a>
                     </div>
+                    <!-- definisco una variabile locale "user" che sicuramente esiste -->
                     <div *ngIf="loggedUser as user"
                          class="d-flex align-items-center">
                         <div class="bold">
                             <span>{{filiale.nome}}</span>
                         </div>
+                        <!-- dropdown è una classe bootstrap che permette di utilizzare un pulsante per mostrare un
+                         menù di elementi quando viene cliccato. In questo caso il menu si chiude quando si preme fuori da lui
+                         width:auto per far sì che sia largo il giusto da contere gli elementi della progressbar-->
                         <div *ngIf="user.punti!==undefined && user.vantaggio" class="dropdown" style="width: auto;">
 
                             <button class="nav-user-dropdown dropdown-toggle interactive-transparent progress-dropdown"
                                     data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside"
                                     aria-expanded="false">
+                                <!--aria-expanded serve per i software di lettura per comunicare ai non vedenti
+                                che il blocco non è espando -->
                                 <div class="text-center small">
                                     <span style="font-style:italic">
                                         <strong>{{user.vantaggio.nome}}</strong>
@@ -31,6 +39,8 @@
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <span class="me-2 benefit-numbers">{{user.vantaggio.punteggioMinimo}}</span>
+                                    <!-- flex-grow-1 informa il contenitore flex (figlio di d-flex) che può espandersi ed occupare
+                                     lo spazio disponibile nel contenitore-->
                                     <div class="progress flex-grow-1" style="height: 5px">
                                         <div class="progress-bar bg-success" role="progressbar"
                                              [style.width.%]="calcolaProgresso(user)"
@@ -75,6 +85,7 @@
 
     <nav class="navbar navbar-expand-sm navbar-light bg-black bg-opacity-10 shadow-sm rounded-bottom-5">
         <div class="container-fluid" *ngIf="!isOnlyEmployee()">
+            <!-- su schermi piccoli crea un pulsante "CATEGORIE" che si espande nell'elenco delle macro -->
             <button class="navbar-toggler w-100" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCategories" aria-controls="navbarCategories" aria-expanded="false" aria-label="Toggle navigation">
                 <span>CATEGORIE</span>
             </button>
@@ -88,7 +99,10 @@
         </div>
     </nav>
 </header>
+<!-- clearfix serve per non far collassare la pagina in caso di presenza di soli elementi floattanti, aggiungendo un elemento
+ invisibile dopo ogni contenuto-->
 <main class="clearfix">
+    <!-- qui è dove verranno sostituiti tutti gli altri componenti-->
     <router-outlet></router-outlet>
 </main>
 

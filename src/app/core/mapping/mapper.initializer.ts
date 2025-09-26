@@ -20,12 +20,15 @@ import {stockProfile} from "./profiles/stock.profile";
 import {datiSpedizioneProfile} from "./profiles/dati-spedizione.profile";
 
 function initializeMapper():Mapper{
-    setupMapperMetadata();
+    setupMapperMetadata(); //inizializza i metadati
 
+    //definisce un mapper con strategia pojos, adatta cioè alla mappatura dei DTO
+    //generati automaticamente
     const mapper=createMapper({
         strategyInitializer:pojos()
     });
 
+    //informo i profile su che mapper usare
     prodottoProfile(mapper);
     carrelloProfile(mapper);
     indirizzoUtenteProfile(mapper);
@@ -47,4 +50,5 @@ function initializeMapper():Mapper{
     return mapper;
 }
 
+// il mapper che useranno i componenti
 export const mapper=initializeMapper();

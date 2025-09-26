@@ -49,6 +49,8 @@
                 <div class="row">
                     <div class="accordion" id="accordionUtenti">
                         <div class="accordion-item" *ngFor="let u of utentiFiltrati">
+                            <!-- contiene un pulsante che quando premuto attiva una funzione di libreria js che apre l'item puntato da
+                            data-bs-target -->
                             <h2 class="accordion-header">
                                 <button type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+u.id" class="accordion-button collapsed">
                                     <div class="row w-100 align-items-center">

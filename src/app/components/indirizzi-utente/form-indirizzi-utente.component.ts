@@ -27,6 +27,10 @@ export class FormIndirizziUtenteComponent implements OnInit {
         private session:SessionService,
         private fb:FormBuilder
     ) {
+        //quando il componente viene creato (o meglio, l'istanza della classe) viene anche definita la variabile addressForm
+        //che definisce come si devono comportare tutti gli elementi di input del form, in particolare valore di default, se obbligatori e il pattern che devono rispettare.
+        //E' utilizzato così e non con il solito binding nel tag perchè deve essere acceduto anche dal componente padre (profilo utente)
+        //per inserire un indirizzo anche in fase di registrazione
         this.addressForm = this.fb.group({
             nazione:['',Validators.required],
             provincia:['',Validators.required],
@@ -61,8 +65,10 @@ export class FormIndirizziUtenteComponent implements OnInit {
         this.addressForm.reset();
     }
     salva(){
+        //markAllAsTouched serve per attivare la verifica dei valori contenuti nelle caselle del form
         this.addressForm.markAllAsTouched();
         if(this.addressForm.valid){
+            //aggiorna il valore di indirizzo in modo che prenda i valori del form o, se non definiti, riprenda i propri (es. id non esiste nel form)
             this.indirizzo={...this.indirizzo,...this.addressForm.value};
             this.salvaIndirizzo.emit(this.indirizzo);
         }

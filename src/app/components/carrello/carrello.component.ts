@@ -123,6 +123,7 @@ export class CarrelloComponent implements OnInit {
         return 0;
     }
     checkoutOrdine(){
+        //il costo di spedizione viene inviato al checkout come parametro dell'url
         this.router.navigate(["/checkout/ordine"], {
             queryParams: {
                 costoSpedizione: this.calcolaSpedizione(),
@@ -212,6 +213,7 @@ export class CarrelloComponent implements OnInit {
             this.carrelloService.updateItemInCart(cartItem)
                 .subscribe({
                 next:(res)=>{
+                    //aggiorna l'elemento in posizione index, quello modificato
                     const index = this.carrello.findIndex(
                         cartElement => cartElement.prodotto.id === item.prodotto.id
                     );

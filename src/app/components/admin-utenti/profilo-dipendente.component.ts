@@ -59,9 +59,7 @@ export class ProfiloDipendenteComponent implements OnInit {
         else{
             this.router.navigate(["/"]);
         }
-        /*if(!this.loggedUser.ruoli?.includes("ADMIN") || this.loggedUser.ruoli?.includes("DIPENDENTE")){
-            this.router.navigate(['/']);
-        }*/
+
         this.dipendenteId=this.route.snapshot.paramMap.get("id");
         if(this.dipendenteId){
             this.modifica=true;
@@ -70,6 +68,7 @@ export class ProfiloDipendenteComponent implements OnInit {
                 .subscribe({
                     next:(res:UtenteModel)=>{
                         this.dipendente=res;
+                        //controllo per non lasciare l'immagine di default se non se ne ha caricata una
                         if(res.pathImmagine){
                             this.previewUrl=res.pathImmagine;
                         }
@@ -167,6 +166,7 @@ export class ProfiloDipendenteComponent implements OnInit {
         if(!this.dipendente.ruoli){
             this.dipendente.ruoli=[];
         }
+        //assegna o rimuove il ruolo admin da quelli selezionati in base alla checkbox
         if(checkbox.checked && this.adminRole){
             this.ruoliSelezionati.push(this.adminRole);
         }
@@ -179,6 +179,7 @@ export class ProfiloDipendenteComponent implements OnInit {
         if(!img){
             return;
         }
+
         const reader=new FileReader();
         reader.onload=()=>this.previewUrl=reader.result;
         reader.readAsDataURL(img);

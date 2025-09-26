@@ -118,46 +118,40 @@ export class CatalogoUtenteComponent implements OnInit {
             return false;
         }
 
-        // 2. Controlla se il prodotto esiste e ha scorte disponibili
+        //controllo se tra i prodotti trovo quello specifico
         const prodotto = this.prodFiltrati.find(p => p.id === id);
 
+        //controllo se quel prodotto esiste e, se sì, quanti ce ne sono in stock
         if (!prodotto || ! prodotto.quantitaDisponibile || !(prodotto.quantitaDisponibile > 0)) {
             // Se il prodotto non esiste o la quantità è 0 (o null/undefined),
             // non è disponibile per l'aggiunta.
             return false;
         }
 
-        // 3. Controlla se un articolo identico è GIA' nel carrello
-        // Usiamo .some() perché è più efficiente: si ferma appena trova una corrispondenza.
+        //controllo se nel carrello è già presente quel prodotto
         const giaNelCarrello = this.carrello.some(item =>
             item.prodotto.id === id &&
             !item.wishlist &&        // Non è nella wishlist
             item.quantita > 0        // E la sua quantità è maggiore di zero
         );
 
-        // Se è già nel carrello, non può essere aggiunto di nuovo.
         if (giaNelCarrello) {
             return false;
         }
 
-        // Se tutti i controlli sono stati superati, il prodotto è disponibile!
+        // Se tutti i controlli sono stati superati, il prodotto è disponibile
         return true;
 
     }
     disponibileWishlist(id:string|undefined):boolean{
-        // 1. Se l'ID non è valido, non può essere aggiunto.
         if (!id) {
             return false;
         }
 
-        // 2. Controlla se un articolo con lo stesso ID è GIA' presente come "wishlist".
-        //    Usiamo .some() per efficienza.
         const giaNellaWishlist = this.carrello.some(item =>
             item.prodotto.id === id && item.wishlist
         );
 
-        // 3. Il prodotto è "disponibile" per la wishlist se NON è già presente.
-        //    Quindi, restituiamo il valore negato del nostro controllo.
         return !giaNellaWishlist;
     }
 

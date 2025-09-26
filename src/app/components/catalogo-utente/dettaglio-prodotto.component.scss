@@ -3,6 +3,7 @@ $secondary-color: #6c757d;
 $border-color: #dee2e6;
 $background-color: #fff;
 
+//crea delle variabili locali da usare in questo scss
 :host {
   --primary-color: #{$primary-color};
   --secondary-color: #{$secondary-color};
@@ -25,6 +26,9 @@ $background-color: #fff;
 }
 
 .product-image-column {
+  /* i tre valori sono flex-grow (può ingrandirsi se ha spazio),
+  flex-shrink (se non ha spazio si può rimpicciolire) e flex-basis (grandezza iniziale)
+  */
   flex: 7 1 0;
   min-width: 500px;
 
