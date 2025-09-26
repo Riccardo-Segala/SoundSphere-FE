@@ -76,6 +76,10 @@ export class DettaglioProdottoComponent implements OnInit {
     }
 
     addToWishlist(){
+        if(!this.loggedUser){
+            this.router.navigate(['/login']);
+            return;
+        }
         const prodId=this.route.snapshot.paramMap.get("id");
         if(!prodId){
 
@@ -100,6 +104,10 @@ export class DettaglioProdottoComponent implements OnInit {
     }
 
     addToCart(){
+        if(!this.loggedUser){
+            this.router.navigate(['/login']);
+            return;
+        }
         const prodId=this.route.snapshot.paramMap.get("id");
         if(!prodId){
             return;
