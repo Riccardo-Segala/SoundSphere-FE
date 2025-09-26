@@ -52,6 +52,7 @@
                                         {{c.name}}
                                     </button>
                                 </h2>
+                                <!-- show.bs.collapse serve per invocare un metodo nel momento in cui il pulsante dell'accordion viene premuto -->
                                 <div [attr.id]="'collapse'+c.id" class="accordion-collapse collapse" data-bs-parent="#accordionCategorie"
                                      (show.bs.collapse)="selezionaCategoria(c.id)">
                                     <div class="accordion-body d-flex flex-wrap gap-2">

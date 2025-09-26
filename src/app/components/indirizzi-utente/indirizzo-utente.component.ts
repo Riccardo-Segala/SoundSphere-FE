@@ -20,6 +20,7 @@ import {FormIndirizziUtenteComponent} from "./form-indirizzi-utente.component";
 export class IndirizzoutenteComponent implements OnInit {
     indirizzi:IndirizzoUtenteModel[]=[];
     loggedUser:UtenteModel={};
+    //si crea una variabile che permette di accedere al form del figlio
     @ViewChild(FormIndirizziUtenteComponent) public addressForm!:FormIndirizziUtenteComponent;
     @Input() modifica:boolean=false;
     idModifica:string|null=null;
@@ -60,7 +61,6 @@ export class IndirizzoutenteComponent implements OnInit {
                 indirizzo.tipologia="RESIDENZA";
             }
             this.indirizzoService.createUserAddress(mapper.map(indirizzo,'IndirizzoUtenteModel','CreateUserAddressDTO'))
-                .pipe()
                 .subscribe({
                     next:(res)=>{
                         this.caricaListaIndirizzi();
@@ -93,6 +93,7 @@ export class IndirizzoutenteComponent implements OnInit {
         }
     }
 
+    //funzione che serve per visualizzare il form assegnato all'indirizzo corretto
     indirizzoInModifica(id:string|undefined){
         if(id){
             if(id!==this.idModifica){

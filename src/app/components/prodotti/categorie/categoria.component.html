@@ -14,6 +14,8 @@
                 </button>
 
             </div>
+            <!-- componente ricorsivo, che può aprire un altro menu di sottocategorie se non è foglia oppure aggiungere la categoria alla
+            lista di quelle da assegnare al prodotto-->
             <app-categorie-prodotto *ngIf="c.id===selectedCategoria"
                                           [categorieProdotto]="categorieProdotto"
                                           [categoriaInput]="c"

@@ -65,6 +65,7 @@
             <div class="row justify-content-center">
                 <div *ngIf="!modifica">
                     <h3 class="ms-2 mb-3">Indirizzo di Residenza</h3>
+                    <!-- componente figlio per inserire l'indirizzo anche in fase di registrazione -->
                     <app-form-indirizzi #formIndirizzo *ngIf="!modifica" [modifica]="modifica"></app-form-indirizzi>
                 </div>
             </div>

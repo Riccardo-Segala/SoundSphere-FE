@@ -176,7 +176,12 @@ export class FormUtenteComponent implements OnInit{
         if(!img){
             return;
         }
+        /*viene creata un istanza di file reader per leggere l'immagine*/
         const reader=new FileReader();
+        /* quando viene lanciato l'evento di load, cioè quando il file è letto con
+        * successo, viene eseguita la callback function che ritorna una valore che viene
+        * assegnato al previewUrl: questo valore è il contenuto dell'immagine in formato
+        * base64, praticamente una stringa (detta daat URL) */
         reader.onload=()=>this.previewUrl=reader.result;
         reader.readAsDataURL(img);
 

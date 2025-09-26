@@ -8,9 +8,11 @@ export const categoriaProfile=(mapper:Mapper)=>{
         forMember(
             (destination:CategoriaModel)=>destination.children,
             mapFrom((source:ResponseCategoryNavigationDTO)=>{
+                // controllo del set come se fosse un array per poter accedere a proprietà come length
+                // "as unknown as" permette di fare casting forzati ignorando quello che pensa il compilatore, lo fa e basta
                 const childrenAsArray=source.children as unknown as ResponseParentCategoryDTO[];
                 if(childrenAsArray && childrenAsArray.length>0){
-                    //const childrenArray = Array.from(source.children);
+                    //mappa e poi converte in set
                     const mappedChildren = mapper.mapArray<ResponseParentCategoryDTO, CategoriaModel>(
                         childrenAsArray,
                         'ResponseParentCategoryDTO', // La sorgente di ogni figlio

@@ -11,7 +11,9 @@ export class authKeyInterceptor implements HttpInterceptor {
         const token=this.session.getToken();
         console.log("Token:", token);
         let authReq=req;
+        //setta l'header solamente se il token esiste effettivamente
         if(token){
+            //clona la request in quanto gli oggetti HttpRequest sono immutabili
             authReq=req.clone({
                 setHeaders:{
                     Authorization: `Bearer ${token}`
@@ -19,6 +21,7 @@ export class authKeyInterceptor implements HttpInterceptor {
             });
             console.log('[AuthInterceptor] Added header:',authReq.headers.get('Authorization'));
         }
+        //ritorna il nuovo pacchetto che deve essere inviato al backend
         return next.handle(authReq);
     }
 }

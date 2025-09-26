@@ -11,6 +11,9 @@
 
         <div class="product-price align-items-end">
             <div class="d-flex price">
+                <!-- la currency pipe permette di definire come visualizzare una valuta:
+                 scelta valuta:EUR, mostrare come symbol €, minimo una cifra intera, e
+                 due cifre decimali-->
                 <span [class]="loggedUser?.vantaggio?.sconto ? 'discounted-price':''">{{ prodotto.prezzo | currency:'EUR':'symbol':'1.2-2' }}</span>
                 <p class=" ms-3 card-text card-price prezzo-scontato" *ngIf="this.loggedUser?.vantaggio?.sconto">{{ prezzoScontato()|currency:'EUR':'symbol':'1.2-2'}}</p>
             </div>
@@ -46,6 +49,11 @@
     </div>
 </section>
 
+<!-- questo è utile per pagine particolarmente grandi che contengono un componente figlio.
+ quelli con @ sono detti blocchi e significano:
+  - defer: aspetta a caricare questo finchè non si vede il placeholder nello schermo
+  - placeholder: nella posizione in cui si trova questo
+  - loading: mostra questo finchè non è caricato il componente, sostituisce per poco tempo placeholder-->
 <div *ngIf="prodotto && prodotto.id" class="reviews-section">
     @defer (on viewport){
         <app-recensioni [loggedUser]="loggedUser" [prodottoId]="prodotto.id" [stelleMedie]="stelleMedie"/>

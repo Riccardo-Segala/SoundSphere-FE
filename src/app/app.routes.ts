@@ -23,8 +23,11 @@ import {StockComponent} from "./components/stock/stock.component";
 import {AdminStockComponent} from "./components/admin-stock/admin-stock.component";
 import {WishlistComponent} from "./components/wishlist/wishlist.component";
 
-
+/* definisce le route del sito e vi associa un componente
+  in particolare: path definisce l'url dopo http://localhost:4200,
+  component definisce il componente da caricare al posto di router-outlet*/
 export const routes: Routes = [
+    // quando il path è localhost:4200, lo cambia in localhost:4200/categorie (definisce qual è l'home page)
   {path: '', redirectTo: '/categorie', pathMatch: 'full' },
   {path: 'login', component: LoginComponent },
   {path: 'registrazione', component: ProfiloUtenteComponent },
@@ -32,8 +35,9 @@ export const routes: Routes = [
     {path:'indirizzi-utente',component:IndirizzoutenteComponent},
     {path:'metodi-pagamento',component:ListaMetodoPagamentoComponent},
   {path: 'catalogo-utente', component: CatalogoUtenteComponent },
-  {path:'catalogo-utente/:slug',component:CatalogoUtenteComponent},
-  {path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },
+  // :slug è un parametro, verrà sostituito da un valore
+    {path:'catalogo-utente/:slug',component:CatalogoUtenteComponent},
+    {path: 'dettaglio-prodotto/:id',component: DettaglioProdottoComponent },
   {path: 'carrello',component:CarrelloComponent},
   {path:'wishlist',component:WishlistComponent},
   {path:'categorie',component:CategorieComponent},

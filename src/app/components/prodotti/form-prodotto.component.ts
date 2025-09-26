@@ -130,6 +130,7 @@ export class FormProdottoComponent implements OnInit {
     }
     salva(){
         let api$:Observable<ProdottoModel>;
+        //crea un prodotto con gli stessi attributi degli input, ma con anche il flag rentable
         const prodotto={...this.prodotto,rentable:true};
         if(this.modifica){
             if(this.id){

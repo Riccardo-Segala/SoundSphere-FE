@@ -11,6 +11,7 @@
     width: 24px;
     height: 24px;
     fill: var(--star-color-empty);
+    //classe aggiunta per le colorare le stelle che devono essere riempite
     &.filled {
       fill: var(--star-color);
     }
@@ -20,7 +21,7 @@
 .star-input {
   .interactive {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row-reverse; //nel DOM vengono messe nell'ordine inverso e questo le raddrizza visivamente
     justify-content: flex-end;
 
     label {
@@ -31,8 +32,14 @@
       }
     }
 
+    /*
+    :hover colora la stella su cui si è con il mouse,
+    :hover - label colora anche quelle la seguono, quindi quelle minori
+    tilde è un "selettore di fratelli"
+    */
     label:hover,
     label:hover ~ label,
+    //questo è per quando invece premi su una stella, e colora anche quelle che la seguono
     input[type="radio"]:checked ~ label {
       svg {
         fill: var(--star-color);

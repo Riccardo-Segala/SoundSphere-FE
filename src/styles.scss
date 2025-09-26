@@ -1,3 +1,8 @@
+//stili che si applicano a tutti i componenti
+// :active per quando si clicca il pulsante
+// :hover per quando ci si passa sopra con cursore
+// :disabled per quando il pulsante è disabilitato
+
 .btn {
   border-radius: 20px;
   border-color: #000;
@@ -6,12 +11,12 @@
 
 .btn:hover,{
   border-color: #000;
-  transform: scale(1.05);
+  transform: scale(1.05); //ingrandisce del 5%
 }
 
 .btn:active {
   border-color: #000;
-  transform: scale(0.98) !important;
+  transform: scale(0.98) !important; // !important serve per sovrascrivere i comportamenti di default di bootstrap
 }
 
 .btn-primary {
@@ -87,21 +92,25 @@ font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transform: scale(1.05);
 }
 
+/* questo stile si applica per tutti i tag input con type=number e serve a rimuovere le freccette per aumentare e decrementare il valore
+in particolare: inner-spin l'interno delle frecce, outer-spin il bordo
+*/
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
-  margin: 0;
+  margin: 0; //per non lasciare spazio occupato
 }
 
 /* Per Firefox */
 input[type=number] {
+  // mostra l'input come semplice casella di testo, rimuovendo le freccette
   -moz-appearance: textfield;
 }
 
 .discounted-price{
-  text-decoration: line-through;
+  text-decoration: line-through; //testo barrato
   color: #999;
-  font-size:0.8em;
+  font-size:0.8em; // ne riduce la grandezza all'80% rispetta a quella del testo del contenitore
 }
 
 .prezzo-scontato{

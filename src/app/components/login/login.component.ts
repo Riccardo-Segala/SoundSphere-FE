@@ -44,12 +44,14 @@ export class LoginComponent {
                 if(response){
                     //const res:JwtResponseDTO=response;
                     if(response.token){
+                        //importante settare il token nella sessione prima di ottenere l'utente, che altrimenti non funzionerebbe
                         this.sessionService.setToken(response.token);
                         this.userService.getCurrentUser()
                             .pipe(map(dto=>mapper.map<ResponseUserDTO,UtenteModel>(dto,'ResponseUserDTO','UtenteModel')))
                             .subscribe((utente:UtenteModel)=>{
                                 this.loggedUser=utente;
                                 this.sessionService.setUser(utente);
+                                //reindirizza alla pagina corretta in base al ruolo
                                 if(this.loggedUser.ruoli?.some(ruolo=>ruolo.nome==="ADMIN")){
                                     this.router.navigate(['/admin-page']);
                                 }

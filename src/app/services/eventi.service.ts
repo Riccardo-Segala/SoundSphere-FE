@@ -14,6 +14,7 @@ export class EventiService{
     }
 
     getEventsWithRents():Observable<EventoModel[]>{
+        //effettua una chiamata http asincrona all'url e restituisce un array oggetti
         return this.http.get<EventoModel[]>(`${this.url}`);
     }
 }

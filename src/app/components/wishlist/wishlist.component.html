@@ -2,7 +2,7 @@
     <h1>La tua Wishlist</h1>
 
     <div class="row">
-
+            <!-- align-items-stretch allunga tutti gli elementi per far raggiungere l'altezza di quello più alto-->
             <div *ngFor="let c of wishlist" class="d-flex align-items-stretch py-4 border-bottom cart-card">
 
                 <img src="http://localhost:8080{{c.prodotto.pathImmagine}}" alt="{{ c.prodotto?.nome }}" class="me-3" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">

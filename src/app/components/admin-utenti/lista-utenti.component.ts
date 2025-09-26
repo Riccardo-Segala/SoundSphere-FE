@@ -163,7 +163,10 @@ export class ListaUtentiComponent implements OnInit {
         return false;
     }
 
+    //restituisce un oggetto con due proprietà: find e class
     isInPromozione(id:string|undefined):{find:boolean,class:string}{
+        //permette dinamicamente di assegnare una classe all'elemento html in base alla presenza
+        //o meno nell'array dell'utente
         if(id){
             if(this.idUtentiDaPromuovere.find(idProm=>idProm===id)){
                 return {find:true,class:'text-bg-primary'};

@@ -87,6 +87,7 @@ export class AdminStockComponent implements OnInit{
         }
 
         if(this.stringaFiltro!==""){
+            //cerca sia su nome che marca del prodotto
             this.stocksFiltrati=this.stocksFiltrati.filter(stock=>
                 stock.prodotto.nome?.toLowerCase().includes(this.stringaFiltro.toLowerCase()) ||
                 stock.prodotto.marca?.toLowerCase().includes(this.stringaFiltro.toLowerCase()))

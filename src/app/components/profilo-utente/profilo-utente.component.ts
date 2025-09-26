@@ -33,6 +33,9 @@ export class ProfiloUtenteComponent implements OnInit{
     modifica:boolean=false;
     previewUrl:string|ArrayBuffer|null='/images/placeholder-utente';
 
+    //puo accedere al form del figlio. static:false permette ad angular di rendere disponibile il form dopo che è
+    //stata completamente inizializzata e controllata la vista
+    // ! è  per dire al compilatore di "stare tranquillo" e che la variabile verrà inizializzata ad un certo punto
     @ViewChild('formIndirizzo',{static:false}) private addressFormComponent!:FormIndirizziUtenteComponent;
     profileForm!:FormGroup;
 
@@ -50,6 +53,9 @@ export class ProfiloUtenteComponent implements OnInit{
     }
 
     ngOnInit(){
+        /*
+        * utilizzo di formBuilder per poter controllare in un'unica volta i campi sia del form utente che form indirizzo
+        * */
         this.profileForm = this.fb.group({
             nome:['',Validators.required],
             cognome:['',Validators.required],
@@ -77,6 +83,7 @@ export class ProfiloUtenteComponent implements OnInit{
         }
         else{
             this.modifica=false;
+            //aggiunge il controllo per inserire la password
             this.profileForm.addControl(
                 'password',
                 this.fb.control('', [Validators.required, Validators.minLength(8),Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$")])
@@ -88,6 +95,7 @@ export class ProfiloUtenteComponent implements OnInit{
             return this.profileForm.invalid;
         }
         else{
+            //controlla sia la validità del form utente che l'esistenza e la validità del form indirizzo
             return this.profileForm.invalid || (this.addressFormComponent && this.addressFormComponent.addressForm.invalid);
         }
     }
@@ -108,6 +116,7 @@ export class ProfiloUtenteComponent implements OnInit{
                 next:(res:JwtResponseDTO)=>{
                     if(res.token){
                         this.sessionService.setToken(res.token);
+                        //importante settare prima il token nella sessione, altrimenti è impossibile inserire l'indirizzo
                         let indirizzo:IndirizzoUtenteModel=this.addressFormComponent.addressForm.value;
                         indirizzo.main=true;
                         indirizzo.tipologia="RESIDENZA";

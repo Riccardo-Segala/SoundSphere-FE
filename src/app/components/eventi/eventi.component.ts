@@ -17,9 +17,6 @@ import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 export class EventiComponent implements OnInit{
     eventi:EventoModel[]=[];
 
-    @ViewChild('carouselEvents') carouselElement!:ElementRef;
-
-
     constructor(
         private eventiService:EventiService
     ) {}
@@ -28,12 +25,15 @@ export class EventiComponent implements OnInit{
         this.eventiService.getEventsWithRents().subscribe({
             next:(res:EventoModel[])=>{
                 res.sort((e1,e2)=>{
+                    //controlla ogni coppia di elementi per ordinare, in modo da avere nelle prime posizioni
+                    //gli eventi più vicini nel futuro
                     const event1=this.parseDate(e1.data);
                     const event2=this.parseDate(e2.data);
 
                     return event1.getTime()-event2.getTime();
                 });
 
+                //mostra solo le prima 5
                 this.eventi=res.splice(0,5);
             },
             error:(err)=>{
@@ -43,6 +43,7 @@ export class EventiComponent implements OnInit{
     }
 
     parseDate(dateString:string):Date{
+        //converte formato stringa da dd/mm/yyyy a yyyy-mm-dd
         const parts=dateString.split('/');
 
         return new Date(parseInt(parts[2]),parseInt(parts[1])-1,parseInt(parts[0]));

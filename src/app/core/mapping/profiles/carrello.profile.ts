@@ -4,6 +4,9 @@ import {UpdateCartItemDTO, ResponseCartDTO, ResponseProductDTO} from "../../../a
 import {CarrelloModel} from "../../../models/carrello.model"
 import {ProdottoModel} from "../../../models/prodotto.model";
 
+//ogni profile mappa automaticamente da una sorgente (dto/model) ad una destinazione (model/dto)
+//le proprietà con stesso nome. Quelle con nome diverso o con tipo diverso (es.oggetti annidati)
+//vanno mappati esplicitamente
 export const carrelloProfile =(mapper:Mapper)=>{
     createMap(mapper,'ResponseCartDTO','CarrelloModel',
         forMember(

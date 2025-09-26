@@ -1,10 +1,9 @@
 .scrollable-column{
   height: 100%;
   overflow-y: auto; //mostra barra di scorrimento solo se necessario
-  overflow-x:hidden;
+  overflow-x:hidden; //nasconde se supera la altezza del contenitore
 }
 
-//  servirebbe per nascondere la scrollbar interna
 .scrollable-column::-webkit-scrollbar{
   display:none;
 }

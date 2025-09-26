@@ -1,8 +1,0 @@
-<section>
-    <button type="button" (click)="naviga(undefined)">Crea dipendente</button>
-    <div *ngFor="let d of dipendenti">
-        <span>{{d.cognome}} {{d.nome}} {{d.email}} {{d.dataDiNascita}}</span>
-        <button type="button" (click)="naviga(d.id)">Modifica</button>
-        <button type="button" (click)="elimina(d.id)">Elimina</button>
-    </div>
-</section>
