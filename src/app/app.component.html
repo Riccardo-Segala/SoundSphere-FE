@@ -15,6 +15,9 @@
                     </div>
                     <div *ngIf="loggedUser as user"
                          class="d-flex align-items-center">
+                        <div class="bold">
+                            <span>{{filiale.nome}}</span>
+                        </div>
                         <div *ngIf="user.punti!==undefined && user.vantaggio" class="dropdown" style="width: auto;">
 
                             <button class="nav-user-dropdown dropdown-toggle interactive-transparent progress-dropdown"
@@ -58,10 +61,10 @@
                                 <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
                             </ul>
                         </div>
-                        <button class="button-cart ms-2" type="button" (click)="carrello('carrello')">
+                        <button *ngIf="!isOnlyEmployee()" class="button-cart ms-2" type="button" (click)="carrello('carrello')">
                             <i class="bi bi-cart-fill"></i>
                         </button>
-                        <button class="button-wishlist ms-2" type="button" (click)="carrello('wishlist')">
+                        <button *ngIf="!isOnlyEmployee()" class="button-wishlist ms-2" type="button" (click)="carrello('wishlist')">
                             <i class="bi bi-heart-fill"></i>
                         </button>
                     </div>
@@ -71,7 +74,7 @@
     </div>
 
     <nav class="navbar navbar-expand-sm navbar-light bg-black bg-opacity-10 shadow-sm rounded-bottom-5">
-        <div class="container-fluid">
+        <div class="container-fluid" *ngIf="!isOnlyEmployee()">
             <button class="navbar-toggler w-100" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCategories" aria-controls="navbarCategories" aria-expanded="false" aria-label="Toggle navigation">
                 <span>CATEGORIE</span>
             </button>
